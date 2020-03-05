@@ -1,0 +1,54 @@
+version: "3.5"
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=somepassword
+    container_name: ves_postgres
+    networks:
+      ves_net:
+        ipv4_address: "172.12.0.12"
+
+  web:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    container_name: ves_web
+    command: bash -c "python manage.py makemigrations ves &&  python manage.py migrate && python manage.py collectstatic --noinput &&  uvicorn  ves_n.asgi:application --host 0.0.0.0 --port 8012   "
+    volumes:
+      - .:/code
+    ports:
+      - 8012:8012
+    networks:
+      ves_net:
+        ipv4_address: "172.12.0.11"
+    depends_on:
+      - postgres
+  redis:
+    image: "redis:alpine"
+    ports:
+      - 6381:6379
+  nginx:
+    image: nginx
+    container_name: ves_nginx1
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - "./media/:/code/media"
+      - "./static/:/code/static"
+      - "./nginx/:/etc/nginx/conf.d"
+      - "./letsencrypt:/code/letsencrypt"
+    depends_on:
+      - web
+    networks:
+      ves_net:
+        ipv4_address: "172.12.0.9"
+
+networks:
+  ves_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "172.12.0.0/16"

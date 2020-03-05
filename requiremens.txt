@@ -1,0 +1,10 @@
+Django==3.0
+numpy==1.18.0
+channels == 2.4.0
+channels_redis == 2.4.1
+Twisted[tls,http2]
+django-redis
+Pillow==6.2.1
+psycopg2-binary==2.8.4
+uvicorn
+django-globals

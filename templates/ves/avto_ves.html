@@ -1,0 +1,489 @@
+{% extends 'base.html' %}
+{#{% load static %}#}
+{% block title %}
+    Автотранспорт
+{% endblock %}
+{% block content %}
+
+    <div id="body" class="container-fluid" style="text-align: center;">
+    <input type="checkbox" id="hmt" class="hidden-menu-ticker">
+
+<label class="btn-menu" for="hmt">
+  авто
+</label>
+<div class="hidden-menu">
+
+<div class="accordion" id="accordionExample">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h2 class="mb-0">
+        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          5687-TI-3
+        </button>
+      </h2>
+    </div>
+
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+      <div class="card-body">
+        <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">агент</th>
+      <th scope="col">накладная</th>
+      <th scope="col">время</th>
+         <th scope="col">масса, кг</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Mark</td>
+      <td>4353453445</td>
+      <td>12-03-2020 12:23</td>
+        <td>342</td>
+    </tr>
+  </tbody>
+</table>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" id="headingTwo">
+      <h2 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          5765-AA-7
+        </button>
+      </h2>
+    </div>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+      <div class="card-body">
+       te VHS.
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" id="headingThree">
+      <h2 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          4234-AX-5
+        </button>
+      </h2>
+    </div>
+    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+      <div class="card-body">
+        Anim parinth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+        <hr>
+        <h3 style="margin-left: 2%;">Вес</h3>
+        <hr>
+        <div class="row">
+            <div class="col-1"></div>
+            <span class="badge badge-warning">нестабильный<br>_______________</span>
+            <div class="col-2" style="background-color: #1b1e21; color:white; text-align: right; font-size: 3rem;">
+                <span id="vesOnline" style="cursor: not-allowed;">140 </span><br><span> кг</span>
+            </div>
+
+            <div class="col-2" style="background-color: #1c7430; color:white; text-align: right; font-size: 3rem;">
+                <span id="vesFix" style="cursor: pointer;" onclick="correct();">0 </span><br><span id="label_ves">брутто</span><span> кг</span>
+            </div>
+
+            <div class="col-2">
+                <button class="btn btn-success" onclick="fixVes()" style="width: 100%; height: 40%;">Зафиксировать
+                </button>
+                <hr>
+                <button class="btn btn-warning" onclick="destroyFixVes()" style="width: 100%; height: 40%; ">Сброс
+                </button>
+            </div>
+
+            <div class="col-2" style="background-color: #1b1e21; color:white; text-align: right; border-radius: 2%;">
+                <div style="margin-top: 1%;  font-size: 1rem;  ">
+
+                    <div class="col-3"> Авто</div>
+                    <span id="gos_num_avto" class="col-8" style="cursor: pointer;  font-size: 2rem;  "
+                          onclick="correct_num();">****-**-*</span>
+                </div>
+
+                <div style="margin-top: 1%;  font-size: 1rem;  ">
+                    <div class="col-3"> Прицеп</div>
+                    <span id="gos_num_pricep" class="col-8" style="cursor: pointer;  font-size: 2rem;  "
+                          onclick="correct_num_pricep();">****-**-*</span>
+                </div>
+            </div>
+            <div class="col-2">
+                <h4>Состояние транспорта</h4>
+                <div class="form-check ">
+                    <input class="form-check-input" type="radio" name="cheks" id="brutto" value="1" checked>
+                    <label class="form-check-label" for="brutto">
+                        Груженый
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="cheks" id="netto" value="2">
+                    <label class="form-check-label" for="netto">
+                        Порожний
+                    </label>
+                </div>
+            </div>
+
+        </div>
+        <hr>
+        <h3 style="margin-left: 2%;">Данные по транспорту</h3>
+        <hr>
+        <div class="row">
+            <div class="col-1"></div>
+
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="nameDriver"><b>Имя водителя</b></label>
+                    <hr style="width: 80%;">
+                    <input id="nameDriver" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="nakladnaya"><b>№ накладной</b></label>
+                    <hr style="width: 80%;">
+                    <input id="nakladnaya" pattern="[0-9]{7}" type="text" maxlength="7" class="form-control">
+                </div>
+
+                <div id="dov_otpr" class="form-group">
+                    <label for="otpravitel"><b>Отправитель</b></label>
+                    <hr style="width: 80%;">
+                    <input id="otpravitel" class="form-control">
+                </div>
+
+
+                <div id="div_pol" class="form-group" style="display: none;">
+                    <label for="poluchatel"><b>Получатель</b></label>
+                    <hr style="width: 80%;">
+                    <input id="poluchatel" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="description"><b>Примечания</b></label>
+                    <hr style="width: 80%; height: 20%;">
+                    <textarea id="description" rows="1" class="form-control"></textarea>
+                </div>
+            </div>
+
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="nameGruz"><b>Наименование</b></label>
+                    <hr style="width: 80%; height: 20%;">
+                    <textarea id="nameGruz" rows="1" class="form-control"></textarea>
+                </div>
+                <div>
+                    <div class="d-inline-block  form-group col-7">
+                        <label for="price"><b>Цена</b></label>
+                        <hr style="width: 80%;">
+                        <input id="price" pattern="[0-9]{7}" type="text" class="form-control">
+                    </div>
+
+                    <div class="d-inline-block  form-group col-3 ">
+                        <label for="price"><b>ед</b></label>
+
+                        <select>
+                            <option value="br">Br</option>
+                            <option value="eu">Eu</option>
+                            <option value="dol">$</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div>
+                    <div class="d-inline-block  form-group col-7 ">
+                        <label for="price"><b>Вес</b></label>
+                        <hr style="width: 80%;">
+                        <input id="ves_nakladnaia" pattern="[0-9]{7}" type="text" class="form-control">
+                    </div>
+
+                    <div class="d-inline-block  form-group col-3 ">
+                        <label for="price"><b>ед</b></label>
+
+                        <select>
+                            <option value="kg">кг</option>
+                            <option value="t">т</option>
+                        </select>
+                    </div>
+                </div>
+                <label><b>Добавить запись</b></label>
+                <hr>
+                <div>
+                    <button class="btn btn-success">Добавить</button>
+                </div>
+
+            </div>
+            <div class="col-1">
+                <button class="btn btn-success" style="width: 100%; margin-top: 1%;">Въезд</button>
+                <button class="btn btn-danger" style="width: 100%; margin-top: 1%;">Въезд</button>
+                <hr>
+                <button class="btn btn-success" style="width: 100%; margin-top: 1%;">Выезд</button>
+                <button class="btn btn-danger" style="width: 100%; margin-top: 1%;">Выезд</button>
+
+
+            </div>
+            <div class="d-inline-flex col-6 border ">
+                <div class="col-6">
+                    <div class="border">
+                        <video width="400" height="300" controls="controls" poster="video/duel.jpg"></video>
+                    </div>
+                    <div>ffffffffff</div>
+                </div>
+                <div class="col-6 ">
+                    <div class="border"> <video width="400" height="300" controls="controls" poster="video/duel.jpg"></video></div>
+
+                    <div class="border">
+                         <video width="400" height="300" controls="controls" poster="video/duel.jpg"></video>
+                    </div>
+                    </div><br>
+
+            </div>
+
+        </div>
+
+    </div>
+    <!-- Modal ves -->
+    <div class="modal fade" id="ves_modal" tabindex="-1" role="dialog" aria-labelledby="ves_modal"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ves_modal">Изменения веса</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label>Введите вес для установки</label>
+                    <input type="number" id="vesKorrect">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">отмена</button>
+                    <button type="button" onclick="changeVes()" class="btn btn-primary">Изменить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal change GosNomAvto -->
+    <div class="modal fade" id="gosnomeravto" tabindex="-1" role="dialog" aria-labelledby="gosnomeravto"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="gosnomeravto">Изменить номер авто</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group col-md-7">
+                        <label for="gosNavto">Номер авто</label>
+                        <input type="text" class="form-control" id="gosNavto"
+                               pattern="([0-9][0-9][0-9][0-9])" maxlength='4' name="gosNavto"
+                        >
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="seriaAvto">Серия </label>
+                        <input type="text" class="form-control" id="seriaAvto" maxlength="2"
+                               pattern="([a-zA-Z][a-zA-Z])" name="seriaAvto">
+                    </div>
+                    <div class="form-group col-md-2 ">
+                        <label for="regionAvto">Регион</label>
+                        <input type="text" class="form-control" pattern="([0-7])"
+                               id="regionAvto" maxlength="1" name="regionAvto">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">отмена</button>
+                    <button type="button" onclick="changeNumAvto()" class="btn btn-primary">Изменить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        var pricep = false;
+        var filterInt = function (value) {
+            if (/^(\-|\+)?([0-9]+|Infinity)$/.test(value))
+                return Number(value);
+            return false;
+        }
+
+        function changeVes() {
+            if (filterInt($("#vesKorrect").val())) {
+                $("#vesFix").html($("#vesKorrect").val());
+                $('#ves_modal').modal('hide');
+            } else {
+                alert('не целое число');
+            }
+
+        }
+
+        function fixVes() {
+            $("#vesFix").html($("#vesOnline").html());
+        }
+
+        function destroyFixVes() {
+            $("#vesFix").html(0);
+        }
+
+        function correct() {
+            $('#ves_modal').modal('show');
+            $("#vesKorrect").val($("#vesFix").html());
+        }
+
+        function correct_num() {
+            $('#gosnomeravto').modal('toggle');
+            var num = $('#gos_num_avto').html();
+            var arr = num.split('-');
+            $("#seriaAvto").val(arr[1]);
+            $('#gosNavto').val(arr[0]);
+            $('#regionAvto').val(arr[2]);
+        }
+
+
+        function correct_num_pricep() {
+            $('#gosnomeravto').modal('toggle');
+            var num = $('#gos_num_pricep').html();
+            var arr = num.split('-');
+            $("#seriaAvto").val(arr[1]);
+            $('#gosNavto').val(arr[0]);
+            $('#regionAvto').val(arr[2]);
+            pricep = true;
+        }
+
+        function changeNumAvto() {
+            let num = $('#gosNavto').val() + "-" + $("#seriaAvto").val() + "-" + $("#regionAvto").val();
+            if (pricep) {
+                $('#gos_num_pricep').html(num);
+
+            } else {
+                $('#gos_num_avto').html(num);
+            }
+            $('#gosnomeravto').modal('hide');
+        }
+
+        $('#gosnomeravto').on('hidden.bs.modal', function (e) {
+            pricep = false;
+        })
+
+
+        $("#brutto").click(function () {
+            $("#label_ves").html('брутто');
+            $("#dov_otpr").css('display', 'block');
+            $("#div_pol").css('display', 'none');
+        });
+
+        $("#netto").click(function () {
+            $("#label_ves").html('тара');
+            $("#div_pol").css('display', 'block');
+            $("#dov_otpr").css('display', 'none');
+        });
+
+
+        var roomName = "wert";
+        var chatSocket = new WebSocket(
+            'ws://' + window.location.host +
+            '/ws/');
+
+        chatSocket.onmessage = function (e) {
+            var data = JSON.parse(e.data);
+            var message = data['message'];
+            document.querySelector('#chat-log').value += (message + '\n');
+        };
+
+        chatSocket.onclose = function (e) {
+
+            console.error('Chat socket closed unexpectedly');
+        };
+
+
+    </script>
+
+
+        <style>
+       .hidden-menu {
+  display: block;
+  position: fixed;
+  list-style:none;
+  padding: 10px;
+  margin: 0;
+
+  box-sizing: border-box;
+  width: 40%;
+  background-color: #eee;
+  height: 100%;
+  top: 10%;
+  left: -40%;
+  transition: left .2s;
+  z-index: 2;
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+}
+
+.hidden-menu-ticker {
+  display: none;
+}
+
+.btn-menu {
+  color: #fff;
+  background-color: #0058B9;
+  padding: 7px;
+  position: fixed;
+  top: 10%;
+  left: 5px;
+  cursor: pointer;
+  transition: left .23s;
+  z-index: 3;
+  width: 60px;
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+}
+.btn-menu span {
+  display: block;
+  height: 3px;
+  background-color: #fff;
+  margin: 5px 0 0;
+  transition: all .1s linear .23s;
+  position: relative;
+}
+.btn-menu span.first {
+  margin-top: 0;
+}
+
+.hidden-menu-ticker:checked ~ .btn-menu {
+  left: 35%;
+}
+.hidden-menu-ticker:checked ~ .hidden-menu {
+  left: 0;
+}
+.hidden-menu-ticker:checked ~ .btn-menu span.first {
+  -webkit-transform: rotate(45deg);
+  top: 8px;
+
+}
+.hidden-menu-ticker:checked ~ .btn-menu span.second {
+  opacity: 0;
+}
+.hidden-menu-ticker:checked ~ .btn-menu span.third {
+  -webkit-transform: rotate(-45deg);
+  top: -8px;
+}
+        </style>
+{% endblock %}

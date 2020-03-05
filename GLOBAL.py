@@ -1,0 +1,1 @@
+globals()['autovesconn'] = False

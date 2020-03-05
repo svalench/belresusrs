@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+{% load static %}
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %} || System</title>
+    <head>
+   <link rel="stylesheet" href="{% static 'boostrap/css/bootstrap.min.css' %}">
+        <script src="{% static 'jq.js' %}"></script>
+    <script src="{% static 'boostrap/js/bootstrap.min.js' %}"></script>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light ml-2 mr-2">
+  <a class="navbar-brand" href="#">Белресурсы</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'ves:start' %}">Стартовая <span class="sr-only">(current)</span></a>
+      </li>
+
+         <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Взвешивание
+        </a>
+        <div class="dropdown-menu " aria-labelledby="navbarDropdown1">
+            <a class="nav-link " href="{% url 'ves:menu_ves' %}">Меню</a>
+            <a class="nav-link " href="{% url 'ves:avto_ves' %}">Автотранспорт  <span class="badge badge-success">v</span></a>
+              <a class="nav-link " href="{% url 'ves:zd_ves' %}">Ж/Д транспорт <span class="badge badge-success">v</span></a>
+        </div>
+      </li>
+
+         <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Данные
+        </a>
+        <div class="dropdown-menu " aria-labelledby="navbarDropdown2">
+            <a class="nav-link " href="{% url 'ves:menu_ves' %}">Меню</a>
+              <a class="nav-link " href="{% url 'ves:menu_ves' %}">Что то</a>
+              <a class="nav-link " href="{% url 'ves:menu_ves' %}">Еще что то</a>
+        </div>
+      </li>
+
+        <li class="nav-item">
+        <a class="nav-link" href="{% url 'ves:menu_ves' %}">Настройки</a>
+      </li>
+
+    </ul>
+
+      <ul class="navbar-nav text-right mr-5" >
+           <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{ request.user    }}
+        </a>
+        <div class="dropdown-menu " aria-labelledby="navbarDropdown">
+
+            <a class="nav-link " href="{%   url 'logout' %}">Выйти</a>
+
+        </div>
+      </li>
+
+      </ul>
+
+
+
+  </div>
+</nav>
+
+
+</header>
+
+{% block content %}
+
+
+
+{% endblock %}
+
+<script src="{% static 'popper.js' %}" ></script>
+<script src="{% static 'b.min.js' %}" ></script>
+
+</body>
+</html>
