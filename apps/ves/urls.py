@@ -25,6 +25,9 @@ urlpatterns = [
     path('ves/avto',  StartView.avto_ves, name = 'avto_ves'),
     path('ves/zd',  StartView.zd_ves, name = 'zd_ves'),
     # path('<str:room_name>/', views.room, name='room'),
+    path('data',  StartView.menu_data, name = 'menu_data'),
+    path('data/contragents',  StartView.menu_data, name = 'contragents'),
+    path('data/actions',  StartView.menu_data, name = 'actions'),
 
 
 ]

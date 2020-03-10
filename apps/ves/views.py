@@ -35,6 +35,10 @@ class StartView(LoginRequiredMixin, CreateView):
         return render(request,'ves/menu_ves.html')
 
     @login_required
+    def menu_data(request):
+        return render(request, 'data/menu_data.html')
+
+    @login_required
     def avto_ves(request):
         auto = Auto.objects.filter(status_in=True)
         print(auto)
