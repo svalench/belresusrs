@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from ves_n.views import logout_view, addactionView
+from ves_n.views import logout_view, addactionView, addAutoView
 
 from channels.routing import ProtocolTypeRouter
 
@@ -29,5 +29,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('logout', logout_view, name = 'logout'),
-    path('addaction/',addactionView, name='addaction')
+    path('addaction/',addactionView, name='addaction'),
+    path('addautoPOST/',addAutoView, name='addautoPOST'),
 ]

@@ -62,7 +62,7 @@ class Vagon(models.Model):
 
 class ActionUser(models.Model):
     id = models.AutoField(primary_key=True)
-    parentId = models.OneToOneField(User, on_delete=models.CASCADE)
+    parentId = models.ForeignKey(User, on_delete=models.CASCADE)
     action = models.CharField('действие', max_length=255, db_index=True)
     where = models.CharField('где', max_length=255, db_index=True)
     date_add = models.DateTimeField(auto_now_add=True)

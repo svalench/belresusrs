@@ -14,6 +14,7 @@
         <div class="hidden-menu">
 
             <div class="accordion" id="accordionExample">
+                {% for a in auto_in %}
                 <div class="card">
                     <div class="card-header" id="headingOne">
                         <h2 class="mb-0">
@@ -48,37 +49,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-header" id="headingTwo">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
-                                    data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                5765-AA-7
-                            </button>
-                        </h2>
-                    </div>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                        <div class="card-body">
-                            te VHS.
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header" id="headingThree">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
-                                    data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                4234-AX-5
-                            </button>
-                        </h2>
-                    </div>
-                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
-                         data-parent="#accordionExample">
-                        <div class="card-body">
-                            Anim parinth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
+
+
             </div>
 
 
@@ -191,9 +164,9 @@
                     </div>
 
                     <div class="d-inline-block  form-group col-3 ">
-                        <label for="price"><b>ед</b></label>
+                        <label for="valuta"><b>ед</b></label>
 
-                        <select>
+                        <select id="valuta">
                             <option value="br">Br</option>
                             <option value="eu">Eu</option>
                             <option value="dol">$</option>
@@ -210,9 +183,9 @@
                     </div>
 
                     <div class="d-inline-block  form-group col-3 ">
-                        <label for="price"><b>ед</b></label>
+                        <label for="ed"><b>ед</b></label>
 
-                        <select>
+                        <select id="ed">
                             <option value="kg">кг</option>
                             <option value="t">т</option>
                         </select>
@@ -221,7 +194,7 @@
                 <label><b>Добавить запись</b></label>
                 <hr>
                 <div>
-                    <button class="btn btn-success">Добавить</button>
+                    <button onclick="addAuto()" class="btn btn-success">Добавить</button>
                 </div>
 
             </div>
@@ -318,10 +291,19 @@
         </div>
     </div>
 
-{% csrf_token %}
+
+
+    {% csrf_token %}
+
+
+
+
+
+
+
     <script>
-    // using jQuery
-var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+        // using jQuery
+        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
         var pricep = false;
         var filterInt = function (value) {
             if (/^(\-|\+)?([0-9]+|Infinity)$/.test(value))
@@ -336,7 +318,7 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
 
         function addAction(action) {
             let data = "where=auto&action=" + action + "&user={{ request.user.id }}";
-            console.log(data);
+
             $.ajax({
                 type: "POST",
                 url: '{% url 'addaction' %}',
@@ -349,7 +331,59 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
                         xhr.setRequestHeader("X-CSRFToken", csrftoken);
                     }
                 }
-                });
+            });
+        }
+
+        function addAuto() {
+            let numberPricep = $("#gos_num_pricep").html();
+            var num = $('#gos_num_avto').html();
+            var arrAuto = num.split('-');
+            var arrPricep = num.split('-');
+
+            let numAuto = arrAuto.join("");
+            let numPricep = arrPricep.join("");
+            let valuta = $("#valuta").val();
+            let price = $('#price').val();
+            let ed = $("#ed").val();
+            let ves = $("#vesFix").html();
+            let ves_nakladnay = $("#ves_nakladnaia").val();
+            let nakladnay = $("#nakladnaya").val();
+            let typeCar = $("[name='cheks']:checked").val();
+
+            if (typeCar == 1) {
+                let agent = $("#otpravitel").val();
+            } else {
+                let agent = $("#poluchatel").val();
+            }
+
+             let data = {
+                'ves': ves,
+                 'ves_nakladnaya':ves_nakladnay,
+                 'nakladnaya':nakladnay,
+                 'ed':ed,
+                 'valuta':valuta,
+                 'price':price,
+                 'typeCar':typeCar,
+                 'numAuto':numAuto,
+                 'numPricep':numPricep
+            };
+            console.log(data);
+            $.ajax({
+                type: "POST",
+                url: '{% url 'addautoPOST' %}',
+                data: data,
+                success: function () {
+                    console.log('Load was performed.');
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+
+
+
         }
 
 
@@ -370,7 +404,7 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
         }
 
         function destroyFixVes() {
-             addAction('вес сброшен');
+            addAction('вес сброшен');
             $("#vesFix").html(0);
         }
 
@@ -422,12 +456,14 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
 
 
         $("#brutto").click(function () {
+             addAction('оператор указал авто как груженый');
             $("#label_ves").html('брутто');
             $("#dov_otpr").css('display', 'block');
             $("#div_pol").css('display', 'none');
         });
 
         $("#netto").click(function () {
+            addAction('оператор указал авто как порожний');
             $("#label_ves").html('тара');
             $("#div_pol").css('display', 'block');
             $("#dov_otpr").css('display', 'none');

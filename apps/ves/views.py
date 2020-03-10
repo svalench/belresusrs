@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.views import View
 from django.views.generic import CreateView
 from apps.ves.consumers import *
-
+from apps.ves.models import Auto
 
 
 class StartView(LoginRequiredMixin, CreateView):
@@ -36,12 +36,13 @@ class StartView(LoginRequiredMixin, CreateView):
 
     @login_required
     def avto_ves(request):
-        print(globalAuto)
+        auto = Auto.objects.filter(status_in=True)
+        print(auto)
         if (globalAuto == True):
             print('woops')
             return HttpResponseRedirect(403)
-
-        return render(request, 'ves/avto_ves.html')
+        data = {'auto_in': auto }
+        return render(request, 'ves/avto_ves.html', data)
 
     @login_required
     def zd_ves(request):
