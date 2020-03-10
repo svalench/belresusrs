@@ -365,10 +365,12 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
         }
 
         function fixVes() {
+            addAction('вес зафиквсирован');
             $("#vesFix").html($("#vesOnline").html());
         }
 
         function destroyFixVes() {
+             addAction('вес сброшен');
             $("#vesFix").html(0);
         }
 
@@ -379,6 +381,7 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
         }
 
         function correct_num() {
+            addAction('Попытка корректировки номера авто');
             $('#gosnomeravto').modal('toggle');
             var num = $('#gos_num_avto').html();
             var arr = num.split('-');
@@ -389,6 +392,7 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
 
 
         function correct_num_pricep() {
+            addAction('Попытка корректировки номера прицепа');
             $('#gosnomeravto').modal('toggle');
             var num = $('#gos_num_pricep').html();
             var arr = num.split('-');
@@ -399,11 +403,14 @@ var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
         }
 
         function changeNumAvto() {
+
             let num = $('#gosNavto').val() + "-" + $("#seriaAvto").val() + "-" + $("#regionAvto").val();
             if (pricep) {
+                addAction('корректировка номера прицепа');
                 $('#gos_num_pricep').html(num);
 
             } else {
+                addAction('корректировка номера авто');
                 $('#gos_num_avto').html(num);
             }
             $('#gosnomeravto').modal('hide');
