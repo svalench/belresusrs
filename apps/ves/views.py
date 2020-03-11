@@ -50,6 +50,8 @@ class StartView(LoginRequiredMixin, CreateView):
         return render(request, 'ves/zd_ves.html')
 
 
+
+# класс для просмотра данных
 class DataView(LoginRequiredMixin, CreateView):
     template_name = 'ves/start.html'
     login_url = '/accounts/login/'
