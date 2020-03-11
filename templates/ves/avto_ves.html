@@ -148,6 +148,7 @@
                     <hr style="width: 80%; height: 20%;">
                     <textarea id="description" rows="1" class="form-control"></textarea>
                 </div>
+                 <button onclick="addAuto()" style="width: 100%;" class="btn btn-success">Добавить транспорт</button>
             </div>
 
             <div class="col-2">
@@ -191,10 +192,10 @@
                         </select>
                     </div>
                 </div>
-                <label><b>Добавить запись</b></label>
+                <label><b>Добавить в табилцу</b></label>
                 <hr>
                 <div>
-                    <button onclick="addAuto()" class="btn btn-success">Добавить</button>
+                    <button onclick="addNakladnayaRow()" class="btn btn-success">Добавить</button>
                 </div>
 
             </div>
@@ -207,12 +208,14 @@
 
 
             </div>
+
+
             <div class="d-inline-flex col-6 border ">
                 <div class="col-6">
                     <div class="border">
                         <video width="400" height="300" controls="controls" poster="video/duel.jpg"></video>
                     </div>
-                    <div style="width:400px; height:300px;" class="border">
+                    <div style="width:400px; height:300px; overflow: auto;" class="border">
                         <table class="table">
                                 <thead>
                                 <tr>
@@ -220,15 +223,11 @@
                                     <th scope="col">наименование</th>
                                     <th scope="col">вес</th>
                                     <th scope="col">цена</th>
+                                    <th scope="col">delete</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>4353453445</td>
-                                    <td>12-03-2020 12:23</td>
-                                    <td>342</td>
-                                </tr>
+                                <tbody id="table-nakladnaya">
+
                                 </tbody>
                             </table>
                     </div>
@@ -324,6 +323,9 @@
         // using jQuery
         var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
         var pricep = false;
+        var count=1;
+        var rowsTable=[];
+        var Table=[];
         var filterInt = function (value) {
             if (/^(\-|\+)?([0-9]+|Infinity)$/.test(value))
                 return Number(value);
@@ -333,6 +335,45 @@
         function csrfSafeMethod(method) {
             // these HTTP methods do not require CSRF protection
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        function addNakladnayaRow() {
+            let typeCar = $("[name='cheks']:checked").val();
+            if(typeCar==2){alert('Транспорт порожний'); return;}
+            let valuta = $("#valuta").val();
+            let price = $('#price').val();
+            let ed = $("#ed").val();
+            let ves_nakladnay = $("#ves_nakladnaia").val();
+            let nakladnay = $("#nakladnaya").val();
+            let name = $("#nameGruz").val();
+            Table[count] = {"count":count,"name":name,"ves":ves_nakladnay,"ed":ed,"price":price,"valuta":valuta};
+            let row = "<tr><td>"+count+"</td><td>"+name+"</td><td>"+ves_nakladnay+" ,"+ed+"</td><td>"+price+" ,"+valuta+"</td><td><button id='row_"+count+"' onclick='deleteRow(this)'>x</button></td>";
+            let table = $("#table-nakladnaya").html();
+            rowsTable[count] = row;
+            let newtable = rowsTable.join("");
+            $("#table-nakladnaya").html(newtable);
+            alert('done');
+            count++;
+        }
+
+        function deleteRow(e){
+            let ar = e.id.split('_');
+            rowsTable=[];
+            delete Table[ar[1]];
+            console.log(Table);
+            var newTable = [];
+            var c=1;
+            Table.forEach(function(a,v){
+                a.count = c;
+                 rowsTable[c] = "<tr><td>"+a.count+"</td><td>"+a.name+"</td><td>"+a.ves_nakladnay+" ,"+a.ed+"</td><td>"+a.price+" ,"+a.valuta+"</td><td><button id='row_"+a.count+"' onclick='deleteRow(this)'>x</button></td>";
+            ;
+                c++;
+            });
+
+
+            let newtable = rowsTable.join("");
+            $("#table-nakladnaya").html(newtable);
+            count--;
         }
 
         function addAction(action) {
@@ -361,9 +402,7 @@
 
             let numAuto = arrAuto.join("");
             let numPricep = arrPricep.join("");
-            let valuta = $("#valuta").val();
-            let price = $('#price').val();
-            let ed = $("#ed").val();
+
             let ves = $("#vesFix").html();
             let ves_nakladnay = $("#ves_nakladnaia").val();
             let nakladnay = $("#nakladnaya").val();
