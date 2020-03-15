@@ -15,40 +15,41 @@
 
             <div class="accordion" id="accordionExample">
                 {% for a in auto_in %}
-                <div class="card">
-                    <div class="card-header" id="headingOne">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
-                                    aria-expanded="true" aria-controls="collapseOne">
-                                5687-TI-3
-                            </button>
-                        </h2>
-                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse"
+                                        data-target="#collapseOne"
+                                        aria-expanded="true" aria-controls="collapseOne">
+                                    5687-TI-3
+                                </button>
+                            </h2>
+                        </div>
 
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
-                         data-parent="#accordionExample">
-                        <div class="card-body">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th scope="col">агент</th>
-                                    <th scope="col">накладная</th>
-                                    <th scope="col">время</th>
-                                    <th scope="col">масса, кг</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>Mark</td>
-                                    <td>4353453445</td>
-                                    <td>12-03-2020 12:23</td>
-                                    <td>342</td>
-                                </tr>
-                                </tbody>
-                            </table>
+                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                             data-parent="#accordionExample">
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">агент</th>
+                                        <th scope="col">накладная</th>
+                                        <th scope="col">время</th>
+                                        <th scope="col">масса, кг</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Mark</td>
+                                        <td>4353453445</td>
+                                        <td>12-03-2020 12:23</td>
+                                        <td>342</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
                 {% endfor %}
 
 
@@ -148,7 +149,7 @@
                     <hr style="width: 80%; height: 20%;">
                     <textarea id="description" rows="1" class="form-control"></textarea>
                 </div>
-                 <button onclick="addAuto()" style="width: 100%;" class="btn btn-success">Добавить транспорт</button>
+                <button onclick="addAuto()" style="width: 100%;" class="btn btn-success">Добавить транспорт</button>
             </div>
 
             <div class="col-2">
@@ -161,7 +162,7 @@
                     <div class="d-inline-block  form-group col-7">
                         <label for="price"><b>Цена</b></label>
                         <hr style="width: 80%;">
-                        <input id="price"  type="text" class="form-control">
+                        <input id="price" type="text" class="form-control">
                     </div>
 
                     <div class="d-inline-block  form-group col-3 ">
@@ -180,7 +181,7 @@
                     <div class="d-inline-block  form-group col-7 ">
                         <label for="price"><b>Вес</b></label>
                         <hr style="width: 80%;">
-                        <input id="ves_nakladnaia"  type="text" class="form-control">
+                        <input id="ves_nakladnaia" type="text" class="form-control">
                     </div>
 
                     <div class="d-inline-block  form-group col-3 ">
@@ -217,19 +218,19 @@
                     </div>
                     <div style="width:400px; height:300px; overflow: auto;" class="border">
                         <table class="table">
-                                <thead>
-                                <tr>
-                                    <th scope="col">№</th>
-                                    <th scope="col">наименование</th>
-                                    <th scope="col">вес</th>
-                                    <th scope="col">цена</th>
-                                    <th scope="col">delete</th>
-                                </tr>
-                                </thead>
-                                <tbody id="table-nakladnaya">
+                            <thead>
+                            <tr>
+                                <th scope="col">№</th>
+                                <th scope="col">наименование</th>
+                                <th scope="col">вес</th>
+                                <th scope="col">цена</th>
+                                <th scope="col">delete</th>
+                            </tr>
+                            </thead>
+                            <tbody id="table-nakladnaya">
 
-                                </tbody>
-                            </table>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="col-6 ">
@@ -323,9 +324,9 @@
         // using jQuery
         var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
         var pricep = false;
-        var count=1;
-        var rowsTable=[];
-        var Table=[];
+        var count = 1;
+        var rowsTable = [];
+        var Table = [];
         var filterInt = function (value) {
             if (/^(\-|\+)?([0-9]+|Infinity)$/.test(value))
                 return Number(value);
@@ -335,59 +336,6 @@
         function csrfSafeMethod(method) {
             // these HTTP methods do not require CSRF protection
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-        }
-
-        function addNakladnayaRow() {
-            let typeCar = $("[name='cheks']:checked").val();
-            if(typeCar==2){alert('Транспорт порожний'); return;}
-            let valuta = $("#valuta").val();
-            let price = $('#price').val();
-            let ed = $("#ed").val();
-            let ves_nakladnay = $("#ves_nakladnaia").val();
-            let nakladnay = $("#nakladnaya").val();
-            let name = $("#nameGruz").val();
-            if(!name){
-                alert("Вы не указали название товара."); $("#nameGruz").focus(); return;
-            }
-            if(!price){
-                alert('Вы не указали цену товара'); $("#price").focus(); return;
-            }
-            if(!price.match(/^(0$|-?[1-9]\d*(\.\d*[1-9]$)?|-?0\.\d*[1-9])$/)){
-                alert("В поле цена должны быть введены только цифры"); $("#price").focus(); return;
-            }
-            if(!ves_nakladnay){
-                if(!confirm('Вы не уакзали вес по надклдной. Продолжить?')){return;}
-            }
-            if(!ves_nakladnay.match(/^(0$|-?[1-9]\d*(\.\d*[1-9]$)?|-?0\.\d*[1-9])$/)){
-                alert("В поле вес должны быть введены только цифры"); $("#ves_nakladnaia").focus(); return;
-            }
-            Table[count] = {"count":count,"name":name,"ves":ves_nakladnay,"ed":ed,"price":price,"valuta":valuta};
-            let row = "<tr><td>"+count+"</td><td>"+name+"</td><td>"+ves_nakladnay+" ,"+ed+"</td><td>"+price+" ,"+valuta+"</td><td><button id='row_"+count+"' onclick='deleteRow(this)'>x</button></td>";
-            let table = $("#table-nakladnaya").html();
-            rowsTable[count] = row;
-            let newtable = rowsTable.join("");
-            $("#table-nakladnaya").html(newtable);
-            count++;
-        }
-
-        function deleteRow(e){
-            let ar = e.id.split('_');
-            rowsTable=[];
-            delete Table[ar[1]];
-            console.log(Table);
-            var newTable = [];
-            var c=1;
-            Table.forEach(function(a,v){
-                a.count = c;
-                 rowsTable[c] = "<tr><td>"+a.count+"</td><td>"+a.name+"</td><td>"+a.ves_nakladnay+" ,"+a.ed+"</td><td>"+a.price+" ,"+a.valuta+"</td><td><button id='row_"+a.count+"' onclick='deleteRow(this)'>x</button></td>";
-            ;
-                c++;
-            });
-
-
-            let newtable = rowsTable.join("");
-            $("#table-nakladnaya").html(newtable);
-            count--;
         }
 
         function addAction(action) {
@@ -408,6 +356,85 @@
             });
         }
 
+        function addNakladnayaRow() {
+            let typeCar = $("[name='cheks']:checked").val();
+            if (typeCar == 2) {
+                alert('Транспорт порожний');
+                return;
+            }
+            let valuta = $("#valuta").val();
+            let price = $('#price').val();
+            let ed = $("#ed").val();
+            let ves_nakladnay = $("#ves_nakladnaia").val();
+            let nakladnay = $("#nakladnaya").val();
+            let name = $("#nameGruz").val();
+            if (!name) {
+                addAction('оператор добавляя запись в список не указал название ');
+                alert("Вы не указали название товара.");
+                $("#nameGruz").focus();
+                return;
+            }
+            if (!price) {
+                addAction('оператор добавляя запись в список не указал цену ');
+                alert('Вы не указали цену товара');
+                $("#price").focus();
+                return;
+            }
+            if (!price.match(/^(0$|-?[1-9]\d*(\.\d*[1-9]$)?|-?0\.\d*[1-9])$/)) {
+                alert("В поле цена должны быть введены только цифры");
+                $("#price").focus();
+                return;
+            }
+            if (!ves_nakladnay) {
+                addAction('оператор добавляя запись в список не указал вес по накладной ');
+                if (!confirm('Вы не уакзали вес по надклдной. Продолжить?')) {
+                    return;
+                }
+            }
+            if (!ves_nakladnay.match(/^(0$|-?[1-9]\d*(\.\d*[1-9]$)?|-?0\.\d*[1-9])$/)) {
+                alert("В поле вес должны быть введены только цифры");
+                $("#ves_nakladnaia").focus();
+                return;
+            }
+            addAction('оператор добавил запись в список накладной');
+            Table[count] = {
+                "count": count,
+                "name": name,
+                "ves": ves_nakladnay,
+                "ed": ed,
+                "price": price,
+                "valuta": valuta
+            };
+            let row = "<tr><td>" + count + "</td><td>" + name + "</td><td>" + ves_nakladnay + " ," + ed + "</td><td>" + price + " ," + valuta + "</td><td><button id='row_" + count + "' onclick='deleteRow(this)'>x</button></td>";
+            let table = $("#table-nakladnaya").html();
+            rowsTable[count] = row;
+            let newtable = rowsTable.join("");
+            $("#table-nakladnaya").html(newtable);
+            count++;
+        }
+
+        function deleteRow(e) {
+            addAction('оператор удалил запись из списка накладной');
+            let ar = e.id.split('_');
+            rowsTable = [];
+            delete Table[ar[1]];
+            console.log(Table);
+            var newTable = [];
+            var c = 1;
+            Table.forEach(function (a, v) {
+                a.count = c;
+                rowsTable[c] = "<tr><td>" + a.count + "</td><td>" + a.name + "</td><td>" + a.ves_nakladnay + " ," + a.ed + "</td><td>" + a.price + " ," + a.valuta + "</td><td><button id='row_" + a.count + "' onclick='deleteRow(this)'>x</button></td>";
+                ;
+                c++;
+            });
+
+
+            let newtable = rowsTable.join("");
+            $("#table-nakladnaya").html(newtable);
+            count--;
+        }
+
+
         function addAuto() {
             let numberPricep = $("#gos_num_pricep").html();
             var num = $('#gos_num_avto').html();
@@ -420,11 +447,15 @@
             let ves = $("#vesFix").html();
             let ves_nakladnay = $("#ves_nakladnaia").val();
             let nakladnay = $("#nakladnaya").val();
-            if(!nakladnay){
-                alert('Вы не указали номер накладной'); $("#nakladnaya").focus(); return;
+            if (!nakladnay) {
+                alert('Вы не указали номер накладной');
+                $("#nakladnaya").focus();
+                return;
             }
-            if(!nakladnay.match(/^(0$|-?[1-9]\d*(\.\d*[1-9]$)?|-?0\.\d*[1-9])$/)){
-                alert("В поле накладная должны быть введены только цифры"); $("#nakladnaya").focus(); return;
+            if (!nakladnay.match(/^(0$|-?[1-9]\d*(\.\d*[1-9]$)?|-?0\.\d*[1-9])$/)) {
+                alert("В поле накладная должны быть введены только цифры");
+                $("#nakladnaya").focus();
+                return;
             }
             let typeCar = $("[name='cheks']:checked").val();
 
@@ -434,16 +465,16 @@
                 let agent = $("#poluchatel").val();
             }
 
-             let data = {
+            let data = {
                 'ves': ves,
-                 'ves_nakladnaya':ves_nakladnay,
-                 'nakladnaya':nakladnay,
-                 'ed':ed,
-                 'valuta':valuta,
-                 'price':price,
-                 'typeCar':typeCar,
-                 'numAuto':numAuto,
-                 'numPricep':numPricep
+                'ves_nakladnaya': ves_nakladnay,
+                'nakladnaya': nakladnay,
+                'ed': ed,
+                'valuta': valuta,
+                'price': price,
+                'typeCar': typeCar,
+                'numAuto': numAuto,
+                'numPricep': numPricep
             };
             console.log(data);
             $.ajax({
@@ -459,7 +490,6 @@
                     }
                 }
             });
-
 
 
         }
@@ -515,25 +545,43 @@
         }
 
         function changeNumAvto() {
-            if(!$('#gosNavto').val()){
-                alert('Вы не указали номер '); $('#gosNavto').focus(); return;
+            if (!$('#gosNavto').val()) {
+                addAction('оператор не указал номер');
+                alert('Вы не указали номер ');
+                $('#gosNavto').focus();
+                return;
             }
-            if(!$('#gosNavto').val().match(/[0-9]{4}/)){
-                alert("В поле  должны быть введены только  4 цифры"); $('#gosNavto').focus(); return;
+            if (!$('#gosNavto').val().match(/[0-9]{4}/)) {
+                addAction('оператор не правльно указал номер');
+                alert("В поле  должны быть введены только  4 цифры");
+                $('#gosNavto').focus();
+                return;
             }
 
-            if(!$('#seriaAvto').val()){
-                alert('Вы не указали номер '); $('#seriaAvto').focus(); return;
+            if (!$('#seriaAvto').val()) {
+                addAction('оператор не указал серию');
+                alert('Вы не указали номер ');
+                $('#seriaAvto').focus();
+                return;
             }
-            if(!$('#seriaAvto').val().match(/[A-Z]{2}/)){
-                alert("В поле  должны быть введены только 2 латинские буквы капс локом"); $('#seriaAvto').focus(); return;
+            if (!$('#seriaAvto').val().match(/[A-Z]{2}/)) {
+                addAction('оператор не правильно ввел буквенный указатель номера');
+                alert("В поле  должны быть введены только 2 латинские буквы капс локом");
+                $('#seriaAvto').focus();
+                return;
             }
 
-            if(!$('#regionAvto').val()){
-                alert('Вы не указали номер '); $('#regionAvto').focus(); return;
+            if (!$('#regionAvto').val()) {
+                addAction('оператор не указал регион');
+                alert('Вы не указали номер ');
+                $('#regionAvto').focus();
+                return;
             }
-            if(!$('#regionAvto').val().match(/[0-7]{1}/)){
-                alert("В поле  должны быть введены только 1 цифрa от 0 до 7"); $('#regionAvto').focus(); return;
+            if (!$('#regionAvto').val().match(/[0-7]{1}/)) {
+                addAction('оператор не правильно ввел регион');
+                alert("В поле  должны быть введены только 1 цифрa от 0 до 7");
+                $('#regionAvto').focus();
+                return;
             }
             let num = $('#gosNavto').val() + "-" + $("#seriaAvto").val() + "-" + $("#regionAvto").val();
             if (pricep) {
@@ -553,7 +601,7 @@
 
 
         $("#brutto").click(function () {
-             addAction('оператор указал авто как груженый');
+            addAction('оператор указал авто как груженый');
             $("#label_ves").html('брутто');
             $("#dov_otpr").css('display', 'block');
             $("#div_pol").css('display', 'none');
@@ -662,11 +710,11 @@
             top: -8px;
         }
 
-    input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
-}
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            /* display: none; <- Crashes Chrome on hover */
+            -webkit-appearance: none;
+            margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+        }
     </style>
 {% endblock %}
