@@ -161,7 +161,7 @@
                     <div class="d-inline-block  form-group col-7">
                         <label for="price"><b>Цена</b></label>
                         <hr style="width: 80%;">
-                        <input id="price" pattern="[0-9]{7}" type="text" class="form-control">
+                        <input id="price"  type="text" class="form-control">
                     </div>
 
                     <div class="d-inline-block  form-group col-3 ">
@@ -180,7 +180,7 @@
                     <div class="d-inline-block  form-group col-7 ">
                         <label for="price"><b>Вес</b></label>
                         <hr style="width: 80%;">
-                        <input id="ves_nakladnaia" pattern="[0-9]{7}" type="text" class="form-control">
+                        <input id="ves_nakladnaia"  type="text" class="form-control">
                     </div>
 
                     <div class="d-inline-block  form-group col-3 ">
@@ -346,13 +346,27 @@
             let ves_nakladnay = $("#ves_nakladnaia").val();
             let nakladnay = $("#nakladnaya").val();
             let name = $("#nameGruz").val();
+            if(!name){
+                alert("Вы не указали название товара."); $("#nameGruz").focus(); return;
+            }
+            if(!price){
+                alert('Вы не указали цену товара'); $("#price").focus(); return;
+            }
+            if(!price.match(/^(0$|-?[1-9]\d*(\.\d*[1-9]$)?|-?0\.\d*[1-9])$/)){
+                alert("В поле цена должны быть введены только цифры"); $("#price").focus(); return;
+            }
+            if(!ves_nakladnay){
+                if(!confirm('Вы не уакзали вес по надклдной. Продолжить?')){return;}
+            }
+            if(!ves_nakladnay.match(/^(0$|-?[1-9]\d*(\.\d*[1-9]$)?|-?0\.\d*[1-9])$/)){
+                alert("В поле вес должны быть введены только цифры"); $("#ves_nakladnaia").focus(); return;
+            }
             Table[count] = {"count":count,"name":name,"ves":ves_nakladnay,"ed":ed,"price":price,"valuta":valuta};
             let row = "<tr><td>"+count+"</td><td>"+name+"</td><td>"+ves_nakladnay+" ,"+ed+"</td><td>"+price+" ,"+valuta+"</td><td><button id='row_"+count+"' onclick='deleteRow(this)'>x</button></td>";
             let table = $("#table-nakladnaya").html();
             rowsTable[count] = row;
             let newtable = rowsTable.join("");
             $("#table-nakladnaya").html(newtable);
-            alert('done');
             count++;
         }
 
@@ -406,6 +420,12 @@
             let ves = $("#vesFix").html();
             let ves_nakladnay = $("#ves_nakladnaia").val();
             let nakladnay = $("#nakladnaya").val();
+            if(!nakladnay){
+                alert('Вы не указали номер накладной'); $("#nakladnaya").focus(); return;
+            }
+            if(!nakladnay.match(/^(0$|-?[1-9]\d*(\.\d*[1-9]$)?|-?0\.\d*[1-9])$/)){
+                alert("В поле накладная должны быть введены только цифры"); $("#nakladnaya").focus(); return;
+            }
             let typeCar = $("[name='cheks']:checked").val();
 
             if (typeCar == 1) {
@@ -495,7 +515,26 @@
         }
 
         function changeNumAvto() {
+            if(!$('#gosNavto').val()){
+                alert('Вы не указали номер '); $('#gosNavto').focus(); return;
+            }
+            if(!$('#gosNavto').val().match(/[0-9]{4}/)){
+                alert("В поле  должны быть введены только  4 цифры"); $('#gosNavto').focus(); return;
+            }
 
+            if(!$('#seriaAvto').val()){
+                alert('Вы не указали номер '); $('#seriaAvto').focus(); return;
+            }
+            if(!$('#seriaAvto').val().match(/[A-Z]{2}/)){
+                alert("В поле  должны быть введены только 2 латинские буквы капс локом"); $('#seriaAvto').focus(); return;
+            }
+
+            if(!$('#regionAvto').val()){
+                alert('Вы не указали номер '); $('#regionAvto').focus(); return;
+            }
+            if(!$('#regionAvto').val().match(/[0-7]{1}/)){
+                alert("В поле  должны быть введены только 1 цифрa от 0 до 7"); $('#regionAvto').focus(); return;
+            }
             let num = $('#gosNavto').val() + "-" + $("#seriaAvto").val() + "-" + $("#regionAvto").val();
             if (pricep) {
                 addAction('корректировка номера прицепа');
@@ -622,5 +661,12 @@
             -webkit-transform: rotate(-45deg);
             top: -8px;
         }
+
+    input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
     </style>
 {% endblock %}
