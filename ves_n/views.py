@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
-from apps.ves.models import ActionUser, Auto, Agent
+from apps.ves.models import ActionUser, Auto, Agent, DataNakladnayaAuto
 
 
 def logout_view(request):
@@ -20,7 +20,6 @@ def logout_view(request):
 
 def addactionView(request, *args, **kwargs):
     form = request.POST
-    print(form)
     model = ActionUser(where=form['where'], action=form['action'], parentId=User(form['user']))
     model.save()
     payload = {'success': True}
@@ -28,10 +27,18 @@ def addactionView(request, *args, **kwargs):
 
 def addAutoView(request):
     form = request.POST
-    print(form['dataNakladnaya'])
     last_in = datetime.now()
-    auto = Auto(number=form['numAuto'], number_pricep=form['numPricep'], last_in=last_in, ves_in=form['ves'], status_in=True)
+    auto = Auto(number=form['numAuto'], number_pricep=form['numPricep'], last_in=last_in, ves_in=form['ves'],
+                status_in=True)
     auto.save()
+    dataNakl = form.getlist('dataNakladnay')
+    arr=[]
+    for a in dataNakl:
+        r = a.split(",")
+        arr.append(DataNakladnayaAuto(number=r[0],name=r[1],price=r[2],price_ed=r[3],ves_nakladnaya=r[4],ves_ed=r[5], parentId = auto))
+    DataNakladnayaAuto.objects.bulk_create(arr)
+
+
     payload = {'success': True}
     return HttpResponse(json.dumps(payload), content_type='application/json')
 

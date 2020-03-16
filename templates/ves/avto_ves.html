@@ -11,22 +11,22 @@
         <label class="btn-menu" for="hmt">
             авто
         </label>
-        <div class="hidden-menu">
+        <div class="hidden-menu" style="overflow: auto;">
 
             <div class="accordion" id="accordionExample">
                 {% for a in auto_in %}
                     <div class="card">
-                        <div class="card-header" id="headingOne">
+                        <div class="card-header" id="headingOne_{{ a.id }}">
                             <h2 class="mb-0">
                                 <button class="btn btn-link" type="button" data-toggle="collapse"
-                                        data-target="#collapseOne"
-                                        aria-expanded="true" aria-controls="collapseOne">
-                                    5687-TI-3
+                                        data-target="#collapseOne_{{ a.id }}"
+                                        aria-expanded="true" aria-controls="collapseOne_{{ a.id }}">
+                                    {{ a.number }}
                                 </button>
                             </h2>
                         </div>
 
-                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                        <div id="collapseOne_{{ a.id }}" class="collapse" aria-labelledby="headingOne_{{ a.id }}"
                              data-parent="#accordionExample">
                             <div class="card-body">
                                 <table class="table">
@@ -476,24 +476,29 @@
             } else {
                 agent = $("#poluchatel").children("option:selected").val();
             }
+            let obj = [];
+            let c=0;
+            Table.forEach(function (a, v) {
+                obj[c]=[a.count,a.name,a.price,a.valuta,a.ves,a.ed];
+                c++;
+            });
+
 
             let data = {
                 'ves': ves,
-                'ves_nakladnaya': ves_nakladnay,
                 'nakladnaya': nakladnay,
-                'ed': ed,
-                'valuta': valuta,
-                'price': price,
                 'typeCar': typeCar,
                 'numAuto': numAuto,
                 'numPricep': numPricep,
                 'contragent': agent,
-                'dataNakladnaya': Table,
+                "dataNakladnay":obj,
             };
             console.log(data);
             $.ajax({
                 type: "POST",
                 url: '{% url 'addautoPOST' %}',
+                traditional: true,
+                dataType: 'json',
                 data: data,
                 success: function () {
                     console.log('Load was performed.');
@@ -504,7 +509,6 @@
                     }
                 }
             });
-
 
         }
 

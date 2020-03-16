@@ -74,6 +74,7 @@ class ActionUser(models.Model):
 class DataNakladnayaAuto(models.Model):
     id = models.AutoField(primary_key=True)
     parentId = models.ForeignKey(Auto, on_delete=models.CASCADE)
+    number = models.BigIntegerField('номер в накладной', null=True)
     name = models.CharField('действие', max_length=255, db_index=True)
     price = models.FloatField('цена', db_index=True)
     ves_nakladnaya = models.BigIntegerField('вес по накладной')
