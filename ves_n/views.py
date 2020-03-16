@@ -28,7 +28,7 @@ def addactionView(request, *args, **kwargs):
 
 def addAutoView(request):
     form = request.POST
-    print(form)
+    print(form['dataNakladnaya'])
     last_in = datetime.now()
     auto = Auto(number=form['numAuto'], number_pricep=form['numPricep'], last_in=last_in, ves_in=form['ves'], status_in=True)
     auto.save()
