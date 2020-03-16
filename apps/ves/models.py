@@ -70,3 +70,15 @@ class ActionUser(models.Model):
     class Meta:
         verbose_name = 'Журнал'
         verbose_name_plural = 'Журналы'
+
+class DataNakladnayaAuto(models.Model):
+    id = models.AutoField(primary_key=True)
+    parentId = models.ForeignKey(Auto, on_delete=models.CASCADE)
+    name = models.CharField('действие', max_length=255, db_index=True)
+    price = models.FloatField('цена', db_index=True)
+    ves_nakladnaya = models.BigIntegerField('вес по накладной')
+    price_ed = models.CharField('валюта', max_length=100)
+    ves_ed = models.CharField('еденицы измерения', max_length=100)
+    class Meta:
+        verbose_name = 'Данные по накладной'
+        verbose_name_plural = 'Данные по накладным'
