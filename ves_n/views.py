@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
-from apps.ves.models import ActionUser, Auto
+from apps.ves.models import ActionUser, Auto, Agent
 
 
 def logout_view(request):
@@ -35,3 +35,23 @@ def addAutoView(request):
     payload = {'success': True}
     return HttpResponse(json.dumps(payload), content_type='application/json')
 
+def addContragentView(request):
+    form = request.POST
+    now = datetime.now()
+    cities = {
+        'gorod': 'г.',
+        'gp': "гп.",
+        'derev': "поселок"
+    }
+    streets = {
+        'prospect': "проспект",
+        'bulvar': "бульвар",
+        'street': "улица",
+        'per': "переулок",
+        'proezd': 'проезд'
+    }
+    address = form['city'] +" "+ cities[form['typeCity']] + ", " + streets[form['typeStreet']] + " " + form['street'] + ", " + form['numHouse']
+    agent = Agent(name=form['name'],unp=form["unp"], description=form['description'], address=address)
+    agent.save()
+    payload = {'success': True}
+    return HttpResponse(json.dumps(payload), content_type='application/json')

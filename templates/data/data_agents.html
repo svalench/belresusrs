@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
   <div class="container">
+  <button class="btn btn-success" data-toggle="modal" data-target="#addcontragent">Добавить контрагента</button> <hr>
     {% for a in page_obj %}
     {# Each "contact" is a Contact model object. #}
     {{ a.name }} - {{ a.address|upper }} - {{ a.unp }} :: {{ a.date_add|upper }}
@@ -27,6 +28,122 @@
     </span>
 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Modal addcontragent -->
+    <div class="modal fade" id="addcontragent" tabindex="-1" role="dialog" aria-labelledby="addcontragent"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="gosnomeravto">Добавить контрагента</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group col-md-7">
+                        <label for="contragentName">название контрагента</label>
+                        <input type="text" class="form-control" id="contragentName"
+                                name="contragentName"
+                        >
+                    </div>
+                    <div class="form-group col-md-5">
+                        <label for="unp">УНП </label>
+                        <input type="text" class="form-control" id="unp" pattern="[0-9]{9}"  name="unp">
+                    </div>
+
+                     <div>
+                    <div class="d-inline-block  form-group col-6 ">
+
+                        <hr style="width: 80%;">
+                        <label for="street">Населенный пункт</label>
+                         <input type="text" class="form-control"
+                               id="city" name="city">
+                    </div>
+
+                    <div class="d-inline-block  form-group col-3 ">
+                        <label for="np"><b>насселенный пункт</b></label>
+
+                        <select id="np">
+                            <option value="gorod">город</option>
+                            <option value="gp">поселок гор-го типа</option>
+                            <option value="derev">сельский нас-ый пункт</option>
+                        </select>
+                    </div>
+                </div>
+
+
+
+                    <div>
+                    <div class="d-inline-block  form-group col-7 ">
+
+                        <hr style="width: 80%;">
+                        <label for="street">Улица\переулок</label>
+                        <input type="text" class="form-control"
+                               id="street" name="street">
+                    </div>
+
+                    <div class="d-inline-block  form-group col-3 ">
+                        <label for="typestreet"><b>улица\переулок</b></label>
+
+                        <select id="typestreet">
+                            <option value="prospect">проспект</option>
+                            <option value="bulvar">бульвар</option>
+                            <option value="street">улица</option>
+                            <option value="per">переулок</option>
+                            <option value="proezd">проезд</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                     <div class="form-group col-md-5 ">
+                        <label for="numH">номер дома</label>
+                        <input type="text" class="form-control" pattern="[0-9]"
+                               id="numH" name="numH">
+                    </div>
+                    <div class="form-group col-md-8 ">
+                        <label for="numH">Описание</label>
+                        <textarea  class="form-control"
+                                   id="description" name="description" ></textarea>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">отмена</button>
+                    <button type="button" onclick="addContragent()" class="btn btn-primary">Добавить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    {% csrf_token %}
+
+
+
+
+
+
+
+
+
+
+
+
+
   </div>
 
     <script src="{% static 'popper.js' %}" ></script>
@@ -34,6 +151,102 @@
 
 
     <script>
+    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+     function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        function addAction(action) {
+            let data = "where=contragents&action=" + action + "&user={{ request.user.id }}";
+
+            $.ajax({
+                type: "POST",
+                url: '{% url 'addaction' %}',
+                data: data,
+                success: function () {
+                    console.log('Load was performed.');
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+        }
+
+        function addContragent() {
+            let name = $("#contragentName").val();
+            let unp = $("#unp").val();
+            let city = $("#city").val();
+            let typeOfCity = $("#np").val();
+            let street = $("#street").val();
+            let typeOfStreet = $("#typestreet").val();
+            let numHouse = $("#numH").val();
+            let description = $("#description").val();
+            // validation
+            if(!name){
+                 addAction('оператор добавляя запись в список не указал название контрагента');
+                alert('Вы не ввели навзание кнтрагента'); $("#contragentName").focus(); return;
+            }
+            if(!unp){
+                 addAction('оператор добавляя запись в список не указал УНП контрагента');
+                alert('Вы не указали УНП  кнтрагента'); $("#unp").focus(); return;
+            }
+             if(!city){
+                 addAction('оператор добавляя запись в список не указал город контрагента');
+                alert('Вы не указали насселеный пункт  кнтрагента'); $("#city").focus(); return;
+            }
+             if(!street){
+                 addAction('оператор добавляя запись в список не указал улицу  контрагента');
+                alert('Вы не указали улицу где зарегестрирован кнтрагент'); $("#street").focus(); return;
+            }
+             if(!numHouse){
+                 addAction('оператор добавляя запись в список не указал номер дома  контрагента');
+                alert('Вы не указали номер дома где зарегестрирован кнтрагент'); $("#numH").focus(); return;
+            }
+             if (!description) {
+                addAction('оператор добавляя запись в список не написал описание контрагента ');
+                if (!confirm('Вы не описание контрагента. Продолжить?')) {
+                    return;
+                }
+            }
+             if (!unp.match(/[0-9]{9}/)) {
+                alert("В поле УНП должны быть введены только 9 цифр");
+                $("#unp").focus();
+                return;
+            }
+             if (!numHouse.match(/^[ 0-9]+$/)) {
+                alert("В поле номер дома должны быть введены только цифры");
+                $("#numH").focus();
+                return;
+            }
+             // post data to server
+             data = {
+                 "name":name,
+                 "unp":unp,
+                 "city":city,
+                 'typeCity':typeOfCity,
+                 "street":street,
+                 "typeStreet":typeOfStreet,
+                 "numHouse":numHouse,
+                 "description":description
+             };
+             $.ajax({
+                type: "POST",
+                url: '{% url 'addcontragentPOST' %}',
+                data: data,
+                success: function () {
+                    console.log('Load was performed.');
+                    document.location.reload(true);
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+        }
 
     </script>
 
