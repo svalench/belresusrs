@@ -1,27 +1,27 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
     <div class="container">
     <div class="m-5">
-     <a href="#">
+     <a href="{% url 'ves:menu_ves' %}">
     <div class="border blockmenu row m-2" >
 
-    <img style="width: 200px;" class="border col-3" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTysGaIeDOA73h6W2HKSBhFAYjsXxGDMQPgRKMc9p8X-ro7EpMz">
+    <img style="width: 200px;" class="border col-3" src="{% static 'img/vesy.jpg' %}">
         <div class="col-4"><h4>Меню взвешивания</h4></div>
             <div class="col-5">Перейдя в это меню Вы сможете выбрать пункт управления весовой станцией автомобильного транспорта или пункт управления весовой станцией железнодорожного транспорта</div>
     </div>
            </a>
-  <a href="#">
+  <a href="{% url 'ves:menu_data' %}">
     <div class="border blockmenu row m-2">
-    <img style="width: 200px;" class="border col-3" src="https://www.pkicon.com/icons/34506/library_256x256.png">
+    <img style="width: 200px;" class="border col-3" src="{% static 'img/data.jpg'  %}">
         <div class="col-4"><h4>Меню БД</h4></div>
          <div class="col-5">Перейдя в это меню Вы сможете выбрать пункты управления информацией</div>
 
     </div>
       </a>
-  <a href="#">
+  <a href="{% url 'ves:menu_data' %}">
         <div class="border blockmenu row m-2">
-    <img style="width: 200px;" class="border col-3" src="data:image/png;base64,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">
+    <img style="width: 200px;" class="border col-3" src="{% static 'img/params.png' %}">
     <div class="col-4"><h4>Настройки</h4></div>
              <div class="col-5">Перейдя в это меню вы сможете настроить управление системой</div>
         </div>
