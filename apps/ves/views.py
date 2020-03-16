@@ -39,11 +39,11 @@ class StartView(LoginRequiredMixin, CreateView):
     @login_required
     def avto_ves(request):
         auto = Auto.objects.filter(status_in=True)
-        print(auto)
+        agents = Agent.objects.all()
         if (globalAuto == True):
             print('woops')
             return HttpResponseRedirect(403)
-        data = {'auto_in': auto }
+        data = {'auto_in': auto, 'agetns':agents}
         return render(request, 'ves/avto_ves.html', data)
 
     @login_required
