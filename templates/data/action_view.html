@@ -4,7 +4,7 @@
   <div class="container">
     {% for contact in page_obj %}
     {# Each "contact" is a Contact model object. #}
-    {{ contact.action|upper }} - {{ contact.where|upper }} :: {{ contact.date_add|upper }}
+    {{ contact.action|upper }} - {{ contact.where|upper }} - {{ contact.parentId.username }} :: {{ contact.date_add|upper }}
         <hr>
     ...
 {% endfor %}

@@ -68,9 +68,8 @@ class DataView(LoginRequiredMixin, CreateView):
     @login_required
     def ActionView(request):
         action = ActionUser.objects.all().order_by("-date_add")
-        print(action)
         paginator = Paginator(action, 10)  # Show 25 contacts per page
-
+        #print(dir(action[0].parentId))
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         data = {'page_obj': page_obj}
@@ -81,6 +80,10 @@ class DataView(LoginRequiredMixin, CreateView):
     @login_required
     def AgentView(request):
         agent = Agent.objects.all()
-        data = {'actions': agent}
+        paginator = Paginator(agent, 10)
+
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        data = {'page_obj': page_obj}
         return render(request, 'data/data_agents.html', data)
 
