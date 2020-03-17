@@ -84,3 +84,17 @@ class DataNakladnayaAuto(models.Model):
     class Meta:
         verbose_name = 'Данные по накладной'
         verbose_name_plural = 'Данные по накладным'
+
+class DataNakladnayaVagon(models.Model):
+    id = models.AutoField(primary_key=True)
+    parentId = models.ForeignKey(Vagon, on_delete=models.CASCADE)
+    number = models.BigIntegerField('номер в накладной', null=True)
+    name = models.CharField('действие', max_length=255, db_index=True)
+    price = models.FloatField('цена', db_index=True)
+    ves_nakladnaya = models.BigIntegerField('вес по накладной')
+    price_ed = models.CharField('валюта', max_length=100)
+    ves_ed = models.CharField('еденицы измерения', max_length=100)
+    date_add = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        verbose_name = 'Данные по накладной'
+        verbose_name_plural = 'Данные по накладным'

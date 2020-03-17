@@ -11,7 +11,7 @@ from django.urls import reverse
 from django.views import View
 from django.views.generic import CreateView
 from apps.ves.consumers import *
-from apps.ves.models import Auto, ActionUser, Agent
+from apps.ves.models import Auto, ActionUser, Agent, Vagon
 
 
 class StartView(LoginRequiredMixin, CreateView):
@@ -39,7 +39,6 @@ class StartView(LoginRequiredMixin, CreateView):
     @login_required
     def avto_ves(request):
         auto = Auto.objects.filter(status_in=True)
-        print(auto)
         agents = Agent.objects.all()
         if (globalAuto == True):
             print('woops')
@@ -49,7 +48,10 @@ class StartView(LoginRequiredMixin, CreateView):
 
     @login_required
     def zd_ves(request):
-        return render(request, 'ves/zd_ves.html')
+        zd = Vagon.objects.filter(status_in=True)
+        agents = Agent.objects.all()
+        data = {'zd_in': zd, 'agetns': agents}
+        return render(request, 'ves/zd_ves.html',data)
 
 
 

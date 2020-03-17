@@ -1,7 +1,723 @@
 {% extends 'base.html' %}
+{#{% load static %}#}
 {% block title %}
-Ж/Д транспорт
+    Железнодорожный транспорт
 {% endblock %}
 {% block content %}
-здесь будет управление ЖД
+
+    <div id="body" class="container-fluid" style="text-align: center;">
+        <input type="checkbox" id="hmt" class="hidden-menu-ticker">
+
+        <label class="btn-menu" for="hmt">
+            вагоны
+        </label>
+        <div class="hidden-menu" style="overflow: auto;">
+
+            <div class="accordion" id="accordionExample">
+                {% for a in zd_in %}
+                    <div class="card">
+                        <div class="card-header" id="headingOne_{{ a.id }}">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse"
+                                        data-target="#collapseOne_{{ a.id }}"
+                                        aria-expanded="true" aria-controls="collapseOne_{{ a.id }}">
+                                    {{ a.number }}
+                                </button>
+                            </h2>
+                        </div>
+
+                        <div id="collapseOne_{{ a.id }}" class="collapse" aria-labelledby="headingOne_{{ a.id }}"
+                             data-parent="#accordionExample">
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">агент</th>
+                                        <th scope="col">накладная</th>
+                                        <th scope="col">время</th>
+                                        <th scope="col">масса, кг</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>{{ a.agent_vagon.name }}</td>
+                                        <td>{{ a.nakladnaya }}</td>
+                                        <td>{{ a.last_in }}</td>
+                                        <td>{{ a.ves_in }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+            </div>
+
+
+        </div>
+
+
+        <hr>
+        <h3 style="margin-left: 2%;">Вес</h3>
+        <hr>
+        <div class="row">
+            <div class="col-1"></div>
+            <span class="badge badge-warning">нестабильный<br>_______________</span>
+            <div class="col-2" style="background-color: #1b1e21; color:white; text-align: right; font-size: 3rem;">
+                <span id="vesOnline" style="cursor: not-allowed;">140 </span><br><span> кг</span>
+            </div>
+
+            <div class="col-2" style="background-color: #1c7430; color:white; text-align: right; font-size: 3rem;">
+                <span id="vesFix" style="cursor: pointer;" onclick="correct();">0 </span><br><span
+                    id="label_ves">брутто</span><span> кг</span>
+            </div>
+
+            <div class="col-2">
+                <button class="btn btn-success" onclick="fixVes()" style="width: 100%; height: 40%;">Зафиксировать
+                </button>
+                <hr>
+                <button class="btn btn-warning" onclick="destroyFixVes()" style="width: 100%; height: 40%; ">Сброс
+                </button>
+            </div>
+
+            <div class="col-2" style="background-color: #1b1e21; color:white; text-align: right; border-radius: 2%;">
+                <div style="margin-top: 1%;  font-size: 1rem;  ">
+
+                    <div class="col-3">Вагон</div>
+                    <span id="gos_num_avto" class="col-8" style="cursor: pointer;  font-size: 2rem;  "
+                          onclick="correct_num();">********</span>
+                </div>
+
+
+            </div>
+            <div class="col-2">
+                <h4>Состояние транспорта</h4>
+                <div class="form-check ">
+                    <input class="form-check-input" type="radio" name="cheks" id="brutto" value="1" checked>
+                    <label class="form-check-label" for="brutto">
+                        Груженый
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="cheks" id="netto" value="2">
+                    <label class="form-check-label" for="netto">
+                        Порожний
+                    </label>
+                </div>
+            </div>
+
+        </div>
+        <hr>
+        <h3 style="margin-left: 2%;">Данные по транспорту</h3>
+        <hr>
+        <div class="row">
+            <div class="col-1"></div>
+
+            <div class="col-2">
+
+
+                <div class="form-group">
+                    <label for="nakladnaya"><b>№ накладной</b></label>
+                    <hr style="width: 80%;">
+                    <input id="nakladnaya" pattern="[0-9]{7}" type="text" maxlength="7" class="form-control">
+                </div>
+
+                <div id="dov_otpr" class="form-group">
+                    <label for="otpravitel"><b>Отправитель</b></label>
+                    <hr style="width: 80%;">
+                    <input id="searchingOtpr">
+                    <select multiple id="otpravitel" class="form-control" style="display: none;">
+                        {% for a in agetns %}
+                            <span><option value="{{ a.id }}"> {{ a.name }}</option></span>
+                        {% endfor %}
+                    </select>
+                </div>
+
+
+                <div id="div_pol" class="form-group" style="display: none;">
+                    <label for="poluchatel"><b>Получатель</b></label>
+                    <hr style="width: 80%;">
+                    <input id="searchingPol">
+                    <select multiple id="poluchatel" class="form-control" style="display: none;">
+                        {% for a in agetns %}
+                            <option value="{{ a.id }}"> {{ a.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="description"><b>Примечания</b></label>
+                    <hr style="width: 80%; height: 20%;">
+                    <textarea id="description" rows="1" class="form-control"></textarea>
+                </div>
+                <button onclick="addAuto()" style="width: 100%;" class="btn btn-success">Добавить транспорт</button>
+            </div>
+
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="nameGruz"><b>Наименование</b></label>
+                    <hr style="width: 80%; height: 20%;">
+                    <textarea id="nameGruz" rows="1" class="form-control"></textarea>
+                </div>
+                <div>
+                    <div class="d-inline-block  form-group col-7">
+                        <label for="price"><b>Цена</b></label>
+                        <hr style="width: 80%;">
+                        <input id="price" type="text" class="form-control">
+                    </div>
+
+                    <div class="d-inline-block  form-group col-3 ">
+                        <label for="valuta"><b>ед</b></label>
+
+                        <select id="valuta">
+                            <option value="br">Br</option>
+                            <option value="eu">Eu</option>
+                            <option value="dol">$</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div>
+                    <div class="d-inline-block  form-group col-7 ">
+                        <label for="price"><b>Вес</b></label>
+                        <hr style="width: 80%;">
+                        <input id="ves_nakladnaia" type="text" class="form-control">
+                    </div>
+
+                    <div class="d-inline-block  form-group col-3 ">
+                        <label for="ed"><b>ед</b></label>
+
+                        <select id="ed">
+                            <option value="kg">кг</option>
+                            <option value="t">т</option>
+                        </select>
+                    </div>
+                </div>
+                <label><b>Добавить в табилцу</b></label>
+                <hr>
+                <div>
+                    <button onclick="addNakladnayaRow()" class="btn btn-success">Добавить</button>
+                </div>
+
+            </div>
+            <div class="col-1">
+                <button class="btn btn-success" style="width: 100%; margin-top: 1%;">Въезд</button>
+                <button class="btn btn-danger" style="width: 100%; margin-top: 1%;">Въезд</button>
+                <hr>
+                <button class="btn btn-success" style="width: 100%; margin-top: 1%;">Выезд</button>
+                <button class="btn btn-danger" style="width: 100%; margin-top: 1%;">Выезд</button>
+
+
+            </div>
+
+
+            <div class="d-inline-flex col-6 border ">
+                <div class="col-6">
+                    <div class="border">
+                        <video width="400" height="300" controls="controls" poster="video/duel.jpg"></video>
+                    </div>
+                    <div style="width:400px; height:300px; overflow: auto;" class="border">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">№</th>
+                                <th scope="col">наименование</th>
+                                <th scope="col">вес</th>
+                                <th scope="col">цена</th>
+                                <th scope="col">delete</th>
+                            </tr>
+                            </thead>
+                            <tbody id="table-nakladnaya">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-6 ">
+                    <div class="border">
+                        <video width="400" height="300" controls="controls" poster="video/duel.jpg"></video>
+                    </div>
+
+                    <div class="border">
+                        <video width="400" height="300" controls="controls" poster="video/duel.jpg"></video>
+                    </div>
+                </div>
+                <br>
+
+            </div>
+
+        </div>
+
+    </div>
+    <!-- Modal ves -->
+    <div class="modal fade" id="ves_modal" tabindex="-1" role="dialog" aria-labelledby="ves_modal"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ves_modal">Изменения веса</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label>Введите вес для установки</label>
+                    <input type="number" id="vesKorrect">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">отмена</button>
+                    <button type="button" onclick="changeVes()" class="btn btn-primary">Изменить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal change GosNomAvto -->
+    <div class="modal fade" id="gosnomeravto" tabindex="-1" role="dialog" aria-labelledby="gosnomeravto"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="gosnomeravto">Изменить номер авто</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group col-md-7">
+                        <label for="gosNavto">Номер вагон</label>
+                        <input type="text" class="form-control" id="gosNavto"
+                               maxlength='12' name="gosNavto"
+                        >
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">отмена</button>
+                    <button type="button" onclick="changeNumAvto()" class="btn btn-primary">Изменить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    {% csrf_token %}
+
+
+
+
+
+
+
+    <script>
+        // using jQuery
+        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+        var pricep = false;
+        var count = 1;
+        var rowsTable = [];
+        var Table = [];
+        var filterInt = function (value) {
+            if (/^(\-|\+)?([0-9]+|Infinity)$/.test(value))
+                return Number(value);
+            return false;
+        }
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        function addAction(action) {
+            let data = "where=vagon&action=" + action + "&user={{ request.user.id }}";
+
+            $.ajax({
+                type: "POST",
+                url: '{% url 'addaction' %}',
+                data: data,
+                success: function () {
+                    console.log('Load was performed.');
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+        }
+
+        function addNakladnayaRow() {
+            let typeCar = $("[name='cheks']:checked").val();
+            if (typeCar == 2) {
+                alert('Транспорт порожний');
+                return;
+            }
+            let valuta = $("#valuta").val();
+            let price = $('#price').val();
+            let ed = $("#ed").val();
+            let ves_nakladnay = $("#ves_nakladnaia").val();
+            let nakladnay = $("#nakladnaya").val();
+            let name = $("#nameGruz").val();
+            if (!name) {
+                addAction('оператор добавляя запись в список не указал название ');
+                alert("Вы не указали название товара.");
+                $("#nameGruz").focus();
+                return;
+            }
+            if (!price) {
+                addAction('оператор добавляя запись в список не указал цену ');
+                alert('Вы не указали цену товара');
+                $("#price").focus();
+                return;
+            }
+            if (!price.match(/^(0$|-?[1-9]\d*(\.\d*[1-9]$)?|-?0\.\d*[1-9])$/)) {
+                alert("В поле цена должны быть введены только цифры");
+                $("#price").focus();
+                return;
+            }
+            if (!ves_nakladnay) {
+                addAction('оператор добавляя запись в список не указал вес по накладной ');
+                if (!confirm('Вы не уакзали вес по надклдной. Продолжить?')) {
+                    return;
+                }
+            }
+            if (!ves_nakladnay.match(/^(0$|-?[1-9]\d*(\.\d*[1-9]$)?|-?0\.\d*[1-9])$/)) {
+                alert("В поле вес должны быть введены только цифры");
+                $("#ves_nakladnaia").focus();
+                return;
+            }
+            addAction('оператор добавил запись в список накладной');
+            Table[count] = {
+                "count": count,
+                "name": name,
+                "ves": ves_nakladnay,
+                "ed": ed,
+                "price": price,
+                "valuta": valuta
+            };
+            let row = "<tr><td>" + count + "</td><td>" + name + "</td><td>" + ves_nakladnay + " ," + ed + "</td><td>" + price + " ," + valuta + "</td><td><button id='row_" + count + "' onclick='deleteRow(this)'>x</button></td>";
+            let table = $("#table-nakladnaya").html();
+            rowsTable[count] = row;
+            let newtable = rowsTable.join("");
+            $("#table-nakladnaya").html(newtable);
+            count++;
+        }
+
+        function deleteRow(e) {
+            addAction('оператор удалил запись из списка накладной');
+            let ar = e.id.split('_');
+            rowsTable = [];
+            delete Table[ar[1]];
+            console.log(Table);
+            var newTable = [];
+            var c = 1;
+            Table.forEach(function (a, v) {
+                a.count = c;
+                rowsTable[c] = "<tr><td>" + a.count + "</td><td>" + a.name + "</td><td>" + a.ves_nakladnay + " ," + a.ed + "</td><td>" + a.price + " ," + a.valuta + "</td><td><button id='row_" + a.count + "' onclick='deleteRow(this)'>x</button></td>";
+                ;
+                c++;
+            });
+
+
+            let newtable = rowsTable.join("");
+            $("#table-nakladnaya").html(newtable);
+            count--;
+        }
+
+
+        function addAuto() {
+            var num = $('#gos_num_avto').html();
+            var arrAuto = num.split('-');
+            var arrPricep = num.split('-');
+            let numAuto = arrAuto.join("");
+            let agent;
+            let ves = $("#vesFix").html();
+            let ves_nakladnay = $("#ves_nakladnaia").val();
+            let nakladnay = $("#nakladnaya").val();
+            if (!nakladnay) {
+                alert('Вы не указали номер накладной');
+                $("#nakladnaya").focus();
+                return;
+            }
+            if (!nakladnay.match(/[0-9]{7}/)) {
+                alert("В поле накладная должны быть введены только цифры");
+                $("#nakladnaya").focus();
+                return;
+            }
+            if (count < 2) {
+                alert('данные по накладной пусты');
+                $("#nameGruz").focus();
+                return;
+            }
+            let typeCar = $("[name='cheks']:checked").val();
+            console.log(typeCar);
+            if (typeCar == "1") {
+                agent = $("#otpravitel").children("option:selected").val();
+            } else {
+                agent = $("#poluchatel").children("option:selected").val();
+            }
+            let obj = [];
+            let c = 0;
+            Table.forEach(function (a, v) {
+                obj[c] = [a.count, a.name, a.price, a.valuta, a.ves, a.ed];
+                c++;
+            });
+
+
+            let data = {
+                'ves': ves,
+                'nakladnaya': nakladnay,
+                'typeCar': typeCar,
+                'numAuto': numAuto,
+                'contragent': agent,
+                "dataNakladnay": obj,
+            };
+            console.log(data);
+            $.ajax({
+                type: "POST",
+                url: '{% url 'addVagonPOST' %}',
+                traditional: true,
+                dataType: 'json',
+                data: data,
+                success: function () {
+                    console.log('Load was performed.');
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+
+        }
+
+
+        function changeVes() {
+            if (filterInt($("#vesKorrect").val())) {
+                addAction('изменен вес');
+                $("#vesFix").html($("#vesKorrect").val());
+                $('#ves_modal').modal('hide');
+            } else {
+                alert('не целое число');
+            }
+
+        }
+
+        function fixVes() {
+            addAction('вес зафиквсирован');
+            $("#vesFix").html($("#vesOnline").html());
+        }
+
+        function destroyFixVes() {
+            addAction('вес сброшен');
+            $("#vesFix").html(0);
+        }
+
+        function correct() {
+            addAction('Попытка изменить вес');
+            $('#ves_modal').modal('show');
+            $("#vesKorrect").val($("#vesFix").html());
+        }
+
+        function correct_num() {
+            addAction('Попытка корректировки номера');
+            $('#gosnomeravto').modal('toggle');
+            var num = $('#gos_num_avto').html();
+
+            $('#gosNavto').val(num);
+
+        }
+
+
+        function changeNumAvto() {
+            if (!$('#gosNavto').val()) {
+                addAction('оператор не указал номер');
+                alert('Вы не указали номер ');
+                $('#gosNavto').focus();
+                return;
+            }
+
+            let num = $('#gosNavto').val();
+            if (pricep) {
+
+
+            } else {
+
+                addAction('корректировка номера');
+                $('#gos_num_avto').html(num);
+            }
+            $('#gosnomeravto').modal('hide');
+        }
+
+        $('#gosnomeravto').on('hidden.bs.modal', function (e) {
+            pricep = false;
+        })
+
+
+        $("#brutto").click(function () {
+            addAction('оператор указал выгон как груженый');
+            $("#label_ves").html('брутто');
+            $("#dov_otpr").css('display', 'block');
+            $("#div_pol").css('display', 'none');
+        });
+
+        $("#netto").click(function () {
+            addAction('оператор указал выгон как порожний');
+            $("#label_ves").html('тара');
+            $("#div_pol").css('display', 'block');
+            $("#dov_otpr").css('display', 'none');
+        });
+
+
+        var fieldO = $('#otpravitel').find('option');
+        // собственно поиск
+        $('#searchingOtpr').bind('keyup', function () {
+            var q = new RegExp($(this).val(), 'ig'),
+                bol = true;
+            if ($('#searchingOtpr').val().length == 0) {
+                $('#otpravitel').css('display', 'none');
+            } else {
+                $('#otpravitel').css('display', 'block');
+            }
+            for (var i = 0, l = fieldO.length; i < l; i += 1) {
+                var option = $(fieldO[i]);
+                if ($(fieldO[i]).text().match(q)) {
+                    option.show();
+                } else {
+                    if (option.is('option')) {
+                        option.hide()
+                    }
+                }
+            }
+        });
+
+
+        var fieldP = $('#poluchatel').find('option');
+        // собственно поиск
+        $('#searchingPol').bind('keyup', function () {
+            var q = new RegExp($(this).val(), 'ig'),
+                bol = true;
+            if ($('#searchingPol').val().length == 0) {
+                $('#otpravitel').css('display', 'none');
+            } else {
+                $('#otpravitel').css('display', 'block');
+            }
+            for (var i = 0, l = fieldP.length; i < l; i += 1) {
+                var option = $(fieldP[i]);
+                if ($(fieldP[i]).text().match(q)) {
+                    option.show();
+                } else {
+                    if (option.is('option')) {
+                        option.hide()
+                    }
+                }
+            }
+        });
+
+
+        var roomName = "wert";
+        var chatSocket = new WebSocket(
+            'ws://' + window.location.host +
+            '/ws/');
+
+        chatSocket.onmessage = function (e) {
+            var data = JSON.parse(e.data);
+            var message = data['message'];
+            document.querySelector('#chat-log').value += (message + '\n');
+        };
+
+        chatSocket.onclose = function (e) {
+
+            console.error('Chat socket closed unexpectedly');
+        };
+
+
+    </script>
+
+
+    <style>
+        .hidden-menu {
+            display: block;
+            position: fixed;
+            list-style: none;
+            padding: 10px;
+            margin: 0;
+
+            box-sizing: border-box;
+            width: 40%;
+            background-color: #eee;
+            height: 100%;
+            top: 10%;
+            left: -40%;
+            transition: left .2s;
+            z-index: 2;
+            -webkit-transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+        }
+
+        .hidden-menu-ticker {
+            display: none;
+        }
+
+        .btn-menu {
+            color: #fff;
+            background-color: #0058B9;
+            padding: 7px;
+            position: fixed;
+            top: 10%;
+            left: 5px;
+            cursor: pointer;
+            transition: left .23s;
+            z-index: 3;
+            width: 60px;
+            -webkit-transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+        }
+
+        .btn-menu span {
+            display: block;
+            height: 3px;
+            background-color: #fff;
+            margin: 5px 0 0;
+            transition: all .1s linear .23s;
+            position: relative;
+        }
+
+        .btn-menu span.first {
+            margin-top: 0;
+        }
+
+        .hidden-menu-ticker:checked ~ .btn-menu {
+            left: 35%;
+        }
+
+        .hidden-menu-ticker:checked ~ .hidden-menu {
+            left: 0;
+        }
+
+        .hidden-menu-ticker:checked ~ .btn-menu span.first {
+            -webkit-transform: rotate(45deg);
+            top: 8px;
+
+        }
+
+        .hidden-menu-ticker:checked ~ .btn-menu span.second {
+            opacity: 0;
+        }
+
+        .hidden-menu-ticker:checked ~ .btn-menu span.third {
+            -webkit-transform: rotate(-45deg);
+            top: -8px;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            /* display: none; <- Crashes Chrome on hover */
+            -webkit-appearance: none;
+            margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+        }
+    </style>
 {% endblock %}
