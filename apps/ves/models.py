@@ -6,7 +6,7 @@ from django.db import models
 
 class Agent(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField('Наименование', max_length=255, db_index=True)
+    name = models.CharField('Наименование', max_length=255, unique=True, db_index=True)
     description = models.TextField('Описание', default=None)
     address = models.TextField('Адрес', default=None, db_index=True)
     date_add = models.DateTimeField(auto_now_add=True, db_index=True)
@@ -22,7 +22,7 @@ class Agent(models.Model):
 
 class Auto(models.Model):
     id = models.AutoField(primary_key=True)
-    agent = models.ManyToManyField(Agent)
+    agents = models.ForeignKey(Agent, on_delete=models.CASCADE, null=True, blank=True)
     number = models.CharField('Номер', max_length=255, db_index=True)
     number_pricep =  models.CharField('номер прицепа', max_length=255, db_index=True)
     date_add = models.DateTimeField(auto_now_add=True, db_index=True)
@@ -43,7 +43,7 @@ class Auto(models.Model):
 
 class Vagon(models.Model):
     id = models.AutoField(primary_key=True)
-    agent = models.ManyToManyField(Agent)
+    agent_vagon = models.ForeignKey('Agent', on_delete=models.CASCADE, null=True, blank=True)
     number = models.CharField('Номер', max_length=255, db_index=True)
     nakladnaya = models.CharField('Накладная', max_length=255, default=0, db_index=True)
     date_add = models.DateTimeField(auto_now_add=True, db_index=True)
