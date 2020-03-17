@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from apps.ves.views import StartView
+from apps.ves.views import StartView, DataView
 
 app_name = 'ves'
 urlpatterns = [
@@ -25,6 +25,10 @@ urlpatterns = [
     path('ves/avto',  StartView.avto_ves, name = 'avto_ves'),
     path('ves/zd',  StartView.zd_ves, name = 'zd_ves'),
     # path('<str:room_name>/', views.room, name='room'),
+
+    path('data',  DataView.menu_data, name = 'menu_data'),
+    path('data/contragents',  DataView.AgentView, name = 'contragents'),
+    path('data/actions',  DataView.ActionView, name = 'actions'),
 
 
 ]

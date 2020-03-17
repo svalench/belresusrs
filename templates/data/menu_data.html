@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+      <link rel="stylesheet" href="{% static 'boostrap/css/bootstrap.min.css' %}">
+
+    <script src="{% static 'boostrap/js/bootstrap.min.js' %}"></script>
+ <div class="container">
+ <div class="row align-items-center m-5 ">
+
+         <div class="col-6 menu">
+             <div onclick="gotoaddAgent()" class="card" style="width: 25rem;">
+  <div class="card-body">
+    <h4 class="card-title">Контрагенты</h4>
+
+    <h6 class="card-subtitle mb-2 text-muted">Меню для добавления контрашента</h6>
+           <hr>
+    <p class="card-text">В данном меню вы сможете добавить нового контрагента или отредактировать сущесвующего</p>
+        <hr>
+
+  </div>
+</div>
+         </div>
+
+
+         <div class="col-6 menu">
+             <div onclick="gotoViewActions()" class="card" style="width: 25rem;">
+  <div class="card-body">
+    <h4 class="card-title">Журнал событий</h4>
+
+    <h6 class="card-subtitle mb-2 text-muted">Меню просмотра журнала событий</h6>
+       <hr>
+    <p class="card-text">В данном меню вы смоежете просмотреть все действия которые были совершены в сисетме</p>
+       <hr>
+  </div>
+</div>
+         </div>
+ </div>
+  </div>
+      </div>
+
+
+    <script src="{% static 'popper.js' %}" ></script>
+<script src="{% static 'b.min.js' %}" ></script>
+
+
+        <style>
+    .menu:hover {
+  -webkit-transform: scale(1.05);
+  -ms-transform: scale(1.05);
+  transform: scale(1.05);
+}
+</style>
+
+    <script>
+function gotoaddAgent() {
+    window.location.href = "{% url 'ves:contragents' %}";
+}
+function gotoViewActions() {
+    window.location.href = "{% url 'ves:actions' %}";
+}
+    </script>
+
+{% endblock %}

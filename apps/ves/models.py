@@ -6,7 +6,7 @@ from django.db import models
 
 class Agent(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField('Наименование', max_length=255, db_index=True)
+    name = models.CharField('Наименование', max_length=255, unique=True, db_index=True)
     description = models.TextField('Описание', default=None)
     address = models.TextField('Адрес', default=None, db_index=True)
     date_add = models.DateTimeField(auto_now_add=True, db_index=True)
@@ -22,7 +22,7 @@ class Agent(models.Model):
 
 class Auto(models.Model):
     id = models.AutoField(primary_key=True)
-    agent = models.ManyToManyField(Agent)
+    agents = models.ForeignKey(Agent, on_delete=models.CASCADE, null=True, blank=True)
     number = models.CharField('Номер', max_length=255, db_index=True)
     number_pricep =  models.CharField('номер прицепа', max_length=255, db_index=True)
     date_add = models.DateTimeField(auto_now_add=True, db_index=True)
@@ -43,7 +43,7 @@ class Auto(models.Model):
 
 class Vagon(models.Model):
     id = models.AutoField(primary_key=True)
-    agent = models.ManyToManyField(Agent)
+    agent_vagon = models.ForeignKey('Agent', on_delete=models.CASCADE, null=True, blank=True)
     number = models.CharField('Номер', max_length=255, db_index=True)
     nakladnaya = models.CharField('Накладная', max_length=255, default=0, db_index=True)
     date_add = models.DateTimeField(auto_now_add=True, db_index=True)
@@ -62,7 +62,7 @@ class Vagon(models.Model):
 
 class ActionUser(models.Model):
     id = models.AutoField(primary_key=True)
-    parentId = models.OneToOneField(User, on_delete=models.CASCADE)
+    parentId = models.ForeignKey(User, on_delete=models.CASCADE)
     action = models.CharField('действие', max_length=255, db_index=True)
     where = models.CharField('где', max_length=255, db_index=True)
     date_add = models.DateTimeField(auto_now_add=True)
@@ -70,3 +70,31 @@ class ActionUser(models.Model):
     class Meta:
         verbose_name = 'Журнал'
         verbose_name_plural = 'Журналы'
+
+class DataNakladnayaAuto(models.Model):
+    id = models.AutoField(primary_key=True)
+    parentId = models.ForeignKey(Auto, on_delete=models.CASCADE)
+    number = models.BigIntegerField('номер в накладной', null=True)
+    name = models.CharField('действие', max_length=255, db_index=True)
+    price = models.FloatField('цена', db_index=True)
+    ves_nakladnaya = models.BigIntegerField('вес по накладной')
+    price_ed = models.CharField('валюта', max_length=100)
+    ves_ed = models.CharField('еденицы измерения', max_length=100)
+    date_add = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        verbose_name = 'Данные по накладной'
+        verbose_name_plural = 'Данные по накладным'
+
+class DataNakladnayaVagon(models.Model):
+    id = models.AutoField(primary_key=True)
+    parentId = models.ForeignKey(Vagon, on_delete=models.CASCADE)
+    number = models.BigIntegerField('номер в накладной', null=True)
+    name = models.CharField('действие', max_length=255, db_index=True)
+    price = models.FloatField('цена', db_index=True)
+    ves_nakladnaya = models.BigIntegerField('вес по накладной')
+    price_ed = models.CharField('валюта', max_length=100)
+    ves_ed = models.CharField('еденицы измерения', max_length=100)
+    date_add = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        verbose_name = 'Данные по накладной'
+        verbose_name_plural = 'Данные по накладным'
