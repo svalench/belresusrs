@@ -3,12 +3,54 @@
 {% block content %}
   <div class="container">
   <button class="btn btn-success" data-toggle="modal" data-target="#addcontragent">Добавить контрагента</button> <hr>
-    {% for a in page_obj %}
-    {# Each "contact" is a Contact model object. #}
-    {{ a.name }} - {{ a.address|upper }} - {{ a.unp }} :: {{ a.date_add|upper }}
-        <hr>
-    ...
-{% endfor %}
+         <div class="accordion" id="accordionExample">
+                 {% for a in page_obj %}
+                    <div class="card">
+                        <div class="card-header" id="headingOne_{{ a.id }}">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse"
+                                        data-target="#collapseOne_{{ a.id }}"
+                                        aria-expanded="true" aria-controls="collapseOne_{{ a.id }}">
+                                    {{ a.name }}
+                                </button>
+                            </h2>
+                        </div>
+
+                        <div id="collapseOne_{{ a.id }}" class="collapse" aria-labelledby="headingOne_{{ a.id }}"
+                             data-parent="#accordionExample">
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">УНП</th>
+                                        <th scope="col">адрес</th>
+                                        <th scope="col">описание</th>
+                                        <th scope="col">добавлен</th>
+                                        <th scope="col">обнавлен</th>
+                                        <th scope="col">действие</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>{{ a.unp }}</td>
+                                        <td>{{ a.address }}</td>
+                                        <td>{{ a.description }}</td>
+                                        <td>{{ a.date_add }}</td>
+                                        <td>{{ a.date_update }}</td>
+                                         <td>
+                                             <button onclick="updateAgent({{ a.pk }})" class="btn btn-warning">Изменить</button>
+                                             <button class="btn btn-danger">Удалить</button>
+                                         </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+            </div>
 
 <div class="pagination">
     <span class="step-links">
@@ -151,6 +193,13 @@
 
 
     <script>
+    var allAgents = '{{ agents }}';
+    allAgents = allAgents.replace(/&quot;/g,'"');
+
+   // allAgents = allAgents.slice(0,-1);
+   // allAgents = allAgents.slice(1);
+   // allAgents = "{"+allAgents+"}";
+   allAgents = JSON.parse(allAgents);
     var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
      function csrfSafeMethod(method) {
             // these HTTP methods do not require CSRF protection
@@ -237,6 +286,7 @@
                 url: '{% url 'addcontragentPOST' %}',
                 data: data,
                 success: function () {
+                    addAction("Добавил контрагента");
                     console.log('Load was performed.');
                     document.location.reload(true);
                 },
@@ -246,6 +296,17 @@
                     }
                 }
             });
+        }
+
+
+        function updateAgent(id){
+         let res;
+         allAgents.forEach(function (a,b) {
+            if(a.pk==id){
+                res=a;
+            }
+         });
+         console.log(res);
         }
 
     </script>

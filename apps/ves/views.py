@@ -2,6 +2,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.core import serializers
 from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -83,10 +84,11 @@ class DataView(LoginRequiredMixin, CreateView):
     @login_required
     def AgentView(request):
         agent = Agent.objects.all()
+        agent_json = serializers.serialize('json', agent)
         paginator = Paginator(agent, 10)
 
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-        data = {'page_obj': page_obj}
+        data = {'page_obj': page_obj,"agents":agent_json}
         return render(request, 'data/data_agents.html', data)
 
