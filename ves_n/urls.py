@@ -33,4 +33,5 @@ urlpatterns = [
     path('addautoPOST/',addAutoView, name='addautoPOST'),
     path('addvagonPOST/',addVagonPost, name='addVagonPOST'),
     path('addcontragentPOST/',addContragentView, name='addcontragentPOST'),
+    path('updcontragentPOST/',updContragentView, name='updcontragentPOST'),
 ]

@@ -92,3 +92,29 @@ def addContragentView(request):
     agent.save()
     payload = {'success': True}
     return HttpResponse(json.dumps(payload), content_type='application/json')
+
+
+def updContragentView(request):
+    form = request.POST
+    now = datetime.now()
+    cities = {
+        'gorod': 'г.',
+        'gp': "гп.",
+        'derev': "поселок"
+    }
+    streets = {
+        'prospect': "проспект",
+        'bulvar': "бульвар",
+        'street': "улица",
+        'per': "переулок",
+        'proezd': 'проезд'
+    }
+    address = form['city'] +" "+ cities[form['typeCity']] + ", " + streets[form['typeStreet']] + " " + form['street'] + ", " + form['numHouse']
+    agetnt = Agent.objects.get(id=form['id'])
+    agetnt.name = form['name']
+    agetnt.unp = form['unp']
+    agetnt.description = form['description']
+    agetnt.address = address
+    agetnt.save()
+    payload = {'success': True}
+    return HttpResponse(json.dumps(payload), content_type='application/json')

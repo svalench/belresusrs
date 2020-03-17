@@ -172,6 +172,99 @@
 
 
 
+
+
+   <!-- Modal addcontragent -->
+    <div class="modal fade" id="updcontragent" tabindex="-1" role="dialog" aria-labelledby="updcontragent"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="gosnomeravtoUpd">Обновить контрагента</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group col-md-7">
+                        <label for="contragentNameUpd">название контрагента</label>
+                        <input type="text" class="form-control" id="contragentNameUpd"
+                                name="contragentNameUpd"
+                        >
+                    </div>
+                    <div class="form-group col-md-5">
+                        <label for="unpUpd">УНП </label>
+                        <input type="text" class="form-control" id="unpUpd" pattern="[0-9]{9}"  name="unpUpd">
+                    </div>
+
+                     <div>
+                    <div class="d-inline-block  form-group col-6 ">
+
+                        <hr style="width: 80%;">
+                        <label for="cityUpd">Населенный пункт</label>
+                         <input type="text" class="form-control"
+                               id="cityUpd" name="cityUpd">
+                    </div>
+
+                    <div class="d-inline-block  form-group col-3 ">
+                        <label for="npUpd"><b>насселенный пункт</b></label>
+
+                        <select id="npUpd">
+                            <option value="gorod">город</option>
+                            <option value="gp">поселок гор-го типа</option>
+                            <option value="derev">сельский нас-ый пункт</option>
+                        </select>
+                    </div>
+                </div>
+
+
+
+                    <div>
+                    <div class="d-inline-block  form-group col-7 ">
+
+                        <hr style="width: 80%;">
+                        <label for="streetUpd">Улица\переулок</label>
+                        <input type="text" class="form-control"
+                               id="streetUpd" name="streetUpd">
+                    </div>
+
+                    <div class="d-inline-block  form-group col-3 ">
+                        <label for="typestreetUpd"><b>улица\переулок</b></label>
+
+                        <select id="typestreetUpd">
+                            <option value="prospect">проспект</option>
+                            <option value="bulvar">бульвар</option>
+                            <option value="street">улица</option>
+                            <option value="per">переулок</option>
+                            <option value="proezd">проезд</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                     <div class="form-group col-md-5 ">
+                        <label for="numHUpd">номер дома</label>
+                        <input type="text" class="form-control" pattern="[0-9]"
+                               id="numHUpd" name="numHUpd">
+                    </div>
+                    <div class="form-group col-md-8 ">
+                        <label for="descriptionUpd">Описание</label>
+                        <textarea  class="form-control"
+                                   id="descriptionUpd" name="descriptionUpd" ></textarea>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">отмена</button>
+                    <button type="button" onclick="addUpdContragent()" class="btn btn-primary">Обновить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
     {% csrf_token %}
 
 
@@ -297,17 +390,133 @@
                 }
             });
         }
-
+var id_select;
 
         function updateAgent(id){
          let res;
+         id_select=id;
+         $("#updcontragent").modal('show');
          allAgents.forEach(function (a,b) {
             if(a.pk==id){
-                res=a;
+                res=a.fields;
             }
          });
+         var arr = res.address.split(",");
+         var arrG = arr[0].split(" ");
+         var arrC = arr[1].split(" ");
+          var cities = {
+         'г.':'gorod',
+         "гп.":'gp',
+         "поселок":'derev'
+    };
+         var streets = {
+              "проспект":'prospect',
+              "бульвар":'bulvar',
+              "улица":'street',
+              "переулок":'per',
+              'проезд':'proezd'
+         };
+          $("#contragentNameUpd").val(res.name);
+             $("#unpUpd").val(res.unp);
+            $("#cityUpd").val(arrG[0]);
+             $("#npUpd").val(cities[arrG[1]]);
+            $("#streetUpd").val(arrC[2]);
+             $("#typestreetUpd").val(streets[arrC[1]]);
+             $("#numHUpd").val(arr[2]);
+             $("#descriptionUpd").val(res.description);
+
          console.log(res);
         }
+
+
+
+
+
+
+
+
+
+
+
+     function addUpdContragent() {
+            let name = $("#contragentNameUpd").val();
+            let unp = $("#unpUpd").val();
+            let city = $("#cityUpd").val();
+            let typeOfCity = $("#npUpd").val();
+            let street = $("#streetUpd").val();
+            let typeOfStreet = $("#typestreetUpd").val();
+            let numHouse = $("#numHUpd").val();
+            let description = $("#descriptionUpd").val();
+            // validation
+            if(!name){
+                 addAction('оператор добавляя запись в список не указал название контрагента');
+                alert('Вы не ввели навзание кнтрагента'); $("#contragentName").focus(); return;
+            }
+            if(!unp){
+                 addAction('оператор добавляя запись в список не указал УНП контрагента');
+                alert('Вы не указали УНП  кнтрагента'); $("#unp").focus(); return;
+            }
+             if(!city){
+                 addAction('оператор добавляя запись в список не указал город контрагента');
+                alert('Вы не указали насселеный пункт  кнтрагента'); $("#city").focus(); return;
+            }
+             if(!street){
+                 addAction('оператор добавляя запись в список не указал улицу  контрагента');
+                alert('Вы не указали улицу где зарегестрирован кнтрагент'); $("#street").focus(); return;
+            }
+             if(!numHouse){
+                 addAction('оператор добавляя запись в список не указал номер дома  контрагента');
+                alert('Вы не указали номер дома где зарегестрирован кнтрагент'); $("#numH").focus(); return;
+            }
+             if (!description) {
+                addAction('оператор добавляя запись в список не написал описание контрагента ');
+                if (!confirm('Вы не описание контрагента. Продолжить?')) {
+                    return;
+                }
+            }
+             if (!unp.match(/[0-9]{9}/)) {
+                alert("В поле УНП должны быть введены только 9 цифр");
+                $("#unp").focus();
+                return;
+            }
+             if (!numHouse.match(/^[ 0-9]+$/)) {
+                alert("В поле номер дома должны быть введены только цифры");
+                $("#numH").focus();
+                return;
+            }
+             // post data to server
+             data = {
+                 "name":name,
+                 "unp":unp,
+                 "city":city,
+                 'typeCity':typeOfCity,
+                 "street":street,
+                 "typeStreet":typeOfStreet,
+                 "numHouse":numHouse,
+                 "description":description,
+                 "id":id_select
+             };
+             $.ajax({
+                type: "POST",
+                url: '{% url 'updcontragentPOST' %}',
+                data: data,
+                success: function () {
+                    addAction("Добавил контрагента");
+                    console.log('Load was performed.');
+                    document.location.reload(true);
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+        }
+
+
+
+
+
 
     </script>
 
