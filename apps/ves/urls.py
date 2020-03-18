@@ -30,6 +30,7 @@ urlpatterns = [
     path('data/contragents',  DataView.AgentView, name = 'contragents'),
     path('data/actions',  DataView.ActionView, name = 'actions'),
     path('ves/users', DataView.UserView, name='users'),
+    path('ves/users/<int:usid>/', DataView.updateUserView, name='usersUpd'),
 
 
 ]

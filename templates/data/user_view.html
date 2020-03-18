@@ -39,8 +39,8 @@
                                     <td>{{ a.date_add }}</td>
                                     <td>{{ a.date_update }}</td>
                                     <td>
-                                        <button onclick="updateAgent({{ a.pk }})" class="btn btn-warning">Изменить
-                                        </button>
+                                        <a href="{% url 'ves:usersUpd'  a.id  %}" class="btn btn-warning">Изменить
+                                        </a>
                                         <button class="btn btn-danger">Удалить</button>
                                     </td>
                                 </tr>
@@ -85,176 +85,15 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group col-md-7">
-                            <label for="contragentName">login</label>
-                            <input type="text" class="form-control" id="contragentName"
-                                   name="contragentName"
-                            >
-                        </div>
-                        <div>
-                            <div class="d-inline-block form-group col-md-5">
-                                <label for="unp">password </label>
-                                <input type="password" class="form-control" id="pass" name="pass">
-                            </div>
-                            <div class="d-inline-block form-group col-md-5">
-                                <label for="unp">password confirm </label>
-                                <input type="password" class="form-control" id="passConf" name="passConf">
-                            </div>
-                        </div>
-                        <div>
-                            <div class="d-inline-block form-group col-md-5">
-                                <label for="unp">Имя </label>
-                                <input type="text" class="form-control" id="name" name="name">
-                            </div>
 
-                            <div class="d-inline-block form-group col-md-5">
-                                <label for="unp">Отчество </label>
-                                <input type="text" class="form-control" id="secondName" name="secondName">
-                            </div>
-                        </div>
-                        <div>
-                            <div class="d-inline-block form-group col-md-5">
-                                <label for="unp">Фамилия </label>
-                                <input type="text" class="form-control" id="lastName" name="lastName">
-                            </div>
-                            <div class="d-inline-block form-group col-md-5">
-                                <label for="unp">Телефон </label>
-                                <input type="text" class="form-control" id="phone" name="phone">
-                            </div>
-                        </div>
-                        <div class="form-group col-md-5">
-                                <label for="unp">Должность </label>
-                                <input type="text" class="form-control" id="role" name="role">
-                            </div>
-                        <div class="form-group col-md-6">
-                                <label for="unp">День рождения </label>
-                                <input type="date" class="form-control" id="birth_date" name="birth_date">
-                            </div>
-
-
-                        <div class="d-inline-block  form-group col-3 ">
-                                <label for="role_user"><b>Роль пользователя</b></label>
-
-                                <select id="role_user">
-                                    <option selected="true" disabled>Выберите роль</option>
-                                    {% for r in  roles %}
-                                     <option value="{{ r.0 }}">{{ r.1 }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-
-
-
-                        <div class="form-group col-md-8 ">
-                            <label for="numH">Описание</label>
-                            <textarea class="form-control"
-                                      id="description" name="description"></textarea>
-                        </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">отмена</button>
-                        <button type="button" onclick="addContragent()" class="btn btn-primary">Добавить</button>
-                    </div>
-
-                    <form method="post">
+                    < method="post">
   {% csrf_token %}
   {{ userform.as_p }}
   {{ profileform.as_p }}
   <button type="submit">Save changes</button>
+
 </form>
-
-
-
-
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Modal addcontragent -->
-        <div class="modal fade" id="updcontragent" tabindex="-1" role="dialog" aria-labelledby="updcontragent"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="gosnomeravtoUpd">Обновить контрагента</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
                     </div>
-                    <div class="modal-body">
-                        <div class="form-group col-md-7">
-                            <label for="contragentNameUpd">название контрагента</label>
-                            <input type="text" class="form-control" id="contragentNameUpd"
-                                   name="contragentNameUpd"
-                            >
-                        </div>
-                        <div class="form-group col-md-5">
-                            <label for="unpUpd">УНП </label>
-                            <input type="text" class="form-control" id="unpUpd" pattern="[0-9]{9}" name="unpUpd">
-                        </div>
-
-                        <div>
-                            <div class="d-inline-block  form-group col-6 ">
-
-                                <hr style="width: 80%;">
-                                <label for="cityUpd">Населенный пункт</label>
-                                <input type="text" class="form-control"
-                                       id="cityUpd" name="cityUpd">
-                            </div>
-
-                            <div class="d-inline-block  form-group col-3 ">
-                                <label for="npUpd"><b>насселенный пункт</b></label>
-
-                                <select id="npUpd">
-                                    <option value="gorod">город</option>
-                                    <option value="gp">поселок гор-го типа</option>
-                                    <option value="derev">сельский нас-ый пункт</option>
-                                </select>
-                            </div>
-                        </div>
-
-
-                        <div>
-                            <div class="d-inline-block  form-group col-7 ">
-
-                                <hr style="width: 80%;">
-                                <label for="streetUpd">Улица\переулок</label>
-                                <input type="text" class="form-control"
-                                       id="streetUpd" name="streetUpd">
-                            </div>
-
-                            <div class="d-inline-block  form-group col-3 ">
-                                <label for="typestreetUpd"><b>улица\переулок</b></label>
-
-                                <select id="typestreetUpd">
-                                    <option value="prospect">проспект</option>
-                                    <option value="bulvar">бульвар</option>
-                                    <option value="street">улица</option>
-                                    <option value="per">переулок</option>
-                                    <option value="proezd">проезд</option>
-                                </select>
-                            </div>
-                        </div>
-
-
-                        <div class="form-group col-md-5 ">
-                            <label for="numHUpd">номер дома</label>
-                            <input type="text" class="form-control" pattern="[0-9]"
-                                   id="numHUpd" name="numHUpd">
-                        </div>
-                        <div class="form-group col-md-8 ">
-                            <label for="descriptionUpd">Описание</label>
-                            <textarea class="form-control"
-                                      id="descriptionUpd" name="descriptionUpd"></textarea>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">отмена</button>
-                        <button type="button" onclick="addUpdContragent()" class="btn btn-primary">Обновить</button>
-                    </div>
-                </div>
             </div>
         </div>
 

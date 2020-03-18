@@ -2,6 +2,8 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import transaction
+
 from apps.ves.models import User
 from django.core import serializers
 from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
@@ -13,7 +15,7 @@ from django.urls import reverse
 from django.views import View
 from django.views.generic import CreateView
 from apps.ves.consumers import *
-from apps.ves.forms import UserForm
+from apps.ves.forms import UserForm, UpdUserForm
 from apps.ves.models import Auto, ActionUser, Agent, Vagon
 from ves_n.setting_data import USER_ROLES_FOR_REDIRECTS_CHOICES, USER_ROLES_SETTINGS
 
@@ -120,3 +122,25 @@ class DataView(LoginRequiredMixin, CreateView):
         data = {'page_obj': page_obj, "users": agent_json,"roles":USER_ROLES_SETTINGS,"userform":user_form}
         return render(request, 'data/user_view.html', data)
 
+    @login_required
+    @transaction.atomic
+    def updateUserView(request,usid):
+        userupd = User.objects.get(pk=usid)
+        if request.method == 'POST':
+            user_form = UpdUserForm(request.POST, instance=userupd)
+
+            if user_form.is_valid():
+                user_form.save()
+
+                messages.success(request, _('Your profile was successfully updated!'))
+                print('Your profile was successfully updated!')
+                return redirect('ves:users')
+            else:
+                messages.error(request, _('Please correct the error below.'))
+                print('Please correct the error below.')
+                return render(request, 'data/update_user.html', {'user_form': user_form})
+        else:
+
+            print(dir(userupd))
+            user_form = UpdUserForm(instance=userupd)
+            return render(request, 'data/update_user.html',{'user_form':user_form})
