@@ -76,21 +76,67 @@
         <!-- Modal addcontragent -->
         <div class="modal fade" id="addcontragent" tabindex="-1" role="dialog" aria-labelledby="addcontragent"
              aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="gosnomeravto">Добавить контрагента</h5>
+                        <h5 class="modal-title" id="gosnomeravto">Добавить пользователя</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
 
-                    < method="post">
+                    <form method="post">
   {% csrf_token %}
-  {{ userform.as_p }}
-  {{ profileform.as_p }}
-  <button type="submit">Save changes</button>
+                        { userform.as_p }}
+
+                        <div class="form-group">
+                            <label>Никнейм</label><br>
+                            {{ userform.username }}
+                        </div>
+                        <div class="form-group">
+                             <label>Имя</label><br>
+                            {{ userform.name }}
+                        </div>
+                        <div class="form-group">
+
+                            <label>Отчесвто</label><br>
+                            {{ userform.secondName }}
+                        </div>
+                        <div class="form-group">
+                             <label>Фамилия</label><br>
+                            {{ userform.lastName }}
+                        </div>
+                        <div class="form-group">
+                            <label>Должность</label><br>
+                            {{ userform.role }}
+                        </div>
+                        <div class="form-group">
+                            <label>Роль</label><br>
+                            {{ userform.user_role }}
+                        </div>
+                         <div class="form-group">
+                             <label>Пароль</label><br>
+                            {{ userform.password1 }}
+                        </div>
+                        <div class="form-group">
+                             <label>Подтверждение пароля</label><br>
+                            {{ userform.password2 }}
+                        </div>
+                        <div class="form-group">
+                            <label>Телефон</label><br>
+                            {{ userform.phone }}
+                        </div>
+                        <div class="form-group">
+                            <label>Дата рождения</label><br>
+                            {{ userform.birth_date }}
+                        </div>
+                        <div class="form-group">
+                            <label>Дополнительная информация</label><br>
+                            {{ userform.descriptions }}
+                        </div>
+
+  <button type="submit">Добавить</button>
 
 </form>
                     </div>
@@ -139,216 +185,7 @@
                 }
             });
         }
-
-        function addContragent() {
-            let name = $("#contragentName").val();
-            let unp = $("#unp").val();
-            let city = $("#city").val();
-            let typeOfCity = $("#np").val();
-            let street = $("#street").val();
-            let typeOfStreet = $("#typestreet").val();
-            let numHouse = $("#numH").val();
-            let description = $("#description").val();
-            // validation
-            if (!name) {
-                addAction('оператор добавляя запись в список не указал название контрагента');
-                alert('Вы не ввели навзание кнтрагента');
-                $("#contragentName").focus();
-                return;
-            }
-            if (!unp) {
-                addAction('оператор добавляя запись в список не указал УНП контрагента');
-                alert('Вы не указали УНП  кнтрагента');
-                $("#unp").focus();
-                return;
-            }
-            if (!city) {
-                addAction('оператор добавляя запись в список не указал город контрагента');
-                alert('Вы не указали насселеный пункт  кнтрагента');
-                $("#city").focus();
-                return;
-            }
-            if (!street) {
-                addAction('оператор добавляя запись в список не указал улицу  контрагента');
-                alert('Вы не указали улицу где зарегестрирован кнтрагент');
-                $("#street").focus();
-                return;
-            }
-            if (!numHouse) {
-                addAction('оператор добавляя запись в список не указал номер дома  контрагента');
-                alert('Вы не указали номер дома где зарегестрирован кнтрагент');
-                $("#numH").focus();
-                return;
-            }
-            if (!description) {
-                addAction('оператор добавляя запись в список не написал описание контрагента ');
-                if (!confirm('Вы не описание контрагента. Продолжить?')) {
-                    return;
-                }
-            }
-            if (!unp.match(/[0-9]{9}/)) {
-                alert("В поле УНП должны быть введены только 9 цифр");
-                $("#unp").focus();
-                return;
-            }
-            if (!numHouse.match(/^[ 0-9]+$/)) {
-                alert("В поле номер дома должны быть введены только цифры");
-                $("#numH").focus();
-                return;
-            }
-            // post data to server
-            data = {
-                "name": name,
-                "unp": unp,
-                "city": city,
-                'typeCity': typeOfCity,
-                "street": street,
-                "typeStreet": typeOfStreet,
-                "numHouse": numHouse,
-                "description": description
-            };
-            $.ajax({
-                type: "POST",
-                url: '{% url 'addcontragentPOST' %}',
-                data: data,
-                success: function () {
-                    addAction("Добавил контрагента");
-                    console.log('Load was performed.');
-                    document.location.reload(true);
-                },
-                beforeSend: function (xhr, settings) {
-                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    }
-                }
-            });
-        }
-
-        var id_select;
-
-        function updateAgent(id) {
-            let res;
-            id_select = id;
-            $("#updcontragent").modal('show');
-            allAgents.forEach(function (a, b) {
-                if (a.pk == id) {
-                    res = a.fields;
-                }
-            });
-            var arr = res.address.split(",");
-            var arrG = arr[0].split(" ");
-            var arrC = arr[1].split(" ");
-            var cities = {
-                'г.': 'gorod',
-                "гп.": 'gp',
-                "поселок": 'derev'
-            };
-            var streets = {
-                "проспект": 'prospect',
-                "бульвар": 'bulvar',
-                "улица": 'street',
-                "переулок": 'per',
-                'проезд': 'proezd'
-            };
-            $("#contragentNameUpd").val(res.name);
-            $("#unpUpd").val(res.unp);
-            $("#cityUpd").val(arrG[0]);
-            $("#npUpd").val(cities[arrG[1]]);
-            $("#streetUpd").val(arrC[2]);
-            $("#typestreetUpd").val(streets[arrC[1]]);
-            $("#numHUpd").val(arr[2]);
-            $("#descriptionUpd").val(res.description);
-
-            console.log(res);
-        }
-
-
-        function addUpdContragent() {
-            let name = $("#contragentNameUpd").val();
-            let unp = $("#unpUpd").val();
-            let city = $("#cityUpd").val();
-            let typeOfCity = $("#npUpd").val();
-            let street = $("#streetUpd").val();
-            let typeOfStreet = $("#typestreetUpd").val();
-            let numHouse = $("#numHUpd").val();
-            let description = $("#descriptionUpd").val();
-            // validation
-            if (!name) {
-                addAction('оператор добавляя запись в список не указал название контрагента');
-                alert('Вы не ввели навзание кнтрагента');
-                $("#contragentName").focus();
-                return;
-            }
-            if (!unp) {
-                addAction('оператор добавляя запись в список не указал УНП контрагента');
-                alert('Вы не указали УНП  кнтрагента');
-                $("#unp").focus();
-                return;
-            }
-            if (!city) {
-                addAction('оператор добавляя запись в список не указал город контрагента');
-                alert('Вы не указали насселеный пункт  кнтрагента');
-                $("#city").focus();
-                return;
-            }
-            if (!street) {
-                addAction('оператор добавляя запись в список не указал улицу  контрагента');
-                alert('Вы не указали улицу где зарегестрирован кнтрагент');
-                $("#street").focus();
-                return;
-            }
-            if (!numHouse) {
-                addAction('оператор добавляя запись в список не указал номер дома  контрагента');
-                alert('Вы не указали номер дома где зарегестрирован кнтрагент');
-                $("#numH").focus();
-                return;
-            }
-            if (!description) {
-                addAction('оператор добавляя запись в список не написал описание контрагента ');
-                if (!confirm('Вы не описание контрагента. Продолжить?')) {
-                    return;
-                }
-            }
-            if (!unp.match(/[0-9]{9}/)) {
-                alert("В поле УНП должны быть введены только 9 цифр");
-                $("#unp").focus();
-                return;
-            }
-            if (!numHouse.match(/^[ 0-9]+$/)) {
-                alert("В поле номер дома должны быть введены только цифры");
-                $("#numH").focus();
-                return;
-            }
-            // post data to server
-            data = {
-                "name": name,
-                "unp": unp,
-                "city": city,
-                'typeCity': typeOfCity,
-                "street": street,
-                "typeStreet": typeOfStreet,
-                "numHouse": numHouse,
-                "description": description,
-                "id": id_select
-            };
-            $.ajax({
-                type: "POST",
-                url: '{% url 'updcontragentPOST' %}',
-                data: data,
-                success: function () {
-                    addAction("Добавил контрагента");
-                    console.log('Load was performed.');
-                    document.location.reload(true);
-                },
-                beforeSend: function (xhr, settings) {
-                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    }
-                }
-            });
-        }
-
-
+$('input').addClass("form-control");
     </script>
 
 {% endblock %}
