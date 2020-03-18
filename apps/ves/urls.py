@@ -29,6 +29,7 @@ urlpatterns = [
     path('data',  DataView.menu_data, name = 'menu_data'),
     path('data/contragents',  DataView.AgentView, name = 'contragents'),
     path('data/actions',  DataView.ActionView, name = 'actions'),
+    path('ves/users', DataView.UserView, name='users'),
 
 
 ]

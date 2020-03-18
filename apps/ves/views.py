@@ -1,18 +1,21 @@
+from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
+from apps.ves.models import User
 from django.core import serializers
 from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-
+from django.utils.translation import gettext as _
 # Create your views here.
 from django.urls import reverse
 from django.views import View
 from django.views.generic import CreateView
 from apps.ves.consumers import *
+from apps.ves.forms import UserForm
 from apps.ves.models import Auto, ActionUser, Agent, Vagon
+from ves_n.setting_data import USER_ROLES_FOR_REDIRECTS_CHOICES, USER_ROLES_SETTINGS
 
 
 class StartView(LoginRequiredMixin, CreateView):
@@ -91,4 +94,29 @@ class DataView(LoginRequiredMixin, CreateView):
         page_obj = paginator.get_page(page_number)
         data = {'page_obj': page_obj,"agents":agent_json}
         return render(request, 'data/data_agents.html', data)
+
+    @login_required
+    def UserView(request):
+        users = User.objects.all()
+        agent_json = serializers.serialize('json', users)
+        paginator = Paginator(users, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        user_form = UserForm()
+        if request.method == 'POST':
+            user_form = UserForm(request.POST)
+
+            if user_form.is_valid():
+                user_form.save()
+
+                messages.success(request, _('Your profile was successfully updated!'))
+                print('Your profile was successfully updated!')
+                return redirect('ves:users')
+            else:
+                messages.error(request, _('Please correct the error below.'))
+                print('Please correct the error below.')
+        print("======")
+        #print(users[5].profile.descriptions)
+        data = {'page_obj': page_obj, "users": agent_json,"roles":USER_ROLES_SETTINGS,"userform":user_form}
+        return render(request, 'data/user_view.html', data)
 

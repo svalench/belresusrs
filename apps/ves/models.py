@@ -1,7 +1,25 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 from django.db import models
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 # Create your models here.
+from ves_n import settings
+from ves_n.setting_data import USER_ROLES_FOR_REDIRECTS_CHOICES
+
+
+class User(AbstractUser):
+    id = models.AutoField(primary_key=True)
+    descriptions = models.TextField('описание', max_length=500, blank=True)
+    name = models.CharField("имя", max_length=60, blank=True)
+    secondName = models.CharField("отчество", max_length=60, blank=True)
+    lastName = models.CharField("фамилия", max_length=60, blank=True)
+    role = models.CharField("должность", max_length=100, null=True, blank=True)
+    birth_date = models.DateField("дата рождения", null=True, blank=True)
+    phone = models.CharField("телефон", max_length=30, null=True)
+    user_role = models.CharField(max_length=20, choices=USER_ROLES_FOR_REDIRECTS_CHOICES,
+                                 verbose_name='Роль пользователя', default=USER_ROLES_FOR_REDIRECTS_CHOICES[0][0])
+
+
 
 
 class Agent(models.Model):
