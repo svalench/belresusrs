@@ -18,6 +18,11 @@ class User(AbstractUser):
     phone = models.CharField("телефон", max_length=30, null=True)
     user_role = models.CharField(max_length=20, choices=USER_ROLES_FOR_REDIRECTS_CHOICES,
                                  verbose_name='Роль пользователя', default=USER_ROLES_FOR_REDIRECTS_CHOICES[0][0])
+    def is_admin(self):
+        if(self.user_role==USER_ROLES_FOR_REDIRECTS_CHOICES[2][0]):
+            return True
+        else:
+            return False
 
 
 

@@ -125,6 +125,8 @@ class DataView(LoginRequiredMixin, CreateView):
     @login_required
     @transaction.atomic
     def updateUserView(request,usid):
+        if(not request.user.is_admin()):
+            return HttpResponseForbidden()
         userupd = User.objects.get(pk=usid)
         if request.method == 'POST':
             user_form = UpdUserForm(request.POST, instance=userupd)
