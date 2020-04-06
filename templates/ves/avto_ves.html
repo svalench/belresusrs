@@ -350,7 +350,6 @@
 
         function addAction(action) {
             let data = "where=auto&action=" + action + "&user={{ request.user.id }}";
-
             $.ajax({
                 type: "POST",
                 url: '{% url 'addaction' %}',

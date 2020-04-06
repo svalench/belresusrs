@@ -6,12 +6,12 @@ from abc import ABCMeta
 
 from datetime import datetime
 from django.contrib.auth import logout
-from django.contrib.auth.models import User
+
 
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
-from apps.ves.models import ActionUser, Auto, Agent, DataNakladnayaAuto, Vagon, DataNakladnayaVagon
+from apps.ves.models import ActionUser, Auto, Agent, DataNakladnayaAuto, Vagon, DataNakladnayaVagon, User
 
 
 def logout_view(request):
@@ -20,7 +20,7 @@ def logout_view(request):
 
 def addactionView(request, *args, **kwargs):
     form = request.POST
-    model = ActionUser(where=form['where'], action=form['action'], parentId=User(form['user']))
+    model = ActionUser(where=form['where'], action=form['action'], parentId=User(id=form['user']))
     model.save()
     payload = {'success': True}
     return HttpResponse(json.dumps(payload), content_type='application/json')
