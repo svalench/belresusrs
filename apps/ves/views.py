@@ -3,8 +3,9 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
-
-from apps.ves.models import User
+from django.core import exceptions
+from GLOBAL import GlobalAutoUse
+from apps.ves.models import User, GlobalData
 from django.core import serializers
 from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
 from django.http import HttpResponseRedirect
@@ -44,11 +45,13 @@ class StartView(LoginRequiredMixin, CreateView):
 
     @login_required
     def avto_ves(request):
+        one_entry = GlobalData.objects.get(id=1)
         auto = Auto.objects.filter(status_in=True)
         agents = Agent.objects.all()
-        if (globalAuto == True):
+        print(GlobalAutoUse)
+        if (one_entry.Auto == True):
             print('woops')
-            return HttpResponseRedirect(403)
+            raise exceptions.PermissionDenied
         data = {'auto_in': auto, 'agetns':agents}
         return render(request, 'ves/avto_ves.html', data)
 

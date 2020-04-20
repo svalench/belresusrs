@@ -674,6 +674,27 @@ if($('#searchingPol').val().length==0){
         } }
 });
 
+function getData(){
+    let data ={"zanyato":true,"all":false};
+              $.ajax({
+                type: "POST",
+                url: '{% url 'getDataAuto' %}',
+                traditional: true,
+                dataType: 'json',
+                data: data,
+                success: function (dat) {
+                    console.log(dat);
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+}
+getData();
+
+setInterval(getData, 1000);
 
 
 
@@ -694,28 +715,24 @@ if($('#searchingPol').val().length==0){
 
 
 
-
-
-
-
-
-
-
-        var roomName = "wert";
-        var chatSocket = new WebSocket(
-            'ws://' + window.location.host +
-            '/ws/');
-
-        chatSocket.onmessage = function (e) {
-            var data = JSON.parse(e.data);
-            var message = data['message'];
-            document.querySelector('#chat-log').value += (message + '\n');
-        };
-
-        chatSocket.onclose = function (e) {
-
-            console.error('Chat socket closed unexpectedly');
-        };
+        {##}
+        {##}
+        {##}
+        {#var roomName = "wert";#}
+        {#var chatSocket = new WebSocket(#}
+        {#    'ws://' + window.location.host +#}
+        {#    '/ws/');#}
+        {##}
+        {#chatSocket.onmessage = function (e) {#}
+        {#    var data = JSON.parse(e.data);#}
+        {#    var message = data['message'];#}
+        {#    document.querySelector('#chat-log').value += (message + '\n');#}
+        {#};#}
+        {##}
+        {#chatSocket.onclose = function (e) {#}
+        {##}
+        {#    console.error('Chat socket closed unexpectedly');#}
+        {#};#}
 
 
     </script>

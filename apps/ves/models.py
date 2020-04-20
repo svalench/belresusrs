@@ -6,6 +6,10 @@ from django.dispatch import receiver
 from ves_n import settings
 from ves_n.setting_data import USER_ROLES_FOR_REDIRECTS_CHOICES
 
+class GlobalData(models.Model):
+    id = models.AutoField(primary_key=True)
+    Auto = models.BooleanField('Авто занято',default=False)
+    Zd   = models.BooleanField("ЖД занято", default=False)
 
 class User(AbstractUser):
     id = models.AutoField(primary_key=True)

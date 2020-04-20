@@ -1,17 +1,17 @@
 import abc
-
+from django.core.exceptions import ObjectDoesNotExist
 import json
 import threading
 from abc import ABCMeta
 
 from datetime import datetime
 from django.contrib.auth import logout
-
+from GLOBAL import GlobalAutoUse
 
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
-from apps.ves.models import ActionUser, Auto, Agent, DataNakladnayaAuto, Vagon, DataNakladnayaVagon, User
+from apps.ves.models import ActionUser, Auto, Agent, DataNakladnayaAuto, Vagon, DataNakladnayaVagon, User, GlobalData
 
 
 def logout_view(request):
@@ -118,3 +118,26 @@ def updContragentView(request):
     agetnt.save()
     payload = {'success': True}
     return HttpResponse(json.dumps(payload), content_type='application/json')
+
+def GetDataAuto(request):
+
+    try:
+        one_entry = GlobalData.objects.get(id=1)
+    except ObjectDoesNotExist:
+        one_entry = GlobalData(Auto=False)
+
+    form = request.POST
+    if (form["all"]=="true"):
+        one_entry.Auto=False
+        one_entry.Zd=False
+    else:
+        if(form['zanyato']):
+            one_entry.Auto = True
+    one_entry.save()
+    print(one_entry.Auto)
+    dataRecive = {
+        'plc':"1200",
+        "type":"vrs",
+        'global':one_entry.Auto,
+    }
+    return HttpResponse(json.dumps(dataRecive), content_type='application/json')

@@ -146,16 +146,23 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL ='/'
-
+# redis_url = os.getenv('REDISTOGO_URL')
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             "hosts": [(redis_url, 6379)],
+#         },
+#     },
+# }
 CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('172.12.0.1', 6381)],
+    "default": {
+        "CONFIG": {
+            "hosts": [('127.0.0.1','6379')],
         },
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
     },
 }
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

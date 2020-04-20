@@ -8,3 +8,5 @@ Pillow==6.2.1
 psycopg2-binary==2.8.4
 uvicorn
 django-globals
+aiohttp
+redis-server

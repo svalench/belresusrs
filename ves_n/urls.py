@@ -19,7 +19,7 @@ from django.urls import path, include
 from ves_n.views import *
 
 from channels.routing import ProtocolTypeRouter
-
+from django.views.defaults import server_error, page_not_found, permission_denied
 application = ProtocolTypeRouter({
     # Empty for now (http->django views is added by default)
 })
@@ -34,4 +34,5 @@ urlpatterns = [
     path('addvagonPOST/',addVagonPost, name='addVagonPOST'),
     path('addcontragentPOST/',addContragentView, name='addcontragentPOST'),
     path('updcontragentPOST/',updContragentView, name='updcontragentPOST'),
+    path('getDataAuto/', GetDataAuto, name='getDataAuto'),
 ]

@@ -80,9 +80,42 @@
 
 
 {% endblock %}
+   {% csrf_token %}
+
 
 <script src="{% static 'popper.js' %}" ></script>
 <script src="{% static 'b.min.js' %}" ></script>
+<script>
 
+
+  var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+
+    function falseAll(){
+    let data ={"avto":false,"zd":false,"all":true};
+              $.ajax({
+                type: "POST",
+                url: '{% url 'getDataAuto' %}',
+                traditional: true,
+                dataType: 'json',
+                data: data,
+                success: function (dat) {
+                    console.log(dat);
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+}
+setTimeout(falseAll,2000);
+//setInterval(falseAll, 2000);
+</script>
 </body>
 </html>
