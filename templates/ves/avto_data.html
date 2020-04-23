@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <div class="container">
+         <div class="accordion" id="accordionExample">
+                 {% for a in page_obj %}
+                    <div class="card">
+                        <div class="card-header" id="headingOne_{{ a.id }}">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse"
+                                        data-target="#collapseOne_{{ a.id }}"
+                                        aria-expanded="true" aria-controls="collapseOne_{{ a.id }}">
+                                    {{ a.number }}
+                                </button>
+                            </h2>
+                        </div>
+
+                        <div id="collapseOne_{{ a.id }}" class="collapse" aria-labelledby="headingOne_{{ a.id }}"
+                             data-parent="#accordionExample">
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">агент</th>
+                                        <th scope="col">накладная</th>
+                                        <th scope="col">время въезда</th>
+                                        <th scope="col">время выезда</th>
+                                        <th scope="col">масса на въезде, кг</th>
+                                        <th scope="col">масса на выезде, кг</th>
+                                         <th scope="col">нетто, кг</th>
+                                         <th scope="col">статус</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>{{ a.agents.name }}</td>
+                                        <td>{{ a.nakladnaya }}</td>
+                                        <td>{{ a.last_in }}</td>
+                                         <td>{{ a.last_out }}</td>
+                                        <td>{{ a.ves_in }}</td>
+                                        <td>{{ a.ves_out }}</td>
+                                        <td>{{ a.netto }}</td>
+                                        {% if a.status_in %}<td>
+                                        <span class="badge badge-warning">на территории</span>
+                                        </td> {% else %}<td>
+                                        <span class="badge badge-success">выехал</span>
+                                        </td> {% endif %}
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+            </div>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {% csrf_token %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    <script src="{% static 'popper.js' %}" ></script>
+<script src="{% static 'b.min.js' %}" ></script>
+
+
+    <script>
+    var data = '{{ data }}';
+    data = data.replace(/&quot;/g,'"');
+   data = JSON.parse(data);
+    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+     function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        function addAction(action) {
+            let data = "where=contragents&action=" + action + "&user={{ request.user.id }}";
+
+            $.ajax({
+                type: "POST",
+                url: '{% url 'addaction' %}',
+                data: data,
+                success: function () {
+                    console.log('Load was performed.');
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+        }
+
+
+    </script>
+
+{% endblock %}

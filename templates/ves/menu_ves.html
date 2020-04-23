@@ -23,6 +23,22 @@
          </div>
 
 
+             <div class="col-6 menu">
+             <div onclick="gotoavtoData()" class="card" style="width: 25rem;">
+  <div class="card-body">
+    <h4 class="card-title">Автомобильный транспорт Данные</h4>
+
+    <h6 class="card-subtitle mb-2 text-muted">Данные по всем автомобилям</h6>
+           <hr>
+    <p class="card-text">Просмотр данных по всем автомобилям</p>
+        <hr>
+
+
+  </div>
+</div>
+         </div>
+
+
          <div class="col-6 menu">
              <div onclick="gotozd()" class="card" style="width: 25rem;">
   <div class="card-body">
@@ -36,6 +52,22 @@
    <p>Статутс   -    <span class="badge badge-success">Свободно</span></p>
 
 
+
+  </div>
+</div>
+         </div>
+
+
+
+        <div class="col-6 menu">
+             <div onclick="gotozdData()" class="card" style="width: 25rem;">
+  <div class="card-body">
+    <h4 class="card-title">Железнодорожный транспорт данные</h4>
+
+    <h6 class="card-subtitle mb-2 text-muted">данные по ЖД транспорту</h6>
+       <hr>
+    <p class="card-text">данные по железнодорожному транспорту в виде таблицы</p>
+       <hr>
 
   </div>
 </div>
@@ -60,6 +92,9 @@
     <script>
 function gotoavto() {
     window.location.href = "/ves/avto";
+}
+function gotoavtoData() {
+    window.location.href = "/ves/avtodata";
 }
 function gotozd() {
     window.location.href = "/ves/zd";

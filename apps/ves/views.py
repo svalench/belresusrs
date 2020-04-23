@@ -55,6 +55,20 @@ class StartView(LoginRequiredMixin, CreateView):
         data = {'auto_in': auto, 'agetns':agents}
         return render(request, 'ves/avto_ves.html', data)
 
+
+
+    @login_required
+    def avto_data(request):
+        autoAll = Auto.objects.all()
+        json =serializers.serialize('json', autoAll)
+        paginator = Paginator(autoAll, 10)  # Show 25 contacts per page
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        data = {'page_obj': page_obj,"data":json}
+        return render(request, 'ves/avto_data.html', data)
+
+
+
     @login_required
     def zd_ves(request):
         zd = Vagon.objects.filter(status_in=True)
