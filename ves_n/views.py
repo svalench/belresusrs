@@ -120,7 +120,6 @@ def updContragentView(request):
     return HttpResponse(json.dumps(payload), content_type='application/json')
 
 def GetDataAuto(request):
-
     try:
         one_entry = GlobalData.objects.get(id=1)
     except ObjectDoesNotExist:
@@ -139,5 +138,25 @@ def GetDataAuto(request):
         'plc':"1200",
         "type":"vrs",
         'global':one_entry.Auto,
+    }
+    return HttpResponse(json.dumps(dataRecive), content_type='application/json')
+
+
+
+
+
+
+
+def GetDataStatus(request):
+    try:
+        one_entry = GlobalData.objects.get(id=1)
+    except ObjectDoesNotExist:
+        one_entry = GlobalData(Auto=False)
+
+    dataRecive = {
+        'plc':"1200",
+        "type":"vrs",
+        'auto':one_entry.Auto,
+        'zd': one_entry.Zd,
     }
     return HttpResponse(json.dumps(dataRecive), content_type='application/json')
