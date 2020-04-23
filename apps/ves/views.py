@@ -71,6 +71,10 @@ class StartView(LoginRequiredMixin, CreateView):
 
     @login_required
     def zd_ves(request):
+        one_entry = GlobalData.objects.get(id=1)
+        if (one_entry.Zd == True):
+            print('woops')
+            raise exceptions.PermissionDenied
         zd = Vagon.objects.filter(status_in=True)
         agents = Agent.objects.all()
         data = {'zd_in': zd, 'agetns': agents}

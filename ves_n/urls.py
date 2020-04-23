@@ -36,4 +36,5 @@ urlpatterns = [
     path('updcontragentPOST/',updContragentView, name='updcontragentPOST'),
     path('getDataAuto/', GetDataAuto, name='getDataAuto'),
     path('getDataStatus/', GetDataStatus, name='getDataStatus'),
+    path('getDataZd/', GetDataZd, name='getDataZd'),
 ]

@@ -143,6 +143,26 @@ def GetDataAuto(request):
 
 
 
+def GetDataZd(request):
+    try:
+        one_entry = GlobalData.objects.get(id=1)
+    except ObjectDoesNotExist:
+        one_entry = GlobalData(Auto=False)
+
+    form = request.POST
+
+    if(form['zanyato']):
+        one_entry.Zd = True
+    one_entry.save()
+    print(one_entry.Auto)
+    dataRecive = {
+        'plc':"1200",
+        "type":"vrs",
+        'global':one_entry.Auto,
+    }
+    return HttpResponse(json.dumps(dataRecive), content_type='application/json')
+
+
 
 
 
