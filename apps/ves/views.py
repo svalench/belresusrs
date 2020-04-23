@@ -81,6 +81,17 @@ class StartView(LoginRequiredMixin, CreateView):
         return render(request, 'ves/zd_ves.html',data)
 
 
+    @login_required
+    def zd_data(request):
+        autoAll = Vagon.objects.all()
+        json =serializers.serialize('json', autoAll)
+        paginator = Paginator(autoAll, 10)  # Show 25 contacts per page
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        data = {'page_obj': page_obj,"data":json}
+        return render(request, 'ves/zd_data.html', data)
+
+
 
 # класс для просмотра данных
 class DataView(LoginRequiredMixin, CreateView):
