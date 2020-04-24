@@ -41,7 +41,7 @@
     <label for="exampleFormControlSelect1">Контрагенты</label>
     <select class="form-control" id="kontrselect">
          {% for a in agents %}
-      <option id="{{ a.id }}">{{ a.name }}</option>
+      <option value="{{ a.id }}">{{ a.name }}</option>
         {% endfor %}
     </select>
       <hr>
@@ -56,7 +56,7 @@
     <label for="exampleFormControlSelect1">номер</label>
     <select class="form-control" id="kontrselect">
          {% for a in uniq %}
-      <option id="{{ a.id }}">{{ a.number }}</option>
+      <option value="{{ a.id }}">{{ a.number }}</option>
         {% endfor %}
     </select>
       <hr>
@@ -76,6 +76,14 @@
             </div>
   </div>
 
+    <div id="result" style="display: none;">
+        <div id="kol" style="font-size: 250%;"></div>
+        <div id="allVes" style="font-size: 250%;"></div>
+        <div id="nettoVes" style="font-size: 250%;"></div>
+    </div>
+
+
+
 <script>
     var startmodal = $("#modbody").html();
    function addAgent(){
@@ -94,6 +102,42 @@
 function returnModal(){
         $("#modbody").html(startmodal);
 }
+function resultFilter(count,all_ves,netto_ves){
+       $("#kol").html(count);
+       $("#allVes").html(all_ves);
+       $("#nettoVes").html(netto_ves);
+}
+//сбор данных по формам и отправка данных на сервер
+    function filter(c){
+       var url = '{% url 'get_data_Vagon' %}';
+        switch (c) {
+            case "agent":
+                var agentId = $("#kontrselect :selected").val();
+                var data = {'agentId':agentId,'switch':c};
+                reciveAjax(data,url);
+                break;
+
+                default:
+                    break;
+
+        }
+    }
+function reciveAjax(data,url){
+        $.ajax({
+                type: "POST",
+                url: url,
+                data: data,
+                success: function (res) {
+                    console.log('Load was performed.');
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+}
+
     //возвращаем нормальный див в модалку
     $('#exampleModal').on('hide.bs.modal', function (e) {
   $("#modbody").html(startmodal);
