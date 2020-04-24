@@ -83,7 +83,7 @@ class StartView(LoginRequiredMixin, CreateView):
 
     @login_required
     def zd_data(request):
-        autoAll = Vagon.objects.all()
+        autoAll = Vagon.objects.all().order_by("-date_add")
         uniqZd = Vagon.objects.raw('SELECT * from ves_vagon GROUP BY (id,number) having COUNT(*) = 1 ORDER BY id')
         agent = Agent.objects.all()
         json =serializers.serialize('json', uniqZd)
