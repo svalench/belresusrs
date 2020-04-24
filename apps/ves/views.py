@@ -84,11 +84,13 @@ class StartView(LoginRequiredMixin, CreateView):
     @login_required
     def zd_data(request):
         autoAll = Vagon.objects.all()
-        json =serializers.serialize('json', autoAll)
+        uniqZd = Vagon.objects.raw('SELECT * from ves_vagon GROUP BY (id,number) having COUNT(*) = 1 ORDER BY id')
+        agent = Agent.objects.all()
+        json =serializers.serialize('json', uniqZd)
         paginator = Paginator(autoAll, 10)  # Show 25 contacts per page
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-        data = {'page_obj': page_obj,"data":json}
+        data = {'page_obj': page_obj,"data":json,"agents":agent,"uniq":uniqZd}
         return render(request, 'ves/zd_data.html', data)
 
 
