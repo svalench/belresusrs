@@ -1,209 +1,259 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-  <div class="container">
+    <div class="container">
 
-  <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  анализ
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Фильтр</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            анализ
         </button>
-      </div>
-      <div id="modbody" class="modal-body">
-        <h2>По контрагенту</h2>
-          <hr>
-          <button class="btn btn-success" onclick="addAgent()" id="agent-select">перейти</button>
-          <h2>По номеру</h2>
-          <hr>
-          <button class="btn btn-success" onclick="addNum()" id="number-select">перейти</button>
-          <h2>По дате</h2>
-          <hr>
-          <button class="btn btn-success" onclick="addDate()" id="date-select">перейти</button>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" onclick="returnModal();" class="btn btn-primary">назад</button>
-      </div>
-    </div>
-  </div>
-</div>
-  <div id="filter-agent" style="display: none;">
-      <div class="form-group">
-    <label for="exampleFormControlSelect1">Контрагенты</label>
-    <select class="form-control" id="kontrselect">
-         {% for a in agents %}
-      <option value="{{ a.id }}">{{ a.name }}</option>
-        {% endfor %}
-    </select>
-      <hr>
-      <button class="btn btn-success" onclick="filter('agent')">Показать</button>
-  </div>
-  </div>
 
-
-
-  <div id="filter-num" style="display: none;">
-      <div class="form-group">
-    <label for="exampleFormControlSelect1">номер</label>
-    <select class="form-control" id="kontrselect">
-         {% for a in uniq %}
-      <option value="{{ a.id }}">{{ a.number }}</option>
-        {% endfor %}
-    </select>
-      <hr>
-      <button class="btn btn-success" onclick="filter('num')">Показать</button>
-  </div>
-  </div>
-
-
-  <div id="filter-data" style="display: none;">
-      <div class="form-group">
-    <label for="exampleFormControlSelect1">дата начала</label>
-   <input type="date">
-          <hr><label for="exampleFormControlSelect1">дата окончания</label>
-   <input type="date">
-          <hr>
-<button class="btn btn-success" onclick="filter('date')">Показать</button>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Фильтр</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div id="modbody" class="modal-body">
+                        <h2>По контрагенту</h2>
+                        <hr>
+                        <button class="btn btn-success" onclick="addAgent()" id="agent-select">перейти</button>
+                        <h2>По номеру</h2>
+                        <hr>
+                        <button class="btn btn-success" onclick="addNum()" id="number-select">перейти</button>
+                        <h2>По дате</h2>
+                        <hr>
+                        <button class="btn btn-success" onclick="addDate()" id="date-select">перейти</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" onclick="returnModal();" class="btn btn-primary">назад</button>
+                    </div>
+                </div>
             </div>
-  </div>
+        </div>
+        <div id="filter-agent" style="display: none;">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Контрагенты</label>
+                <select class="form-control" id="kontrselect">
+                    {% for a in agents %}
+                        <option value="{{ a.id }}">{{ a.name }}</option>
+                    {% endfor %}
+                </select>
+                <hr>
+                <button class="btn btn-success" onclick="filter('agent')">Показать</button>
+            </div>
+        </div>
 
-    <div id="result" style="display: none;">
-        <div id="kol" style="font-size: 250%;"></div>
-        <div id="allVes" style="font-size: 250%;"></div>
-        <div id="nettoVes" style="font-size: 250%;"></div>
-    </div>
+
+        <div id="filter-num" style="display: none;">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">номер</label>
+                <select class="form-control" id="num">
+                    {% for a in uniq %}
+                        <option value="{{ a.number }}">{{ a.number }}</option>
+                    {% endfor %}
+                </select>
+                <hr>
+                <button class="btn btn-success" onclick="filter('num')">Показать</button>
+            </div>
+        </div>
 
 
+        <div id="filter-data" style="display: none;">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">дата начала</label>
+                <input id="startTime" type="date">
+                <hr>
+                <label for="exampleFormControlSelect1">дата окончания</label>
+                <input id="endTime" type="date">
+                <hr>
+                <button class="btn btn-success" onclick="filter('date')">Показать</button>
+            </div>
+        </div>
 
-<script>
-    var startmodal = $("#modbody").html();
-   function addAgent(){
-        var div = $("#filter-agent" ).html();
-        $("#modbody").html(div);
-    }
+        <div id="result" style="display: none;">
+            <div id="kol" style="font-size: 250%;"></div>
+            <div id="allVes" style="font-size: 250%;"></div>
+            <div id="nettoVes" style="font-size: 250%;"></div>
+        </div>
 
-      function addNum(){
-        var div = $("#filter-num" ).html();
-        $("#modbody").html(div);
-    }
-      function addDate(){
-        var div = $("#filter-data" ).html();
-        $("#modbody").html(div);
-    }
-function returnModal(){
-        $("#modbody").html(startmodal);
-}
-function resultFilter(count,all_ves,netto_ves){
-       $("#kol").html(count);
-       $("#allVes").html(all_ves);
-       $("#nettoVes").html(netto_ves);
-}
-//сбор данных по формам и отправка данных на сервер
-    function filter(c){
-       var url = '{% url 'get_data_Vagon' %}';
-        switch (c) {
-            case "agent":
-                var agentId = $("#kontrselect :selected").val();
-                var data = {'agentId':agentId,'switch':c};
-                reciveAjax(data,url);
-                break;
 
-                default:
-                    break;
+        <script>
+            var startmodal = $("#modbody").html();
 
-        }
-    }
-function reciveAjax(data,url){
-        $.ajax({
-                type: "POST",
-                url: url,
-                data: data,
-                success: function (res) {
-                    console.log('Load was performed.');
-                },
-                beforeSend: function (xhr, settings) {
-                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    }
+            function addAgent() {
+                var div = $("#filter-agent").html();
+                $("#modbody").html(div);
+            }
+
+            function addNum() {
+                var div = $("#filter-num").html();
+                $("#modbody").html(div);
+            }
+
+            function addDate() {
+                var div = $("#filter-data").html();
+                $("#modbody").html(div);
+            }
+
+            function returnModal() {
+                $("#modbody").html(startmodal);
+            }
+
+            function resultFilter(count, all_ves, netto_ves) {
+                $("#kol").html(count);
+                $("#allVes").html(all_ves);
+                $("#nettoVes").html(netto_ves);
+            }
+
+            //сбор данных по формам и отправка данных на сервер
+            function filter(c) {
+
+                switch (c) {
+                    case "agent":
+                        var url = '{% url 'getZdAgent' %}';
+                        var agentId = $("#kontrselect :selected").val();
+                        var data = {'agentId': agentId, 'switch': c};
+                        getdata(data, url, c);
+                        break;
+                    case "num":
+                        var url = '{% url 'getZdNumber' %}';
+                        var num = $("#num :selected").val();
+                        var data = {'num': num, 'switch': c};
+                        getdata(data, url, c);
+                        break;
+                    case "date":
+                        var url = '{% url 'getZdDate' %}';
+                        var start = $("#startTime").val();
+                        var end = $("#endTime").val();
+                        var data ={"start":start,"end":end,"switch":c};
+                        getdata(data,url,c);
+                        break;
+                    default:
+                        break;
+
                 }
+            }
+
+            function reciveAjax(data, url) {
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: data,
+                    success: function (res) {
+                        console.log('Load was performed.');
+                    },
+                    beforeSend: function (xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        }
+                    }
+                });
+            }
+
+            function getdata(data, url, c) {
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: data,
+                    success: function (res) {
+                        switch (c) {
+                            case "agent":
+                                $("#modbody").html("количество- " + res.col + "средний вес" + res.srednee + "общий вес нетто" + res.sum);
+                                break;
+                            case "num":
+                                $("#modbody").html("количество- " + res.col + "средний вес" + res.srednee + "общий вес нетто" + res.sum);
+                                break;
+                                case "date":
+                                $("#modbody").html("количество- " + res.col + "средний вес" + res.srednee + "общий вес нетто" + res.sum);
+                                break;
+                        }
+
+                    },
+                    beforeSend: function (xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        }
+                    }
+                });
+            }
+
+            //возвращаем нормальный див в модалку
+            $('#exampleModal').on('hide.bs.modal', function (e) {
+                $("#modbody").html(startmodal);
             });
-}
-
-    //возвращаем нормальный див в модалку
-    $('#exampleModal').on('hide.bs.modal', function (e) {
-  $("#modbody").html(startmodal);
-});
-</script>
+        </script>
 
 
+        <div class="accordion" id="accordionExample">
+            {% for a in page_obj %}
+                <div class="card">
+                    <div class="card-header" id="headingOne_{{ a.id }}">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link" type="button" data-toggle="collapse"
+                                    data-target="#collapseOne_{{ a.id }}"
+                                    aria-expanded="true" aria-controls="collapseOne_{{ a.id }}">
+                                Номер - {{ a.number }} || Агент -{{ a.agent_vagon.name }} ||
+                                накладноая {{ a.nakladnaya }} || дата - {{ a.date_add }}
+                            </button>
+                        </h2>
+                    </div>
 
-         <div class="accordion" id="accordionExample">
-                 {% for a in page_obj %}
-                    <div class="card">
-                        <div class="card-header" id="headingOne_{{ a.id }}">
-                            <h2 class="mb-0">
-                                <button class="btn btn-link" type="button" data-toggle="collapse"
-                                        data-target="#collapseOne_{{ a.id }}"
-                                        aria-expanded="true" aria-controls="collapseOne_{{ a.id }}">
-                                   Номер - {{ a.number }} || Агент -{{ a.agent_vagon.name  }} || накладноая  {{ a.nakladnaya }} || дата - {{ a.date_add }}
-                                </button>
-                            </h2>
-                        </div>
+                    <div id="collapseOne_{{ a.id }}" class="collapse" aria-labelledby="headingOne_{{ a.id }}"
+                         data-parent="#accordionExample">
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">агент</th>
+                                    <th scope="col">накладная</th>
+                                    <th scope="col">время въезда</th>
+                                    <th scope="col">время выезда</th>
+                                    <th scope="col">масса на въезде, кг</th>
+                                    <th scope="col">масса на выезде, кг</th>
+                                    <th scope="col">нетто, кг</th>
+                                    <th scope="col">статус</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>
 
-                        <div id="collapseOne_{{ a.id }}" class="collapse" aria-labelledby="headingOne_{{ a.id }}"
-                             data-parent="#accordionExample">
-                            <div class="card-body">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">агент</th>
-                                        <th scope="col">накладная</th>
-                                        <th scope="col">время въезда</th>
-                                        <th scope="col">время выезда</th>
-                                        <th scope="col">масса на въезде, кг</th>
-                                        <th scope="col">масса на выезде, кг</th>
-                                         <th scope="col">нетто, кг</th>
-                                         <th scope="col">статус</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
+                                        <button type="button" class="btn btn-lg btn-success" data-toggle="popover"
+                                                title="Агент {{ a.agent_vagon.name }}"
+                                                data-content="Адрес {{ a.agent_vagon.address }} &shy;  УНП {{ a.agent_vagon.unp }} &shy; Добавлен {{ a.agent_vagon.date_add }} ">{{ a.agent_vagon.name }}</button>
+                                    </td>
+                                    <td>{{ a.nakladnaya }}</td>
+                                    <td>{{ a.last_in }}</td>
+                                    <td>{{ a.last_out }}</td>
+                                    <td>{{ a.ves_in }}</td>
+                                    <td>{{ a.ves_out }}</td>
+                                    <td>{{ a.netto }}</td>
+                                    {% if a.status_in %}
                                         <td>
-
-                                            <button type="button" class="btn btn-lg btn-success" data-toggle="popover" title="Агент {{ a.agent_vagon.name }}" data-content="Адрес {{ a.agent_vagon.address }} &shy;  УНП {{ a.agent_vagon.unp }} &shy; Добавлен {{ a.agent_vagon.date_add }} ">{{ a.agent_vagon.name }}</button>
-                                        </td>
-                                        <td>{{ a.nakladnaya }}</td>
-                                        <td>{{ a.last_in }}</td>
-                                         <td>{{ a.last_out }}</td>
-                                        <td>{{ a.ves_in }}</td>
-                                        <td>{{ a.ves_out }}</td>
-                                        <td>{{ a.netto }}</td>
-                                        {% if a.status_in %}<td>
-                                        <span class="badge badge-warning">на территории</span>
-                                        </td> {% else %}<td>
-                                        <span class="badge badge-success">выехал</span>
+                                            <span class="badge badge-warning">на территории</span>
+                                        </td> {% else %}
+                                        <td>
+                                            <span class="badge badge-success">выехал</span>
                                         </td> {% endif %}
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                {% endfor %}
+                </div>
+            {% endfor %}
 
 
-            </div>
+        </div>
 
-<div class="pagination">
+        <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}
             <a href="?page=1">&laquo; first</a>
@@ -219,54 +269,29 @@ function reciveAjax(data,url){
             <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
         {% endif %}
     </span>
-</div>
+        </div>
 
 
+        {% csrf_token %}
 
 
+    </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-    {% csrf_token %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-
-    <script src="{% static 'popper.js' %}" ></script>
-<script src="{% static 'b.min.js' %}" ></script>
+    <script src="{% static 'popper.js' %}"></script>
+    <script src="{% static 'b.min.js' %}"></script>
 
 
     <script>
-    $(function () {
-  $('[data-toggle="popover"]').popover()
-})
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+        })
 
-    var data = '{{ data }}';
-    data = data.replace(/&quot;/g,'"');
-   data = JSON.parse(data);
-    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
-     function csrfSafeMethod(method) {
+        var data = '{{ data }}';
+        data = data.replace(/&quot;/g, '"');
+        data = JSON.parse(data);
+        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+
+        function csrfSafeMethod(method) {
             // these HTTP methods do not require CSRF protection
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
         }

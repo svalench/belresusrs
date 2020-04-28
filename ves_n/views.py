@@ -1,4 +1,7 @@
 import abc
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 import json
 import threading
@@ -6,6 +9,8 @@ from abc import ABCMeta
 
 from datetime import datetime
 from django.contrib.auth import logout
+from django.views.generic import CreateView
+
 from GLOBAL import GlobalAutoUse
 
 from django.http import HttpResponse
@@ -31,16 +36,25 @@ def addactionView(request, *args, **kwargs):
 def addAutoView(request):
     form = request.POST
     last_in = datetime.now()
-    agent = Agent.objects.get(id=form['contragent'])
-    auto = Auto(number=form['numAuto'], agents=agent, nakladnaya=form['nakladnaya'], number_pricep=form['numPricep'], last_in=last_in, ves_in=form['ves'],
+    in_ter = Auto.objects.filter(number=form['numAuto'], status_in=True)
+    if in_ter.exists():
+        print("======================================================================================================================")
+        in_ter[0].last_out=last_in
+        in_ter[0].ves_out=form['ves']
+        in_ter[0].status_in=False
+        in_ter[0].netto = abs(in_ter[0].ves_in-int(form['ves']))
+        in_ter.update(last_out=last_in,ves_out=form['ves'],status_in=False,netto=abs(in_ter[0].ves_in-int(form['ves'])))
+    else:
+        agent = Agent.objects.get(id=form['contragent'])
+        auto = Auto(number=form['numAuto'], agents=agent, nakladnaya=form['nakladnaya'], number_pricep=form['numPricep'], last_in=last_in, ves_in=form['ves'],
                 status_in=True)
-    auto.save()
-    dataNakl = form.getlist('dataNakladnay')
-    arr=[]
-    for a in dataNakl:
-        r = a.split(",")
-        arr.append(DataNakladnayaAuto(number=r[0],name=r[1],price=r[2],price_ed=r[3],ves_nakladnaya=r[4],ves_ed=r[5], parentId = auto))
-    DataNakladnayaAuto.objects.bulk_create(arr)
+        auto.save()
+        dataNakl = form.getlist('dataNakladnay')
+        arr=[]
+        for a in dataNakl:
+            r = a.split(",")
+            arr.append(DataNakladnayaAuto(number=r[0],name=r[1],price=r[2],price_ed=r[3],ves_nakladnaya=r[4],ves_ed=r[5], parentId = auto))
+        DataNakladnayaAuto.objects.bulk_create(arr)
     payload = {'success': True}
     return HttpResponse(json.dumps(payload), content_type='application/json')
 
@@ -51,20 +65,24 @@ def addAutoView(request):
 def addVagonPost(request):
     form = request.POST
     last_in = datetime.now()
-    agent = Agent.objects.get(id=form['contragent'])
+    in_ter = Vagon.objects.filter(number=form['numAuto'], status_in=True)
+    if in_ter.exists():
+        in_ter.update(last_out=last_in, ves_out=form['ves'], status_in=False,netto=abs(in_ter[0].ves_in-int(form['ves'])))
+    else:
+        agent = Agent.objects.get(id=form['contragent'])
     #///////////////////////////////
-    zd = Vagon(number=form['numAuto'], agent_vagon=agent, nakladnaya=form['nakladnaya'],
+        zd = Vagon(number=form['numAuto'], agent_vagon=agent, nakladnaya=form['nakladnaya'],
                 last_in=last_in, ves_in=form['ves'],
                 status_in=True)
-    zd.save()
-    dataNakl = form.getlist('dataNakladnay')
-    arr = []
-    for a in dataNakl:
-        r = a.split(",")
-        arr.append(
+        zd.save()
+        dataNakl = form.getlist('dataNakladnay')
+        arr = []
+        for a in dataNakl:
+            r = a.split(",")
+            arr.append(
             DataNakladnayaVagon(number=r[0], name=r[1], price=r[2], price_ed=r[3], ves_nakladnaya=r[4], ves_ed=r[5],
                                parentId=zd))
-    DataNakladnayaVagon.objects.bulk_create(arr)
+        DataNakladnayaVagon.objects.bulk_create(arr)
     #//////////////////////////////
     payload = {'success': True}
     return HttpResponse(json.dumps(payload), content_type='application/json')
@@ -180,3 +198,73 @@ def GetDataStatus(request):
         'zd': one_entry.Zd,
     }
     return HttpResponse(json.dumps(dataRecive), content_type='application/json')
+
+
+
+
+
+def GetZdNumber(request):
+    form = request.POST
+    allZdNum =Vagon.objects.filter(number=form['num'], status_in=False)
+    if allZdNum.exists():
+        col =allZdNum.count();
+        sum=0
+        for a in allZdNum:
+            sum=sum+a.netto
+        srednee = sum/col
+    else:
+        sum=0
+        srednee=0
+        col=0
+    dataRecive = {
+        'sum': sum,
+        "srednee": srednee,
+        "col":col
+    }
+    return HttpResponse(json.dumps(dataRecive), content_type='application/json')
+
+
+
+
+
+def GetZdAgent(request):
+    form = request.POST
+    allZdAgent = Vagon.objects.filter(agent_vagon=form['agentId'], status_in=False)
+    if allZdAgent.exists():
+        col = allZdAgent.count()
+        sum = 0
+        for a in allZdAgent:
+            sum = sum + a.netto
+        srednee = sum / col
+    else:
+        col=0
+        sum=0
+        srednee=0
+    dataRecive = {
+        'sum': sum,
+        "srednee": srednee,
+        "col": col
+    }
+    return HttpResponse(json.dumps(dataRecive), content_type='application/json')
+
+
+def GetZdDate(request):
+    form = request.POST
+    allZdAgent = Vagon.objects.filter(last_in__gte=form['start'],last_out__lte=form['end'], status_in=False)
+    if allZdAgent.exists():
+        col = allZdAgent.count()
+        sum = 0
+        for a in allZdAgent:
+            sum = sum + a.netto
+        srednee = sum / col
+    else:
+        col=0
+        sum=0
+        srednee=0
+    dataRecive = {
+        'sum': sum,
+        "srednee": srednee,
+        "col": col
+    }
+    return HttpResponse(json.dumps(dataRecive), content_type='application/json')
+
