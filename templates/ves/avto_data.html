@@ -2,6 +2,96 @@
 {% load static %}
 {% block content %}
   <div class="container">
+
+
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            анализ
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Фильтр</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div id="modbody" class="modal-body">
+                        <h2>По контрагенту</h2>
+                        <hr>
+                        <button class="btn btn-success" onclick="addAgent()" id="agent-select">перейти</button>
+                        <h2>По номеру</h2>
+                        <hr>
+                        <button class="btn btn-success" onclick="addNum()" id="number-select">перейти</button>
+                        <h2>По дате</h2>
+                        <hr>
+                        <button class="btn btn-success" onclick="addDate()" id="date-select">перейти</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" onclick="returnModal();" class="btn btn-primary">назад</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="filter-agent" style="display: none;">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Контрагенты</label>
+                <select class="form-control" id="kontrselect">
+                    {% for a in agents %}
+                        <option value="{{ a.id }}">{{ a.name }}</option>
+                    {% endfor %}
+                </select>
+                <hr>
+                <button class="btn btn-success" onclick="filter('agent')">Показать</button>
+            </div>
+        </div>
+
+
+        <div id="filter-num" style="display: none;">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">номер</label>
+                <select class="form-control" id="num">
+                    {% for a in uniq %}
+                        <option value="{{ a.number }}">{{ a.number }}</option>
+                    {% endfor %}
+                </select>
+                <hr>
+                <button class="btn btn-success" onclick="filter('num')">Показать</button>
+            </div>
+        </div>
+
+
+        <div id="filter-data" style="display: none;">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">дата начала</label>
+                <input id="startTime" type="date">
+                <hr>
+                <label for="exampleFormControlSelect1">дата окончания</label>
+                <input id="endTime" type="date">
+                <hr>
+                <button class="btn btn-success" onclick="filter('date')">Показать</button>
+            </div>
+        </div>
+
+        <div id="result" style="display: none;">
+            <div id="kol" style="font-size: 250%;"></div>
+            <div id="allVes" style="font-size: 250%;"></div>
+            <div id="nettoVes" style="font-size: 250%;"></div>
+        </div>
+
+
+
+
+
+
+
+
          <div class="accordion" id="accordionExample">
                  {% for a in page_obj %}
                     <div class="card">
@@ -137,6 +227,122 @@
                 }
             });
         }
+
+
+
+
+
+
+
+
+
+
+                    var startmodal = $("#modbody").html();
+
+            function addAgent() {
+                var div = $("#filter-agent").html();
+                $("#modbody").html(div);
+            }
+
+            function addNum() {
+                var div = $("#filter-num").html();
+                $("#modbody").html(div);
+            }
+
+            function addDate() {
+                var div = $("#filter-data").html();
+                $("#modbody").html(div);
+            }
+
+            function returnModal() {
+                $("#modbody").html(startmodal);
+            }
+
+            function resultFilter(count, all_ves, netto_ves) {
+                $("#kol").html(count);
+                $("#allVes").html(all_ves);
+                $("#nettoVes").html(netto_ves);
+            }
+
+            //сбор данных по формам и отправка данных на сервер
+            function filter(c) {
+
+                switch (c) {
+                    case "agent":
+                        var url = '{% url 'getAutoAgent' %}';
+                        var agentId = $("#kontrselect :selected").val();
+                        var data = {'agentId': agentId, 'switch': c};
+                        getdata(data, url, c);
+                        break;
+                    case "num":
+                        var url = '{% url 'getAutoNumber' %}';
+                        var num = $("#num :selected").val();
+                        var data = {'num': num, 'switch': c};
+                        getdata(data, url, c);
+                        break;
+                    case "date":
+                        var url = '{% url 'getAutoDate' %}';
+                        var start = $("#startTime").val();
+                        var end = $("#endTime").val();
+                        var data ={"start":start,"end":end,"switch":c};
+                        getdata(data,url,c);
+                        break;
+                    default:
+                        break;
+
+                }
+            }
+
+            function reciveAjax(data, url) {
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: data,
+                    success: function (res) {
+                        console.log('Load was performed.');
+                    },
+                    beforeSend: function (xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        }
+                    }
+                });
+            }
+
+            function getdata(data, url, c) {
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: data,
+                    success: function (res) {
+                        switch (c) {
+                            case "agent":
+                                $("#modbody").html("количество- " + res.col + "средний вес" + res.srednee + "общий вес нетто" + res.sum);
+                                break;
+                            case "num":
+                                $("#modbody").html("количество- " + res.col + "средний вес" + res.srednee + "общий вес нетто" + res.sum);
+                                break;
+                                case "date":
+                                $("#modbody").html("количество- " + res.col + "средний вес" + res.srednee + "общий вес нетто" + res.sum);
+                                break;
+                        }
+
+                    },
+                    beforeSend: function (xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        }
+                    }
+                });
+            }
+
+
+
+
+
+
+
+
 
 
     </script>

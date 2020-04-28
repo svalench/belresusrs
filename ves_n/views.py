@@ -38,7 +38,6 @@ def addAutoView(request):
     last_in = datetime.now()
     in_ter = Auto.objects.filter(number=form['numAuto'], status_in=True)
     if in_ter.exists():
-        print("======================================================================================================================")
         in_ter[0].last_out=last_in
         in_ter[0].ves_out=form['ves']
         in_ter[0].status_in=False
@@ -180,11 +179,6 @@ def GetDataZd(request):
     }
     return HttpResponse(json.dumps(dataRecive), content_type='application/json')
 
-
-
-
-
-
 def GetDataStatus(request):
     try:
         one_entry = GlobalData.objects.get(id=1)
@@ -198,9 +192,6 @@ def GetDataStatus(request):
         'zd': one_entry.Zd,
     }
     return HttpResponse(json.dumps(dataRecive), content_type='application/json')
-
-
-
 
 
 def GetZdNumber(request):
@@ -222,9 +213,6 @@ def GetZdNumber(request):
         "col":col
     }
     return HttpResponse(json.dumps(dataRecive), content_type='application/json')
-
-
-
 
 
 def GetZdAgent(request):
@@ -267,4 +255,75 @@ def GetZdDate(request):
         "col": col
     }
     return HttpResponse(json.dumps(dataRecive), content_type='application/json')
+
+
+
+
+
+def GetAutoNumber(request):
+    form = request.POST
+    allZdNum =Auto.objects.filter(number=form['num'], status_in=False)
+    if allZdNum.exists():
+        col =allZdNum.count();
+        sum=0
+        for a in allZdNum:
+            sum=sum+a.netto
+        srednee = sum/col
+    else:
+        sum=0
+        srednee=0
+        col=0
+    dataRecive = {
+        'sum': sum,
+        "srednee": srednee,
+        "col":col
+    }
+    return HttpResponse(json.dumps(dataRecive), content_type='application/json')
+
+
+
+
+
+def GetAutoAgent(request):
+    form = request.POST
+    allZdAgent = Auto.objects.filter(agent_vagon=form['agentId'], status_in=False)
+    if allZdAgent.exists():
+        col = allZdAgent.count()
+        sum = 0
+        for a in allZdAgent:
+            sum = sum + a.netto
+        srednee = sum / col
+    else:
+        col=0
+        sum=0
+        srednee=0
+    dataRecive = {
+        'sum': sum,
+        "srednee": srednee,
+        "col": col
+    }
+    return HttpResponse(json.dumps(dataRecive), content_type='application/json')
+
+
+def GetAutoDate(request):
+    form = request.POST
+    allZdAgent = Auto.objects.filter(last_in__gte=form['start'],last_out__lte=form['end'], status_in=False)
+    if allZdAgent.exists():
+        col = allZdAgent.count()
+        sum = 0
+        for a in allZdAgent:
+            sum = sum + a.netto
+        srednee = sum / col
+    else:
+        col=0
+        sum=0
+        srednee=0
+    dataRecive = {
+        'sum': sum,
+        "srednee": srednee,
+        "col": col
+    }
+    return HttpResponse(json.dumps(dataRecive), content_type='application/json')
+
+
 

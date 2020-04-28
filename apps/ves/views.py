@@ -60,11 +60,14 @@ class StartView(LoginRequiredMixin, CreateView):
     @login_required
     def avto_data(request):
         autoAll = Auto.objects.all()
-        json =serializers.serialize('json', autoAll)
+        agent = Agent.objects.all()
+        uniqZd = Auto.objects.raw(
+            'SELECT number, id FROM ves_auto WHERE id IN (SELECT   MIN(id) FROM ves_auto GROUP BY number)')
+        json =serializers.serialize('json', uniqZd)
         paginator = Paginator(autoAll, 10)  # Show 25 contacts per page
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-        data = {'page_obj': page_obj,"data":json}
+        data = {'page_obj': page_obj,"data":json,"uniq":uniqZd,"agents":agent}
         return render(request, 'ves/avto_data.html', data)
 
 

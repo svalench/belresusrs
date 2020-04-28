@@ -40,4 +40,8 @@ urlpatterns = [
     path('getDataZd/getzdnumbler', GetZdNumber, name='getZdNumber'),
     path('getDataZd/getzdagent', GetZdAgent, name='getZdAgent'),
     path('getDataZd/getzddate', GetZdDate, name='getZdDate'),
+
+    path('getDataAuto/getautonumbler', GetAutoNumber, name='getAutoNumber'),
+    path('getDataAuto/getautoagent', GetAutoAgent, name='getAutoAgent'),
+    path('getDataAuto/getautodate', GetAutoDate, name='getAutoDate'),
 ]
