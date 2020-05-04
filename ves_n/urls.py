@@ -44,4 +44,6 @@ urlpatterns = [
     path('getDataAuto/getautonumbler', GetAutoNumber, name='getAutoNumber'),
     path('getDataAuto/getautoagent', GetAutoAgent, name='getAutoAgent'),
     path('getDataAuto/getautodate', GetAutoDate, name='getAutoDate'),
+
+    path('search/', serchAuto, name='search'),
 ]

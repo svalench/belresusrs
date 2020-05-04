@@ -49,7 +49,7 @@ class Agent(models.Model):
 
 class Auto(models.Model):
     id = models.AutoField(primary_key=True)
-    agents = models.ForeignKey(Agent, on_delete=models.CASCADE, null=True, blank=True)
+    agents = models.ForeignKey(Agent, on_delete=models.CASCADE, null=True, blank=True,db_index=True)
     number = models.CharField('Номер', max_length=255, db_index=True)
     number_pricep =  models.CharField('номер прицепа', max_length=255, db_index=True)
     date_add = models.DateTimeField(auto_now_add=True, db_index=True)
@@ -70,7 +70,7 @@ class Auto(models.Model):
 
 class Vagon(models.Model):
     id = models.AutoField(primary_key=True)
-    agent_vagon = models.ForeignKey('Agent', on_delete=models.CASCADE, null=True, blank=True)
+    agent_vagon = models.ForeignKey('Agent', on_delete=models.CASCADE, null=True, blank=True, db_index=True)
     number = models.CharField('Номер', max_length=255, db_index=True)
     nakladnaya = models.CharField('Накладная', max_length=255, default=0, db_index=True)
     date_add = models.DateTimeField(auto_now_add=True, db_index=True)

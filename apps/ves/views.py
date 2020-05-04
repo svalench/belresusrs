@@ -64,10 +64,11 @@ class StartView(LoginRequiredMixin, CreateView):
         uniqZd = Auto.objects.raw(
             'SELECT number, id FROM ves_auto WHERE id IN (SELECT   MIN(id) FROM ves_auto GROUP BY number)')
         json =serializers.serialize('json', uniqZd)
+        jsonAgent = serializers.serialize('json', agent)
         paginator = Paginator(autoAll, 10)  # Show 25 contacts per page
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-        data = {'page_obj': page_obj,"data":json,"uniq":uniqZd,"agents":agent}
+        data = {'page_obj': page_obj,"data":json,"uniq":uniqZd,'Jagents':jsonAgent,"agents":agent}
         return render(request, 'ves/avto_data.html', data)
 
 
@@ -80,6 +81,7 @@ class StartView(LoginRequiredMixin, CreateView):
             raise exceptions.PermissionDenied
         zd = Vagon.objects.filter(status_in=True)
         agents = Agent.objects.all()
+
         data = {'zd_in': zd, 'agetns': agents}
         return render(request, 'ves/zd_ves.html',data)
 
@@ -89,11 +91,12 @@ class StartView(LoginRequiredMixin, CreateView):
         autoAll = Vagon.objects.all().order_by("-date_add")
         uniqZd = Vagon.objects.raw('SELECT number, id FROM ves_vagon WHERE id IN (SELECT   MIN(id) FROM ves_vagon GROUP BY number)')
         agent = Agent.objects.all()
+        jsonAgent = serializers.serialize('json', agent)
         json =serializers.serialize('json', uniqZd)
         paginator = Paginator(autoAll, 10)  # Show 25 contacts per page
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-        data = {'page_obj': page_obj,"data":json,"agents":agent,"uniq":uniqZd}
+        data = {'page_obj': page_obj,"data":json,"agents":agent,"uniq":uniqZd,'Jagents':jsonAgent}
         return render(request, 'ves/zd_data.html', data)
 
 

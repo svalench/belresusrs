@@ -9,7 +9,7 @@
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
             анализ
         </button>
-
+        <input placeholder="search" id="search"  /> <button onclick="search()">поиск</button><button onclick="search(true)">сброс</button>
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
@@ -335,13 +335,100 @@
                     }
                 });
             }
+let autoStartView;
+
+            $(document).ready(function(){
+                autoStartView = $('#accordionExample').html();
+
+            });
+
+let agents = "{{ Jagents }}";
+agents = agents.replace(/&quot;/g,'"');
+agents = JSON.parse(agents);
+let agent=[];
+agents.forEach(function(a){
+    agent[a.pk] =a;
+});
+let someAutoSearch;
+function search(k=false) {
+    var str = $("#search").val();
+       if(k){
+        str="";
+    }
+    var data = {"request":"auto","case":"auto","search":str};
+    $.ajax({
+                    type: "POST",
+                    url: {% url 'search' %},
+                    data: data,
+                    success: function (res) {
+
+                        var htt='';
+                        res.forEach(function (a){
+                            htt+=' <div class="card">\n' +
+                '                        <div class="card-header" id="headingOne_'+ a.pk +'">\n' +
+                '                            <h2 class="mb-0">\n' +
+                '                                <button class="btn btn-link" type="button" data-toggle="collapse"\n' +
+                '                                        data-target="#collapseOne_'+a.pk+'"\n' +
+                '                                        aria-expanded="true" aria-controls="collapseOne_'+a.pk+'">\n' +
+                '                                    '+a.fields.number+'\n' +
+                '                                </button>\n' +
+                '                            </h2>\n' +
+                '                        </div>\n'+
+            '\n' +
+                '                        <div id="collapseOne_'+ a.pk +'" class="collapse" aria-labelledby="headingOne_'+ a.pk +'"\n' +
+                '                             data-parent="#accordionExample">\n' +
+                '                            <div class="card-body">\n' +
+                '                                <table class="table">\n' +
+                '                                    <thead>\n' +
+                '                                    <tr>\n' +
+                '                                        <th scope="col">агент</th>\n' +
+                '                                        <th scope="col">накладная</th>\n' +
+                '                                        <th scope="col">время въезда</th>\n' +
+                '                                        <th scope="col">время выезда</th>\n' +
+                '                                        <th scope="col">масса на въезде, кг</th>\n' +
+                '                                        <th scope="col">масса на выезде, кг</th>\n' +
+                '                                         <th scope="col">нетто, кг</th>\n' +
+                '                                         <th scope="col">статус</th>\n' +
+                '                                    </tr>\n' +
+                '                                    </thead>\n' +
+                '                                    <tbody>\n' +
+                '                                    <tr>\n' +
+                '                                        <td>'+ agent[a.fields.agents].fields.name +'</td>\n' +
+                '                                        <td>'+ a.fields.nakladnaya +'</td>\n' +
+                '                                        <td>'+ a.fields.last_in +'</td>\n' +
+                '                                         <td>'+ a.fields.last_out +'</td>\n' +
+                '                                        <td>'+ a.fields.ves_in +'</td>\n' +
+                '                                        <td>'+ a.fields.ves_out +'</td>\n' +
+                '                                        <td>'+ a.fields.netto +'</td>\n' +
+                '                                       <td>\n'+
+                    '                                        '+ status_text(a.fields.status_in) +'\n'+
+                    '                                        </td>\n'+
+                '                                    </tr>\n' +
+                '                                    </tbody>\n' +
+                '                                </table>\n' +
+                '                            </div>\n' +
+                                                '</div>\n' +
+                '                        </div>';
+
+                        });
+                        $('#accordionExample').html(htt);
+                    },
+                    beforeSend: function (xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        }
+                    }
+                });
+}
 
 
-
-
-
-
-
+function status_text(t){
+    if(t){
+        return '<span class="badge badge-warning">на территории</span>';
+    }else{
+        return '<span class="badge badge-success">не на территории</span>';
+    }
+}
 
 
 

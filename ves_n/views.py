@@ -2,11 +2,13 @@ import abc
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 import json
 import threading
 from abc import ABCMeta
-
+from django.core.serializers import serialize
+from django.db.models import Q
 from datetime import datetime
 from django.contrib.auth import logout
 from django.views.generic import CreateView
@@ -325,5 +327,19 @@ def GetAutoDate(request):
     }
     return HttpResponse(json.dumps(dataRecive), content_type='application/json')
 
+#метод вовращает данные исходя из строки поиска для модели
+def serchAuto(request):
+    form = request.POST
+    result=""
+    search = form['search']
+    if(form['request']=="auto"):
+        if(form['case']=="auto"):
+            result =Auto.objects.filter(Q(number__contains=search) | Q(number_pricep__contains=search) | Q(last_in__contains=search) | Q(last_out__contains=search) | Q(nakladnaya__contains=search))
+    elif(form['request']=="zd"):
+        result = Vagon.objects.filter(
+            Q(number__contains=search)  | Q(last_in__contains=search) | Q(
+                last_out__contains=search) | Q(nakladnaya__contains=search))
 
-
+    res = serializers.serialize('json', result)
+    print(res)
+    return HttpResponse(res, content_type='application/json')
