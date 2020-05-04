@@ -119,7 +119,7 @@
         <div class="row">
             <div class="col-1"></div>
 
-            <div class="col-2">
+            <div class="col-2" id="dataTransport">
                 <div class="form-group">
                     <label for="nameDriver"><b>Имя водителя</b></label>
                     <hr style="width: 80%;">
@@ -162,7 +162,7 @@
                 <button onclick="addAuto()" style="width: 100%;" class="btn btn-success">Добавить транспорт</button>
             </div>
 
-            <div class="col-2">
+            <div class="col-2" id="DataNakladnaya">
                 <div class="form-group">
                     <label for="nameGruz"><b>Наименование</b></label>
                     <hr style="width: 80%; height: 20%;">
@@ -443,7 +443,7 @@
             count--;
         }
 
-
+let status1=false;
         function addAuto() {
             let numberPricep = $("#gos_num_pricep").html();
             var num = $('#gos_num_avto').html();
@@ -455,17 +455,17 @@
             let ves = $("#vesFix").html();
             let ves_nakladnay = $("#ves_nakladnaia").val();
             let nakladnay = $("#nakladnaya").val();
-            if (!nakladnay) {
+            if (!nakladnay && status1==true) {
                 alert('Вы не указали номер накладной');
                 $("#nakladnaya").focus();
                 return;
             }
-            if (!nakladnay.match(/[0-9]{7}/)) {
+            if (!nakladnay.match(/[0-9]{7}/) && status1==true) {
                 alert("В поле накладная должны быть введены только цифры");
                 $("#nakladnaya").focus();
                 return;
             }
-            if(count<2){
+            if(count<2 && status1==true){
                 alert('данные по накладной пусты'); $("#nameGruz").focus(); return;
             }
             let typeCar = $("[name='cheks']:checked").val();
@@ -488,7 +488,7 @@
                 'nakladnaya': nakladnay,
                 'typeCar': typeCar,
                 'numAuto': numAuto,
-                'numPricep': numPricep,
+                'numPricep': numberPricep,
                 'contragent': agent,
                 "dataNakladnay":obj,
             };
@@ -616,8 +616,9 @@
             pricep = false;
         })
 
-
+var status = true;
         $("#brutto").click(function () {
+            status = true;
             addAction('оператор указал авто как груженый');
             $("#label_ves").html('брутто');
             $("#dov_otpr").css('display', 'block');
@@ -625,6 +626,7 @@
         });
 
         $("#netto").click(function () {
+            status = false;
             addAction('оператор указал авто как порожний');
             $("#label_ves").html('тара');
             $("#div_pol").css('display', 'block');
@@ -673,8 +675,30 @@ if($('#searchingPol').val().length==0){
                 option.hide() }
         } }
 });
-
+let auto_in = "{{ JAuto }}";
+auto_in = auto_in.replace(/&quot;/g,'"');
+auto_in = JSON.parse(auto_in);
 function getData(){
+    var num = $('#gos_num_avto').html();
+    if(status!="true"){
+        auto_in.forEach(function (a) {
+            console.log(a);
+            if(a.fields.number==num.replace(/-/g,'')){
+                 console.log(num.replace(/-/g,''));
+                status1 = true;
+                $("#DataNakladnaya").hide();
+                $("#dataTransport").hide();
+                return;
+            }else{
+                status1= false;
+                $("#DataNakladnaya").show();
+                 $("#dataTransport").show();
+            }
+        });
+    }else{
+        $("#DataNakladnaya").show();
+        $("#dataTransport").show();
+    }
     let data ={"zanyato":true,"all":false};
               $.ajax({
                 type: "POST",
@@ -709,30 +733,6 @@ setInterval(getData, 1000);
 
 
 
-
-
-
-
-
-
-        {##}
-        {##}
-        {##}
-        {#var roomName = "wert";#}
-        {#var chatSocket = new WebSocket(#}
-        {#    'ws://' + window.location.host +#}
-        {#    '/ws/');#}
-        {##}
-        {#chatSocket.onmessage = function (e) {#}
-        {#    var data = JSON.parse(e.data);#}
-        {#    var message = data['message'];#}
-        {#    document.querySelector('#chat-log').value += (message + '\n');#}
-        {#};#}
-        {##}
-        {#chatSocket.onclose = function (e) {#}
-        {##}
-        {#    console.error('Chat socket closed unexpectedly');#}
-        {#};#}
 
 
     </script>

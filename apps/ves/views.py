@@ -47,12 +47,13 @@ class StartView(LoginRequiredMixin, CreateView):
     def avto_ves(request):
         one_entry = GlobalData.objects.get(id=1)
         auto = Auto.objects.filter(status_in=True)
+        json = serializers.serialize('json', auto)
         agents = Agent.objects.all()
         print(GlobalAutoUse)
         if (one_entry.Auto == True):
             print('woops')
             raise exceptions.PermissionDenied
-        data = {'auto_in': auto, 'agetns':agents}
+        data = {'auto_in': auto, 'agetns':agents,'JAuto':json}
         return render(request, 'ves/avto_ves.html', data)
 
 
