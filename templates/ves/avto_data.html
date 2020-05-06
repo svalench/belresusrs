@@ -79,9 +79,11 @@
             </div>
         </div>
 
-        <div id="result" style="display: none;">
+        <div id="resultStat" style="display: none;">
             <div id="kol" style="font-size: 250%;"></div>
             <div id="allVes" style="font-size: 250%;"></div>
+             <div id="piechart" style="width: 100%; height: 30%;"></div>
+            <div id="column"  ></div>
             <div id="nettoVes" style="font-size: 250%;"></div>
         </div>
 
@@ -165,30 +167,7 @@
 </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     {% csrf_token %}
-
-
-
-
-
-
-
-
 
 
 
@@ -230,13 +209,6 @@
 
 
 
-
-
-
-
-
-
-
                     var startmodal = $("#modbody").html();
 
             function addAgent() {
@@ -258,10 +230,14 @@
                 $("#modbody").html(startmodal);
             }
 
-            function resultFilter(count, all_ves, netto_ves) {
+            function resultFilter(count, srednee ,all_ves) {
                 $("#kol").html(count);
                 $("#allVes").html(all_ves);
-                $("#nettoVes").html(netto_ves);
+               // drawChart([]);
+                drawChartBar();
+                $("#nettoVes").html(srednee);
+                var res = $("#resultStat").html();
+                $("#modbody").html(res);
             }
 
             //сбор данных по формам и отправка данных на сервер
@@ -316,14 +292,17 @@
                     data: data,
                     success: function (res) {
                         switch (c) {
+
                             case "agent":
+                                resultFilter(res.col,res,srednee,res.sum);
                                 $("#modbody").html("количество- " + res.col + "средний вес" + res.srednee + "общий вес нетто" + res.sum);
                                 break;
                             case "num":
-                                $("#modbody").html("количество- " + res.col + "средний вес" + res.srednee + "общий вес нетто" + res.sum);
+                                 resultFilter(res.col,res.srednee,res.sum);
                                 break;
                                 case "date":
-                                $("#modbody").html("количество- " + res.col + "средний вес" + res.srednee + "общий вес нетто" + res.sum);
+                                    resultFilter(res.col,res.srednee,res.sum);
+                                //$("#modbody").html("количество- " + res.col + "средний вес" + res.srednee + "общий вес нетто" + res.sum);
                                 break;
                         }
 
@@ -434,4 +413,57 @@ function status_text(t){
 
     </script>
 
+
+    {# google charts #}
+     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+      google.charts.setOnLoadCallback(drawChart);
+    google.charts.setOnLoadCallback(drawChartBar);
+      function drawChart(datas=[]) {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Work',     11],
+          ['Eat',      2],
+          ['Commute',  2],
+          ['Watch TV', 2],
+          ['Sleep',    7]
+        ]);
+
+        var options = {
+          title: 'My Daily Activities'
+        };
+
+        var chartBouble = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chartBouble.draw(data, options);
+      }
+
+
+
+
+      function drawChartBar() {
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Sales', 'Expenses', 'Profit'],
+          ['2014', 1000, 400, 200],
+          ['2015', 1170, 460, 250],
+          ['2016', 660, 1120, 300],
+          ['2017', 1030, 540, 350]
+        ]);
+
+        var options = {
+          chart: {
+            title: 'Company Performance',
+            subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+          }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('column'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+      }
+
+
+    </script>
 {% endblock %}

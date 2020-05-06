@@ -119,7 +119,8 @@
         <div class="row">
             <div class="col-1"></div>
 
-            <div class="col-2" id="dataTransport">
+            <div class="col-2">
+            <div id="dataTransport">
                 <div class="form-group">
                     <label for="nameDriver"><b>Имя водителя</b></label>
                     <hr style="width: 80%;">
@@ -159,6 +160,7 @@
                     <hr style="width: 80%; height: 20%;">
                     <textarea id="description" rows="1" class="form-control"></textarea>
                 </div>
+            </div>
                 <button onclick="addAuto()" style="width: 100%;" class="btn btn-success">Добавить транспорт</button>
             </div>
 
@@ -455,17 +457,17 @@ let status1=false;
             let ves = $("#vesFix").html();
             let ves_nakladnay = $("#ves_nakladnaia").val();
             let nakladnay = $("#nakladnaya").val();
-            if (!nakladnay && status1==true) {
+            if (!nakladnay && !status1) {
                 alert('Вы не указали номер накладной');
                 $("#nakladnaya").focus();
                 return;
             }
-            if (!nakladnay.match(/[0-9]{7}/) && status1==true) {
+            if (!nakladnay.match(/[0-9]{7}/) && !status1) {
                 alert("В поле накладная должны быть введены только цифры");
                 $("#nakladnaya").focus();
                 return;
             }
-            if(count<2 && status1==true){
+            if(count<2 && !status1){
                 alert('данные по накладной пусты'); $("#nameGruz").focus(); return;
             }
             let typeCar = $("[name='cheks']:checked").val();
@@ -820,4 +822,16 @@ setInterval(getData, 1000);
             margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
         }
     </style>
+
+
+
+
+
+
+
+
+
+
+
+
 {% endblock %}
