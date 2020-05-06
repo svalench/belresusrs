@@ -265,6 +265,7 @@ def GetZdDate(request):
 def GetAutoNumber(request):
     form = request.POST
     allZdNum =Auto.objects.filter(number=form['num'], status_in=False)
+    auto_json = serializers.serialize('json', allZdNum)
     if allZdNum.exists():
         col =allZdNum.count();
         sum=0
@@ -278,7 +279,8 @@ def GetAutoNumber(request):
     dataRecive = {
         'sum': sum,
         "srednee": srednee,
-        "col":col
+        "col":col,
+        "auto":auto_json
     }
     return HttpResponse(json.dumps(dataRecive), content_type='application/json')
 
@@ -288,8 +290,9 @@ def GetAutoNumber(request):
 
 def GetAutoAgent(request):
     form = request.POST
-    allZdAgent = Auto.objects.filter(agent_vagon=form['agentId'], status_in=False)
+    allZdAgent = Auto.objects.filter(agents=form['agentId'], status_in=False)
     if allZdAgent.exists():
+        auto_json = serializers.serialize('json', allZdAgent)
         col = allZdAgent.count()
         sum = 0
         for a in allZdAgent:
@@ -302,7 +305,8 @@ def GetAutoAgent(request):
     dataRecive = {
         'sum': sum,
         "srednee": srednee,
-        "col": col
+        "col": col,
+        "auto": auto_json
     }
     return HttpResponse(json.dumps(dataRecive), content_type='application/json')
 

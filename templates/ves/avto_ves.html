@@ -453,6 +453,11 @@ let status1=false;
             var arrPricep = num.split('-');
             let numAuto = arrAuto.join("");
             let numPricep = arrPricep.join("");
+            let prov =parseInt(numAuto);
+            if(!prov  || prov==0){
+                alert('ошибка с номером автотранспорта');
+                 return;
+            }
             let agent;
             let ves = $("#vesFix").html();
             let ves_nakladnay = $("#ves_nakladnaia").val();

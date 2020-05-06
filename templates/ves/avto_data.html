@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-  <div class="container">
-
+    <div class="container">
 
 
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
             анализ
         </button>
-        <input placeholder="search" id="search"  /> <button onclick="search()">поиск</button><button onclick="search(true)">сброс</button>
+        <input placeholder="search" id="search"/>
+        <button onclick="search()">поиск</button>
+        <button onclick="search(true)">сброс</button>
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
@@ -80,75 +81,75 @@
         </div>
 
         <div id="resultStat" style="display: none;">
+            <h5>Количество транспорта</h5>
             <div id="kol" style="font-size: 250%;"></div>
+            <h5>Весь вес</h5>
             <div id="allVes" style="font-size: 250%;"></div>
-             <div id="piechart" style="width: 100%; height: 30%;"></div>
-            <div id="column"  ></div>
+            <h5>Чистый вес</h5>
             <div id="nettoVes" style="font-size: 250%;"></div>
+            <div id="piechart" style="width: 100%; height: 30%;"></div>
+            <div id="column"></div>
+
         </div>
 
 
+        <div class="accordion" id="accordionExample">
+            {% for a in page_obj %}
+                <div class="card">
+                    <div class="card-header" id="headingOne_{{ a.id }}">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link" type="button" data-toggle="collapse"
+                                    data-target="#collapseOne_{{ a.id }}"
+                                    aria-expanded="true" aria-controls="collapseOne_{{ a.id }}">
+                                {{ a.number }}
+                            </button>
+                        </h2>
+                    </div>
 
-
-
-
-
-
-         <div class="accordion" id="accordionExample">
-                 {% for a in page_obj %}
-                    <div class="card">
-                        <div class="card-header" id="headingOne_{{ a.id }}">
-                            <h2 class="mb-0">
-                                <button class="btn btn-link" type="button" data-toggle="collapse"
-                                        data-target="#collapseOne_{{ a.id }}"
-                                        aria-expanded="true" aria-controls="collapseOne_{{ a.id }}">
-                                    {{ a.number }}
-                                </button>
-                            </h2>
-                        </div>
-
-                        <div id="collapseOne_{{ a.id }}" class="collapse" aria-labelledby="headingOne_{{ a.id }}"
-                             data-parent="#accordionExample">
-                            <div class="card-body">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">агент</th>
-                                        <th scope="col">накладная</th>
-                                        <th scope="col">время въезда</th>
-                                        <th scope="col">время выезда</th>
-                                        <th scope="col">масса на въезде, кг</th>
-                                        <th scope="col">масса на выезде, кг</th>
-                                         <th scope="col">нетто, кг</th>
-                                         <th scope="col">статус</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>{{ a.agents.name }}</td>
-                                        <td>{{ a.nakladnaya }}</td>
-                                        <td>{{ a.last_in }}</td>
-                                         <td>{{ a.last_out }}</td>
-                                        <td>{{ a.ves_in }}</td>
-                                        <td>{{ a.ves_out }}</td>
-                                        <td>{{ a.netto }}</td>
-                                        {% if a.status_in %}<td>
-                                        <span class="badge badge-warning">на территории</span>
-                                        </td> {% else %}<td>
-                                        <span class="badge badge-success">выехал</span>
+                    <div id="collapseOne_{{ a.id }}" class="collapse" aria-labelledby="headingOne_{{ a.id }}"
+                         data-parent="#accordionExample">
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">агент</th>
+                                    <th scope="col">накладная</th>
+                                    <th scope="col">время въезда</th>
+                                    <th scope="col">время выезда</th>
+                                    <th scope="col">масса на въезде, кг</th>
+                                    <th scope="col">масса на выезде, кг</th>
+                                    <th scope="col">нетто, кг</th>
+                                    <th scope="col">статус</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>{{ a.agents.name }}</td>
+                                    <td>{{ a.nakladnaya }}</td>
+                                    <td>{{ a.last_in }}</td>
+                                    <td>{{ a.last_out }}</td>
+                                    <td>{{ a.ves_in }}</td>
+                                    <td>{{ a.ves_out }}</td>
+                                    <td>{{ a.netto }}</td>
+                                    {% if a.status_in %}
+                                        <td>
+                                            <span class="badge badge-warning">на территории</span>
+                                        </td> {% else %}
+                                        <td>
+                                            <span class="badge badge-success">выехал</span>
                                         </td> {% endif %}
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                {% endfor %}
+                </div>
+            {% endfor %}
 
 
-            </div>
+        </div>
 
-<div class="pagination">
+        <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}
             <a href="?page=1">&laquo; first</a>
@@ -164,27 +165,25 @@
             <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
         {% endif %}
     </span>
-</div>
+        </div>
 
 
-    {% csrf_token %}
+        {% csrf_token %}
 
 
+    </div>
 
-
-
-  </div>
-
-    <script src="{% static 'popper.js' %}" ></script>
-<script src="{% static 'b.min.js' %}" ></script>
+    <script src="{% static 'popper.js' %}"></script>
+    <script src="{% static 'b.min.js' %}"></script>
 
 
     <script>
-    var data = '{{ data }}';
-    data = data.replace(/&quot;/g,'"');
-   data = JSON.parse(data);
-    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
-     function csrfSafeMethod(method) {
+        var data = '{{ data }}';
+        data = data.replace(/&quot;/g, '"');
+        data = JSON.parse(data);
+        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+
+        function csrfSafeMethod(method) {
             // these HTTP methods do not require CSRF protection
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
         }
@@ -208,262 +207,323 @@
         }
 
 
+        var startmodal = $("#modbody").html();
 
-                    var startmodal = $("#modbody").html();
+        function addAgent() {
+            var div = $("#filter-agent").html();
+            $("#modbody").html(div);
+        }
 
-            function addAgent() {
-                var div = $("#filter-agent").html();
-                $("#modbody").html(div);
+        function addNum() {
+            var div = $("#filter-num").html();
+            $("#modbody").html(div);
+        }
+
+        function addDate() {
+            var div = $("#filter-data").html();
+            $("#modbody").html(div);
+        }
+
+        function returnModal() {
+            $("#modbody").html(startmodal);
+        }
+
+        function resultFilter(count, srednee, all_ves, auto = {}, c = 'agent') {
+            $("#kol").html(count);
+            $("#allVes").html(all_ves);
+            switch (c) {
+                case "agent":
+                    drawForAgent(auto)
+                    break;
+                case 'num':
+                    drawFor1T(auto);
+                    break;
+                case "date":
+                    break;
             }
 
-            function addNum() {
-                var div = $("#filter-num").html();
-                $("#modbody").html(div);
+            $("#nettoVes").html(srednee);
+            var res = $("#resultStat").html();
+            $("#modbody").html(res);
+        }
+
+        //сбор данных по формам и отправка данных на сервер
+        function filter(c) {
+
+            switch (c) {
+                case "agent":
+                    var url = '{% url 'getAutoAgent' %}';
+                    var agentId = $("#kontrselect :selected").val();
+                    var data = {'agentId': agentId, 'switch': c};
+                    getdata(data, url, c);
+                    break;
+                case "num":
+                    var url = '{% url 'getAutoNumber' %}';
+                    var num = $("#num :selected").val();
+                    var data = {'num': num, 'switch': c};
+                    getdata(data, url, c);
+                    break;
+                case "date":
+                    var url = '{% url 'getAutoDate' %}';
+                    var start = $("#startTime").val();
+                    var end = $("#endTime").val();
+                    var data = {"start": start, "end": end, "switch": c};
+                    getdata(data, url, c);
+                    break;
+                default:
+                    break;
+
             }
+        }
 
-            function addDate() {
-                var div = $("#filter-data").html();
-                $("#modbody").html(div);
-            }
-
-            function returnModal() {
-                $("#modbody").html(startmodal);
-            }
-
-            function resultFilter(count, srednee ,all_ves) {
-                $("#kol").html(count);
-                $("#allVes").html(all_ves);
-               // drawChart([]);
-                drawChartBar();
-                $("#nettoVes").html(srednee);
-                var res = $("#resultStat").html();
-                $("#modbody").html(res);
-            }
-
-            //сбор данных по формам и отправка данных на сервер
-            function filter(c) {
-
-                switch (c) {
-                    case "agent":
-                        var url = '{% url 'getAutoAgent' %}';
-                        var agentId = $("#kontrselect :selected").val();
-                        var data = {'agentId': agentId, 'switch': c};
-                        getdata(data, url, c);
-                        break;
-                    case "num":
-                        var url = '{% url 'getAutoNumber' %}';
-                        var num = $("#num :selected").val();
-                        var data = {'num': num, 'switch': c};
-                        getdata(data, url, c);
-                        break;
-                    case "date":
-                        var url = '{% url 'getAutoDate' %}';
-                        var start = $("#startTime").val();
-                        var end = $("#endTime").val();
-                        var data ={"start":start,"end":end,"switch":c};
-                        getdata(data,url,c);
-                        break;
-                    default:
-                        break;
-
+        function reciveAjax(data, url) {
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: data,
+                success: function (res) {
+                    console.log('Load was performed.');
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
                 }
-            }
-
-            function reciveAjax(data, url) {
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    data: data,
-                    success: function (res) {
-                        console.log('Load was performed.');
-                    },
-                    beforeSend: function (xhr, settings) {
-                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                        }
-                    }
-                });
-            }
-
-            function getdata(data, url, c) {
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    data: data,
-                    success: function (res) {
-                        switch (c) {
-
-                            case "agent":
-                                resultFilter(res.col,res,srednee,res.sum);
-                                $("#modbody").html("количество- " + res.col + "средний вес" + res.srednee + "общий вес нетто" + res.sum);
-                                break;
-                            case "num":
-                                 resultFilter(res.col,res.srednee,res.sum);
-                                break;
-                                case "date":
-                                    resultFilter(res.col,res.srednee,res.sum);
-                                //$("#modbody").html("количество- " + res.col + "средний вес" + res.srednee + "общий вес нетто" + res.sum);
-                                break;
-                        }
-
-                    },
-                    beforeSend: function (xhr, settings) {
-                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                        }
-                    }
-                });
-            }
-let autoStartView;
-
-            $(document).ready(function(){
-                autoStartView = $('#accordionExample').html();
-
             });
+        }
 
-let agents = "{{ Jagents }}";
-agents = agents.replace(/&quot;/g,'"');
-agents = JSON.parse(agents);
-let agent=[];
-agents.forEach(function(a){
-    agent[a.pk] =a;
-});
-let someAutoSearch;
-function search(k=false) {
-    var str = $("#search").val();
-       if(k){
-        str="";
-    }
-    var data = {"request":"auto","case":"auto","search":str};
-    $.ajax({
-                    type: "POST",
-                    url: {% url 'search' %},
-                    data: data,
-                    success: function (res) {
+        function getdata(data, url, c) {
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: data,
+                success: function (res) {
+                    switch (c) {
 
-                        var htt='';
-                        res.forEach(function (a){
-                            htt+=' <div class="card">\n' +
-                '                        <div class="card-header" id="headingOne_'+ a.pk +'">\n' +
-                '                            <h2 class="mb-0">\n' +
-                '                                <button class="btn btn-link" type="button" data-toggle="collapse"\n' +
-                '                                        data-target="#collapseOne_'+a.pk+'"\n' +
-                '                                        aria-expanded="true" aria-controls="collapseOne_'+a.pk+'">\n' +
-                '                                    '+a.fields.number+'\n' +
-                '                                </button>\n' +
-                '                            </h2>\n' +
-                '                        </div>\n'+
-            '\n' +
-                '                        <div id="collapseOne_'+ a.pk +'" class="collapse" aria-labelledby="headingOne_'+ a.pk +'"\n' +
-                '                             data-parent="#accordionExample">\n' +
-                '                            <div class="card-body">\n' +
-                '                                <table class="table">\n' +
-                '                                    <thead>\n' +
-                '                                    <tr>\n' +
-                '                                        <th scope="col">агент</th>\n' +
-                '                                        <th scope="col">накладная</th>\n' +
-                '                                        <th scope="col">время въезда</th>\n' +
-                '                                        <th scope="col">время выезда</th>\n' +
-                '                                        <th scope="col">масса на въезде, кг</th>\n' +
-                '                                        <th scope="col">масса на выезде, кг</th>\n' +
-                '                                         <th scope="col">нетто, кг</th>\n' +
-                '                                         <th scope="col">статус</th>\n' +
-                '                                    </tr>\n' +
-                '                                    </thead>\n' +
-                '                                    <tbody>\n' +
-                '                                    <tr>\n' +
-                '                                        <td>'+ agent[a.fields.agents].fields.name +'</td>\n' +
-                '                                        <td>'+ a.fields.nakladnaya +'</td>\n' +
-                '                                        <td>'+ a.fields.last_in +'</td>\n' +
-                '                                         <td>'+ a.fields.last_out +'</td>\n' +
-                '                                        <td>'+ a.fields.ves_in +'</td>\n' +
-                '                                        <td>'+ a.fields.ves_out +'</td>\n' +
-                '                                        <td>'+ a.fields.netto +'</td>\n' +
-                '                                       <td>\n'+
-                    '                                        '+ status_text(a.fields.status_in) +'\n'+
-                    '                                        </td>\n'+
-                '                                    </tr>\n' +
-                '                                    </tbody>\n' +
-                '                                </table>\n' +
-                '                            </div>\n' +
-                                                '</div>\n' +
-                '                        </div>';
-
-                        });
-                        $('#accordionExample').html(htt);
-                    },
-                    beforeSend: function (xhr, settings) {
-                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                        }
+                        case "agent":
+                             auto = JSON.parse(res.auto);
+                            resultFilter(res.col, res.srednee, res.sum, auto, c);
+                            break;
+                        case "num":
+                            auto = JSON.parse(res.auto);
+                            resultFilter(res.col, res.srednee, res.sum, auto, c);
+                            break;
+                        case "date":
+                             auto = JSON.parse(res.auto);
+                            resultFilter(res.col, res.srednee, res.sum, auto, c);
+                            break;
                     }
-                });
-}
+
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+        }
+
+        let autoStartView;
+
+        $(document).ready(function () {
+            autoStartView = $('#accordionExample').html();
+
+        });
+
+        let agents = "{{ Jagents }}";
+        agents = agents.replace(/&quot;/g, '"');
+        agents = JSON.parse(agents);
+        let agent = [];
+        agents.forEach(function (a) {
+            agent[a.pk] = a;
+        });
+        let someAutoSearch;
+
+        function search(k = false) {
+            var str = $("#search").val();
+            if (k) {
+                str = "";
+            }
+            var data = {"request": "auto", "case": "auto", "search": str};
+            $.ajax({
+                type: "POST",
+                url: {% url 'search' %},
+                data: data,
+                success: function (res) {
+
+                    var htt = '';
+                    res.forEach(function (a) {
+                        htt += ' <div class="card">\n' +
+                            '                        <div class="card-header" id="headingOne_' + a.pk + '">\n' +
+                            '                            <h2 class="mb-0">\n' +
+                            '                                <button class="btn btn-link" type="button" data-toggle="collapse"\n' +
+                            '                                        data-target="#collapseOne_' + a.pk + '"\n' +
+                            '                                        aria-expanded="true" aria-controls="collapseOne_' + a.pk + '">\n' +
+                            '                                    ' + a.fields.number + '\n' +
+                            '                                </button>\n' +
+                            '                            </h2>\n' +
+                            '                        </div>\n' +
+                            '\n' +
+                            '                        <div id="collapseOne_' + a.pk + '" class="collapse" aria-labelledby="headingOne_' + a.pk + '"\n' +
+                            '                             data-parent="#accordionExample">\n' +
+                            '                            <div class="card-body">\n' +
+                            '                                <table class="table">\n' +
+                            '                                    <thead>\n' +
+                            '                                    <tr>\n' +
+                            '                                        <th scope="col">агент</th>\n' +
+                            '                                        <th scope="col">накладная</th>\n' +
+                            '                                        <th scope="col">время въезда</th>\n' +
+                            '                                        <th scope="col">время выезда</th>\n' +
+                            '                                        <th scope="col">масса на въезде, кг</th>\n' +
+                            '                                        <th scope="col">масса на выезде, кг</th>\n' +
+                            '                                         <th scope="col">нетто, кг</th>\n' +
+                            '                                         <th scope="col">статус</th>\n' +
+                            '                                    </tr>\n' +
+                            '                                    </thead>\n' +
+                            '                                    <tbody>\n' +
+                            '                                    <tr>\n' +
+                            '                                        <td>' + agent[a.fields.agents].fields.name + '</td>\n' +
+                            '                                        <td>' + a.fields.nakladnaya + '</td>\n' +
+                            '                                        <td>' + a.fields.last_in + '</td>\n' +
+                            '                                         <td>' + a.fields.last_out + '</td>\n' +
+                            '                                        <td>' + a.fields.ves_in + '</td>\n' +
+                            '                                        <td>' + a.fields.ves_out + '</td>\n' +
+                            '                                        <td>' + a.fields.netto + '</td>\n' +
+                            '                                       <td>\n' +
+                            '                                        ' + status_text(a.fields.status_in) + '\n' +
+                            '                                        </td>\n' +
+                            '                                    </tr>\n' +
+                            '                                    </tbody>\n' +
+                            '                                </table>\n' +
+                            '                            </div>\n' +
+                            '</div>\n' +
+                            '                        </div>';
+
+                    });
+                    $('#accordionExample').html(htt);
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+        }
 
 
-function status_text(t){
-    if(t){
-        return '<span class="badge badge-warning">на территории</span>';
-    }else{
-        return '<span class="badge badge-success">не на территории</span>';
-    }
-}
-
+        function status_text(t) {
+            if (t) {
+                return '<span class="badge badge-warning">на территории</span>';
+            } else {
+                return '<span class="badge badge-success">не на территории</span>';
+            }
+        }
 
 
     </script>
 
 
     {# google charts #}
-     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-    google.charts.load('current', {packages: ['corechart', 'bar']});
-      google.charts.setOnLoadCallback(drawChart);
-    google.charts.setOnLoadCallback(drawChartBar);
-      function drawChart(datas=[]) {
-
-        var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['Work',     11],
-          ['Eat',      2],
-          ['Commute',  2],
-          ['Watch TV', 2],
-          ['Sleep',    7]
-        ]);
-
-        var options = {
-          title: 'My Daily Activities'
-        };
-
-        var chartBouble = new google.visualization.PieChart(document.getElementById('piechart'));
-
-        chartBouble.draw(data, options);
-      }
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
 
 
+        google.charts.load('current', {packages: ['corechart', 'bar']});
+        google.charts.setOnLoadCallback(drawFor1T);
+
+        function drawFor1T(auto = []) {
+            let min = 0;
+            var to_data = [['дата', 'вес нетто',]];
+            var to_circle = [['Дата', 'Вес за заезд']];
+            auto.forEach(function (a) {
+
+                if (a.fields.ves_in >= a.fields.ves_out) {
+                    min = a.fields.ves_in;
+                } else {
+                    min = a.fields.ves_out;
+                }
+                to_data.push([a.fields.last_in, min]);
+                to_circle.push([a.fields.last_in, a.fields.netto]);
+            });
+            var data = google.visualization.arrayToDataTable(to_data);
+
+            var options = {
+                title: 'График веса нетто А/М',
+                chartArea: {width: '50%'},
+                hAxis: {
+                    title: 'вес',
+                    minValue: 0
+                },
+                vAxis: {
+                    title: 'дата'
+                }
+            };
+
+            var chart = new google.visualization.BarChart(document.getElementById('column'));
+
+            chart.draw(data, options);
 
 
-      function drawChartBar() {
-        var data = google.visualization.arrayToDataTable([
-          ['Year', 'Sales', 'Expenses', 'Profit'],
-          ['2014', 1000, 400, 200],
-          ['2015', 1170, 460, 250],
-          ['2016', 660, 1120, 300],
-          ['2017', 1030, 540, 350]
-        ]);
+//======================================================================================================
+            //circle
+            var data = google.visualization.arrayToDataTable(to_circle);
 
-        var options = {
-          chart: {
-            title: 'Company Performance',
-            subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-          }
-        };
+            var options = {
+                title: 'График нагруженности транспорта'
+            };
 
-        var chart = new google.charts.Bar(document.getElementById('column'));
+            var chartBouble = new google.visualization.PieChart(document.getElementById('piechart'));
 
-        chart.draw(data, google.charts.Bar.convertOptions(options));
-      }
+            chartBouble.draw(data, options);
 
+        }
+        // draw chart for agent data
+    function drawForAgent(datas) {
+  let min = 0;
+  let amx=0;
+            var to_data = [['дата', 'вес без груза',"вес с грузом"]];
+            var to_circle = [['Дата', 'Вес за заезд']];
+            auto.forEach(function (a) {
+
+                if (a.fields.ves_in >= a.fields.ves_out) {
+                    min = a.fields.ves_out;
+                    max = a.fields.ves_in;
+                } else {
+                    min = a.fields.ves_in;
+                    max =  a.fields.ves_out;
+                }
+                to_data.push([a.fields.number, min,max]);
+                to_circle.push([a.fields.last_in, a.fields.netto]);
+            });
+
+            var data = google.visualization.arrayToDataTable(to_data);
+
+            var options = {
+                title: 'График веса нетто А/М',
+                chartArea: {width: '50%'},
+                hAxis: {
+                    title: 'вес',
+                    minValue: 0
+                },
+                vAxis: {
+                    title: 'дата'
+                }
+            };
+            var chart = new google.visualization.BarChart(document.getElementById('column'));
+            chart.draw(data, options);
+//======================================================================================================
+            //circle
+            var data = google.visualization.arrayToDataTable(to_circle);
+
+            var options = {
+                title: 'График нагруженности транспорта'
+            };
+
+            var chartBouble = new google.visualization.PieChart(document.getElementById('piechart'));
+
+            chartBouble.draw(data, options);
+
+    }
 
     </script>
 {% endblock %}
