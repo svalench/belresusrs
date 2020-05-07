@@ -10,3 +10,4 @@ uvicorn
 django-globals
 aiohttp
 redis-server
+docxtpl

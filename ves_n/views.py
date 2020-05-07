@@ -11,9 +11,9 @@ from django.core.serializers import serialize
 from django.db.models import Q
 from datetime import datetime
 from django.contrib.auth import logout
-from django.views.generic import CreateView
 
-from GLOBAL import GlobalAutoUse
+from docxtpl import DocxTemplate
+
 
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
@@ -186,7 +186,7 @@ def GetDataStatus(request):
         one_entry = GlobalData.objects.get(id=1)
     except ObjectDoesNotExist:
         one_entry = GlobalData(Auto=False)
-
+    print()
     dataRecive = {
         'plc':"1200",
         "type":"vrs",
@@ -347,3 +347,29 @@ def serchAuto(request):
     res = serializers.serialize('json', result)
     print(res)
     return HttpResponse(res, content_type='application/json')
+
+
+
+#
+def reportAutoAgent(request):
+    form = request.GET
+
+    tpl = DocxTemplate('templates/doc/shablon_agent_stat.docx')
+    context = {
+        'agent': form['agent_name'],
+        'agent_adress': form['agent_adress'],
+        'agent_unp': form['agent_unp'],
+        'col_labels': ['вес на въезде', 'вес на выезде', 'дата въезда', 'дата выезда',"нетто"],
+        'tbl_contents': [
+            {'label': 'yellow', 'cols': ['banana', 'capsicum', 'pyrite', 'taxi']},
+            {'label': 'red', 'cols': ['apple', 'tomato', 'cinnabar', 'doubledecker']},
+            {'label': 'green', 'cols': ['guava', 'cucumber', 'aventurine', 'card']},
+        ],
+    }
+    tpl.render(context)
+    response = HttpResponse( content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    now = datetime.now()
+    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+    response['Content-Disposition'] = 'attachment; filename='+dt_string+'.docx'
+    tpl.save(response)
+    return response
