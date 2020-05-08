@@ -52,7 +52,7 @@ class StartView(LoginRequiredMixin, CreateView):
         print(GlobalAutoUse)
         if (one_entry.Auto == True):
             print('woops')
-            raise exceptions.PermissionDenied
+            #raise exceptions.PermissionDenied
         data = {'auto_in': auto, 'agetns':agents,'JAuto':json}
         return render(request, 'ves/avto_ves.html', data)
 

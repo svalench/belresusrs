@@ -1,0 +1,155 @@
+<div class="row">
+    <div class="col-12 text-center align-self-center"><span class="text-center shadow" style="font-size: 30px;">Накладная</span>
+        <hr style="margin-top: 0;">
+    </div>
+</div>
+<div class="row">
+    <div class="col border border-primary">
+        <div class="row">
+            <div class="col text-center"><span style="font-size: 21px;">Данные по трансопрту</span>
+                <hr style="margin-top: 0px;">
+            </div>
+        </div>
+        <div class="row border border-primary">
+            <div class="col-4 text-center" style="margin-bottom: 0;"><label class="shadow">водитель</label>
+                <hr style="margin-top: 0;">
+                <input type="text" id="name_driver" class="form-control-sm shadow-sm"
+                       style="margin-bottom: 20px;width:100%;"></div>
+            <div class="col-4 text-center"><label class="shadow">автомобиль</label>
+                <hr style="margin-top: 0;">
+                <input type="text" id="data_auto" class="form-control-sm shadow-sm"
+                       style="margin-bottom: 20px;width:100%" readonly=""></div>
+            <div class="col"><label class="text-center d-block shadow">прицеп</label>
+                <hr style="margin-top: 0;">
+                <input type="text" id="data_pricep" class="form-control-sm" style="margin-bottom: 20px;width:100%;"
+                       readonly=""></div>
+        </div>
+        <div class="row">
+            <div class="col text-center"><label class="shadow">пункт погрузки</label>
+                <hr style="margin-top: 0;">
+                <input type="text" id="pogruzka" class="form-control-sm shadow-sm"
+                       style="margin-bottom: 20px; width:90%;"></div>
+            <div class="col-4 text-center"><label id="shadow" class="shadow">путевой лист №</label>
+                <hr style="margin-top: 0;">
+                <input type="text" id="N_p_lista" class="form-control-sm shadow-sm"
+                       style="margin-bottom: 20px; width:90%;"></div>
+        </div>
+    </div>
+    <div class="col-md-6 text-center border border-primary">
+        <div class="row">
+            <div class="col-2 text-center"><label class="text-center shadow">тип накладной</label>
+                <hr style="margin-top: 0;">
+                <select id="ttn" style="width:100%;">
+                    <optgroup label="выберите">
+                        <option value="1" selected="">ТН</option>
+                        <option value="2">ТТН</option>
+                    </optgroup>
+                </select></div>
+            <div class="col-3 text-center"><label class="text-center shadow">серия накладной</label>
+                <hr style="margin-top: 0;">
+                <input class="form-control-sm shadow-sm" type="text" id="seria" style="width: 50%;"></div>
+            <div class="col text-center"><label class="text-center shadow">номер накладной</label>
+                <hr style="margin-top: 0;">
+                <input class="form-control-sm shadow-sm" type="text" id="nakladnaya" style="width: 80%;"></div>
+        </div>
+        <div class="row">
+            <div class="col"><span style="font-size: 21px;">поля накданой</span>
+                <hr style="margin-top: 0;">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2 text-center" id="ed"><label class="text-center shadow">ед измения</label>
+                <hr style="margin-top: 0;">
+                <select id="ed_ves" style="width:100%;">
+                    <optgroup label="выберите">
+                        <option value="1" selected="">кг</option>
+                        <option value="2">тн</option>
+                    </optgroup>
+                </select></div>
+            <div class="col-2 text-center"><label class="text-center shadow">количество</label>
+                <hr style="margin-top: 0;">
+                <input class="form-control-sm shadow-sm" type="text" id="ves_nakladnaya" style="width: 90%;"></div>
+            <div class="col-2 text-center" id="ed"><label class="text-center shadow">валюта</label>
+                <hr style="margin-top: 0;">
+                <select id="valuta" style="width:100%;">
+                    <optgroup label="выберите">
+                        <option value="1" selected="">br</option>
+                        <option value="2">usd</option>
+                        <option value="3">eur</option>
+                    </optgroup>
+                </select></div>
+            <div class="col-2 text-center"><label class="text-center shadow">цена</label>
+                <hr style="margin-top: 0;">
+                <input class="form-control-sm shadow-sm" type="text" id="cena" style="width: 90%;"></div>
+            <div class="col-2 text-center"><label class="text-center shadow">ставка НДС</label>
+                <hr style="margin-top: 0;">
+                <input class="form-control-sm shadow-sm" type="text" id="nds" style="width: 90%;" value="20"></div>
+            <div class="col-2 text-center"><label class="text-center shadow">стоимость с НДС</label>
+                <hr style="margin-top: 0;">
+                <input class="form-control-sm shadow-sm" type="text" id="cena_nds" style="width: 90%;" value="0"></div>
+        </div>
+        <div class="row">
+            <div class="col-6 text-center border border-primary"><label id="shadow" class="shadow">Отпуск
+                разрешил</label>
+                <hr style="margin-top: 0;">
+                <input type="text" id="razreshil" class="form-control-sm shadow-sm"
+                       style="margin-bottom: 20px; width:90%;"></div>
+            <div class="col text-center border border-primary"><label id="shadow" class="shadow">Сдал
+                грузоотправитель</label>
+                <hr style="margin-top: 0;">
+                <input type="text" id="sdal" class="form-control-sm shadow-sm" style="margin-bottom: 20px; width:90%;">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row text-center" styel="">
+    <div class="col" type=""><span>Действия</span>
+        <hr>
+        <button class="btn btn-success btn-lg text-left text-sm-center d-xl-flex justify-content-xl-start btn-success"
+                type="button" style="width:60%;">Сохранить
+        </button>
+        <button class="btn btn-primary d-xl-flex justify-content-xl-start btn-warning"
+                type="button" style="width:40%;">Сброс
+        </button>
+    </div>
+    <div class="col" type="">
+        <div class="row" style="height:100%;">
+            <div class="col-3">
+                <button class="btn btn-success btn-lg" type="button" style="width:100%; height:100%;">Включить светофор
+                    на въезд с улицы
+                </button>
+            </div>
+            <div class="col-3">
+                <button class="btn btn-success btn-lg" type="button" style="width:100%; height:100%;">Включить светофор
+                    на выезд на улицы
+                </button>
+            </div>
+            <div class="col-3">
+                <button class="btn btn-success btn-lg" type="button" style="width:100%; height:100%;">Включить светофор
+                    на въезд с территории
+                </button>
+            </div>
+            <div class="col-3">
+                <button class="btn btn-success btn-lg" type="button" style="width:100%; height:100%;">Включить светофор
+                    на выезд на территорию
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    $("#cena").keyup(function(){
+        let kol =$("#ves_nakladnaya").val();
+        let res =$(this).val()*kol*((($("#nds").val())/100)+1);
+        $("#cena_nds").val(res);
+    });
+    $("#nds").keyup(function () {
+         let kol =$("#ves_nakladnaya").val();
+        let res =$("#cena").val()*kol*((($("#nds").val())/100)+1);
+        $("#cena_nds").val(res);
+    });
+</script>
