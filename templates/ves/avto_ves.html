@@ -130,6 +130,13 @@
         var Table = [];
 
 
+        let agents = "{{ agentsJ }}";
+agents = agents.replace(/&quot;/g,'"');
+agents = JSON.parse(agents);
+let newAgents =[];
+    agents.forEach(function(a){
+        newAgents.push(a.fields);
+    });
         var filterInt = function (value) {
             if (/^(\-|\+)?([0-9]+|Infinity)$/.test(value))
                 return Number(value);

@@ -46,11 +46,48 @@ class Agent(models.Model):
         verbose_name_plural = 'Агенты'
 
 
+class CatalogTrailer(models.Model):
+    id = models.AutoField(primary_key=True)
+    tara = models.FloatField('вес', null=True, db_index=True)
+    agent = models.ForeignKey('Agent', on_delete=models.CASCADE, null=True, blank=True, db_index=True)
+    number = models.CharField('Номер', max_length=255, db_index=True)
+    marka = models.CharField('Марка', max_length=255, db_index=True)
+    model = models.CharField('Модель', max_length=255, db_index=True)
+    date_add = models.DateTimeField(auto_now_add=True, db_index=True)
+    date_update = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.number
+
+    class Meta:
+        verbose_name = 'Прицеп'
+        verbose_name_plural = 'Прицепы'
+
+
+class CatalogAuto(models.Model):
+    id = models.AutoField(primary_key=True)
+    tara = models.FloatField('вес', null=True, db_index=True)
+    agent = models.ForeignKey('Agent', on_delete=models.CASCADE, null=True, blank=True, db_index=True)
+    number = models.CharField('Номер', max_length=255, db_index=True)
+    marka = models.CharField('Марка', max_length=255, db_index=True)
+    model = models.CharField('Модель', max_length=255, db_index=True)
+    date_add = models.DateTimeField(auto_now_add=True, db_index=True)
+    date_update = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.number
+
+    class Meta:
+        verbose_name = 'Автомобиль'
+        verbose_name_plural = 'Автомобили'
+
 
 class Auto(models.Model):
     id = models.AutoField(primary_key=True)
     agents = models.ForeignKey(Agent, on_delete=models.CASCADE, null=True, blank=True,db_index=True)
+    catalog = models.ForeignKey(CatalogAuto, on_delete=models.CASCADE, null=True, blank=True, db_index=True)
     number = models.CharField('Номер', max_length=255, db_index=True)
+    driver = models.CharField('Водитель', max_length=255,null=True ,db_index=True)
     number_pricep =  models.CharField('номер прицепа', max_length=255, db_index=True)
     date_add = models.DateTimeField(auto_now_add=True, db_index=True)
     date_update = models.DateTimeField(auto_now=True)
@@ -66,6 +103,8 @@ class Auto(models.Model):
     class Meta:
         verbose_name = 'Автомобиль'
         verbose_name_plural = 'Автомобили'
+
+
 
 
 class Vagon(models.Model):

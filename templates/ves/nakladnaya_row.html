@@ -4,7 +4,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col border border-primary">
+    <div class="col-4 border border-primary">
         <div class="row">
             <div class="col text-center"><span style="font-size: 21px;">Данные по трансопрту</span>
                 <hr style="margin-top: 0px;">
@@ -34,8 +34,22 @@
                 <input type="text" id="N_p_lista" class="form-control-sm shadow-sm"
                        style="margin-bottom: 20px; width:90%;"></div>
         </div>
+        <div class="row">
+            <div class="col-6 text-center border border-primary"><label id="shadow" class="shadow">Отпуск
+                разрешил</label>
+                <hr style="margin-top: 0;">
+                <input type="text" id="razreshil" class="form-control-sm shadow-sm"
+                       style="margin-bottom: 20px; width:90%;"></div>
+            <div class="col text-center border border-primary"><label id="shadow"
+                                                                      class="shadow">Грузоотправитель</label>
+                <hr style="margin-top: 0;">
+                <input type="text" id="agent" class="form-control-sm shadow-sm"
+                       style="margin-bottom: 20px; width:90%;" readonly="">
+                <button class="btn btn-primary" type="button" onclick="show_serchAgent()" style="margin-bottom: 5px;;">выбрать</button>
+            </div>
+        </div>
     </div>
-    <div class="col-md-6 text-center border border-primary">
+    <div class="col text-center border border-primary">
         <div class="row">
             <div class="col-2 text-center"><label class="text-center shadow">тип накладной</label>
                 <hr style="margin-top: 0;">
@@ -51,17 +65,21 @@
             <div class="col text-center"><label class="text-center shadow">номер накладной</label>
                 <hr style="margin-top: 0;">
                 <input class="form-control-sm shadow-sm" type="text" id="nakladnaya" style="width: 80%;"></div>
-            <div class="col text-center"><label class="text-center shadow">наименование товара</label>
-                <hr style="margin-top: 0;">
-                <input class="form-control-sm shadow-sm" type="text" id="name_tovar" style="width: 80%;"></div>
         </div>
         <div class="row">
-            <div class="col"><span style="font-size: 21px;">поля накланой</span>
+            <div class="col"><span style="font-size: 21px;">поля накданой</span>
                 <hr style="margin-top: 0;">
             </div>
         </div>
         <div class="row">
-            <div class="col-2 text-center" id="ed"><label class="text-center shadow">ед измения</label>
+            <div class="col-6"><label class="text-center shadow">наименование товара</label>
+                <hr style="margin-top: 0;">
+                <input type="text" id="name_tovar" class="shadow-sm" style="width: 80%;"
+                       placeholder="наименование"></div>
+            <div class="col-6"><label class="text-center shadow">товар к доставке принял</label>
+                <hr style="margin-top: 0;">
+                <input type="text" id="prinyal" class="shadow-sm" style="width: 80%;" placeholder=" принял"></div>
+            <div class="col-1 text-center" id="ed"><label class="text-center shadow">ед&nbsp;</label>
                 <hr style="margin-top: 0;">
                 <select id="ed_ves" style="width:100%;">
                     <optgroup label="выберите">
@@ -72,7 +90,7 @@
             <div class="col-2 text-center"><label class="text-center shadow">количество</label>
                 <hr style="margin-top: 0;">
                 <input class="form-control-sm shadow-sm" type="text" id="ves_nakladnaya" style="width: 90%;"></div>
-            <div class="col-2 text-center" id="ed"><label class="text-center shadow">валюта</label>
+            <div class="col-1 text-center" id="ed"><label class="text-center shadow">валюта</label>
                 <hr style="margin-top: 0;">
                 <select id="valuta" style="width:100%;">
                     <optgroup label="выберите">
@@ -84,6 +102,9 @@
             <div class="col-2 text-center"><label class="text-center shadow">цена</label>
                 <hr style="margin-top: 0;">
                 <input class="form-control-sm shadow-sm" type="text" id="cena" style="width: 90%;"></div>
+            <div class="col-2 text-center"><label class="text-center shadow">стоимость</label>
+                <hr style="margin-top: 0;">
+                <input class="form-control-sm shadow-sm" type="text" id="price_no_nds" style="width: 90%;"></div>
             <div class="col-2 text-center"><label class="text-center shadow">ставка НДС</label>
                 <hr style="margin-top: 0;">
                 <input class="form-control-sm shadow-sm" type="text" id="nds" style="width: 90%;" value="20"></div>
@@ -92,16 +113,14 @@
                 <input class="form-control-sm shadow-sm" type="text" id="cena_nds" style="width: 90%;" value="0"></div>
         </div>
         <div class="row">
-            <div class="col-6 text-center border border-primary"><label id="shadow" class="shadow">Отпуск
-                разрешил</label>
-                <hr style="margin-top: 0;">
-                <input type="text" id="razreshil" class="form-control-sm shadow-sm"
-                       style="margin-bottom: 20px; width:90%;"></div>
-            <div class="col text-center border border-primary"><label id="shadow" class="shadow">Сдал
-                грузоотправитель</label>
+            <div class="col"><label id="shadow" class="shadow">Сдал грузоотправитель</label>
                 <hr style="margin-top: 0;">
                 <input type="text" id="sdal" class="form-control-sm shadow-sm" style="margin-bottom: 20px; width:90%;">
             </div>
+            <div class="col"><label id="shadow" class="shadow">Основание отпуска</label>
+                <hr style="margin-top: 0;">
+                <input type="text" id="osnovanie" class="form-control-sm shadow-sm"
+                       style="margin-bottom: 20px; width:90%;"></div>
         </div>
     </div>
 </div>
@@ -109,15 +128,12 @@
     <div class="col" type=""><span>Действия</span>
         <hr>
         <button class="btn btn-success btn-lg text-left text-sm-center d-xl-flex justify-content-xl-start btn-success"
-          onclick="save();"      type="button" style="width:60%;">Сохранить
+           onclick="save()"     type="button" style="width:60%;">Сохранить
         </button>
         <button class="btn btn-primary d-xl-flex justify-content-xl-start btn-warning"
                 type="button" style="width:40%;">Сброс
         </button>
     </div>
-
-
-
     <div class="col" type="">
         <div class="row" style="height:100%;">
             <div class="col-3">
@@ -145,25 +161,27 @@
 </div>
 
 
-
-
 <script>
 
 
-    $("#cena").keyup(function(){
-        let kol =$("#ves_nakladnaya").val();
-        let res =$(this).val()*kol*((($("#nds").val())/100)+1);
+    $("#cena").keyup(function () {
+        let kol = $("#ves_nakladnaya").val();
+        let res = $(this).val() * kol * ((($("#nds").val()) / 100) + 1);
+        let nonds = $("#cena").val() * kol ;
         $("#cena_nds").val(res);
+        $("#price_no_nds").val(nonds);
+
     });
     $("#nds").keyup(function () {
-         let kol =$("#ves_nakladnaya").val();
-        let res =$("#cena").val()*kol*((($("#nds").val())/100)+1);
+        let kol = $("#ves_nakladnaya").val();
+        let res = $("#cena").val() * kol * ((($("#nds").val()) / 100) + 1);
+        let nonds = $("#cena").val() * kol ;
         $("#cena_nds").val(res);
+         $("#price_no_nds").val(nonds);
     });
 
 
-
-    function  save() {
+    function save() {
         let name = $("#name_tovar").val();
         let nakladnaya = $("#nakladnaya").val();
         let seria = $("#seria").val();
@@ -174,21 +192,94 @@
         let price = $("#cena").val();
         let nds = $("#nds").val();
         let price_nds = $("#cena_nds").val();
-    Table[0] = {
-                "count": 1,
-                "name": name,
-                "ves": ves_nakladnaya,
-                "ed": ed,
-                "price_one": price,
-                "valuta": valuta,
-                "price":price_nds,
-                "nds":nds,
-                "type":ttn,
-                "nakladnaya_type":ttn,
-                "nakladnaya_seria":seria,
-                "nakladnaya":nakladnaya
+        Table[0] = {
+            "count": 1,
+            "name": name,
+            "ves": ves_nakladnaya,
+            "ed": ed,
+            "price_one": price,
+            "valuta": valuta,
+            "price": price_nds,
+            "nds": nds,
+            "type": ttn,
+            "nakladnaya_type": ttn,
+            "nakladnaya_seria": seria,
+            "nakladnaya": nakladnaya
 
-            };
-    console.log(Table);
+        };
+        console.log(Table);
     }
+
+    function  show_serchAgent(agent) {
+        if(agent==undefined){
+            agent=agents;
+        }
+        $("#serchAgent").modal("show");
+        let html="";
+        agent.forEach(function(a,i){
+            html+="<li><button class='btn btn-info' onclick='selectAgent("+i+")'>"+a.pk+" = "+a.fields.name+"</button></li>";
+        });
+        $("#agents_list").html(html);
+    }
+
+    function selectAgent(pk){
+        $("#succes").attr("data-value",pk);
+        $("#succes").html("agent  -"+agents[pk].fields.name);
+    }
+
+        function serchStr(e){
+        let str = $(e).val();
+        let obj = newAgents.find(obj => obj.name == str);
+        let retval=[];
+        agents.forEach(function(a){
+            if(a.fields.name.indexOf(str)>-1){
+                retval.push(a);
+            }
+        });
+        show_serchAgent(retval);
+
+    };
+
+    function addAgent() {
+        let pk = $("#succes").attr("data-value");
+        if(pk==undefined){
+            alert("не выбран агент");
+            return;
+        }
+         $("#agent").val(agents[pk].fields.name);
+          $("#serchAgent").modal("hide");
+    }
+
 </script>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="serchAgent" tabindex="-1" role="dialog" aria-labelledby="serchAgent" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="serchAgent">Выбор контрагента</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="bodySerchModal" class="modal-body">
+          <label>Поиск</label>
+       <input type="text" onkeyup="serchStr(this)" id="modalSerchAgent" placeholder="Поиск">
+          <br>
+          <div id="succes">
+          </div>
+          <br>
+          <label>Список агентов</label>
+          <ul id="agents_list">
+          </ul>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">отмена</button>
+        <button type="button" onclick="addAgent();" class="btn btn-primary">выбрать</button>
+      </div>
+    </div>
+  </div>
+</div>
