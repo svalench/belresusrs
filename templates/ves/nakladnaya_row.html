@@ -51,6 +51,9 @@
             <div class="col text-center"><label class="text-center shadow">номер накладной</label>
                 <hr style="margin-top: 0;">
                 <input class="form-control-sm shadow-sm" type="text" id="nakladnaya" style="width: 80%;"></div>
+            <div class="col text-center"><label class="text-center shadow">наименование товара</label>
+                <hr style="margin-top: 0;">
+                <input class="form-control-sm shadow-sm" type="text" id="name_tovar" style="width: 80%;"></div>
         </div>
         <div class="row">
             <div class="col"><span style="font-size: 21px;">поля накданой</span>
@@ -106,12 +109,15 @@
     <div class="col" type=""><span>Действия</span>
         <hr>
         <button class="btn btn-success btn-lg text-left text-sm-center d-xl-flex justify-content-xl-start btn-success"
-                type="button" style="width:60%;">Сохранить
+          onclick="save();"      type="button" style="width:60%;">Сохранить
         </button>
         <button class="btn btn-primary d-xl-flex justify-content-xl-start btn-warning"
                 type="button" style="width:40%;">Сброс
         </button>
     </div>
+
+
+
     <div class="col" type="">
         <div class="row" style="height:100%;">
             <div class="col-3">
@@ -142,6 +148,8 @@
 
 
 <script>
+
+
     $("#cena").keyup(function(){
         let kol =$("#ves_nakladnaya").val();
         let res =$(this).val()*kol*((($("#nds").val())/100)+1);
@@ -152,4 +160,35 @@
         let res =$("#cena").val()*kol*((($("#nds").val())/100)+1);
         $("#cena_nds").val(res);
     });
+
+
+
+    function  save() {
+        let name = $("#name_tovar").val();
+        let nakladnaya = $("#nakladnaya").val();
+        let seria = $("#seria").val();
+        let ttn = $("#ttn").val();
+        let ed = $("#ed_ves").val();
+        let ves_nakladnaya = $("#ves_nakladnaya").val();
+        let valuta = $("#valuta").val();
+        let price = $("#cena").val();
+        let nds = $("#nds").val();
+        let price_nds = $("#cena_nds").val();
+    Table[0] = {
+                "count": 1,
+                "name": name,
+                "ves": ves_nakladnaya,
+                "ed": ed,
+                "price_one": price,
+                "valuta": valuta,
+                "price":price_nds,
+                "nds":nds,
+                "type":ttn,
+                "nakladnaya_type":ttn,
+                "nakladnaya_seria":seria,
+                "nakladnaya":nakladnaya
+
+            };
+    console.log(Table);
+    }
 </script>

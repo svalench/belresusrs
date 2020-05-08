@@ -128,6 +128,8 @@
         var count = 1;
         var rowsTable = [];
         var Table = [];
+
+
         var filterInt = function (value) {
             if (/^(\-|\+)?([0-9]+|Infinity)$/.test(value))
                 return Number(value);
@@ -156,7 +158,83 @@
             });
         }
 
+        function addNakladnayaRow() {
+            let typeCar = $("[name='cheks']:checked").val();
+            if (typeCar == 2) {
+                alert('Транспорт порожний');
+                return;
+            }
+            let valuta = $("#valuta").val();
+            let price = $('#price').val();
+            let ed = $("#ed").val();
+            let ves_nakladnay = $("#ves_nakladnaia").val();
+            let nakladnay = $("#nakladnaya").val();
+            let name = $("#nameGruz").val();
+            if (!name) {
+                addAction('оператор добавляя запись в список не указал название ');
+                alert("Вы не указали название товара.");
+                $("#nameGruz").focus();
+                return;
+            }
+            if (!price) {
+                addAction('оператор добавляя запись в список не указал цену ');
+                alert('Вы не указали цену товара');
+                $("#price").focus();
+                return;
+            }
+            if (!price.match(/^(0$|-?[1-9]\d*(\.\d*[1-9]$)?|-?0\.\d*[1-9])$/)) {
+                alert("В поле цена должны быть введены только цифры");
+                $("#price").focus();
+                return;
+            }
+            if (!ves_nakladnay) {
+                addAction('оператор добавляя запись в список не указал вес по накладной ');
+                if (!confirm('Вы не уакзали вес по надклдной. Продолжить?')) {
+                    return;
+                }
+            }
+            if (!ves_nakladnay.match(/^(0$|-?[1-9]\d*(\.\d*[1-9]$)?|-?0\.\d*[1-9])$/)) {
+                alert("В поле вес должны быть введены только цифры");
+                $("#ves_nakladnaia").focus();
+                return;
+            }
+            addAction('оператор добавил запись в список накладной');
+            Table[count] = {
+                "count": count,
+                "name": name,
+                "ves": ves_nakladnay,
+                "ed": ed,
+                "price": price,
+                "valuta": valuta
+            };
+            let row = "<tr><td>" + count + "</td><td>" + name + "</td><td>" + ves_nakladnay + " ," + ed + "</td><td>" + price + " ," + valuta + "</td><td><button id='row_" + count + "' onclick='deleteRow(this)'>x</button></td>";
+            let table = $("#table-nakladnaya").html();
+            rowsTable[count] = row;
+            let newtable = rowsTable.join("");
+            $("#table-nakladnaya").html(newtable);
+            count++;
+        }
 
+        function deleteRow(e) {
+            addAction('оператор удалил запись из списка накладной');
+            let ar = e.id.split('_');
+            rowsTable = [];
+            delete Table[ar[1]];
+            console.log(Table);
+            var newTable = [];
+            var c = 1;
+            Table.forEach(function (a, v) {
+                a.count = c;
+                rowsTable[c] = "<tr><td>" + a.count + "</td><td>" + a.name + "</td><td>" + a.ves_nakladnay + " ," + a.ed + "</td><td>" + a.price + " ," + a.valuta + "</td><td><button id='row_" + a.count + "' onclick='deleteRow(this)'>x</button></td>";
+                ;
+                c++;
+            });
+
+
+            let newtable = rowsTable.join("");
+            $("#table-nakladnaya").html(newtable);
+            count--;
+        }
 
 let status1=false;
         function addAuto() {
