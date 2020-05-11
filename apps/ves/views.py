@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.core import exceptions
 from GLOBAL import GlobalAutoUse
-from apps.ves.models import User, GlobalData
+from apps.ves.models import User, GlobalData, Production
 from django.core import serializers
 from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
 from django.http import HttpResponseRedirect, HttpResponse
@@ -49,13 +49,15 @@ class StartView(LoginRequiredMixin, CreateView):
         auto = Auto.objects.filter(status_in=True)
         json = serializers.serialize('json', auto)
         agents = Agent.objects.all()
+        production  = Production.objects.all()
         print(agents)
         agentsJ = serializers.serialize('json', agents)
+        productionJ = serializers.serialize('json', production)
         print(GlobalAutoUse)
         if (one_entry.Auto == True):
             print('woops')
             #raise exceptions.PermissionDenied
-        data = {'auto_in': auto, 'agentsJ':agentsJ, 'agents':agents,'JAuto':json}
+        data = {'auto_in': auto, 'agentsJ':agentsJ,'production':productionJ, 'agents':agents,'JAuto':json}
         return render(request, 'ves/avto_ves.html', data)
 
 

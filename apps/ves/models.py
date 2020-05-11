@@ -11,6 +11,10 @@ class GlobalData(models.Model):
     Auto = models.BooleanField('Авто занято',default=False)
     Zd   = models.BooleanField("ЖД занято", default=False)
 
+class Production(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField('название', max_length=255, db_index=True)
+
 class User(AbstractUser):
     id = models.AutoField(primary_key=True)
     descriptions = models.TextField('описание', max_length=500, blank=True)
@@ -140,6 +144,33 @@ class ActionUser(models.Model):
 class DataNakladnayaAuto(models.Model):
     id = models.AutoField(primary_key=True)
     parentId = models.ForeignKey(Auto, on_delete=models.CASCADE)
+    productionId = models.ForeignKey(Production, null=True, on_delete=models.CASCADE)
+    type = models.IntegerField('тип накладной', null=True,db_index=True)
+    number = models.BigIntegerField('номер в накладной', null=True,db_index=True)
+    seria = models.CharField('серия накладной',max_length=255,null=True,db_index=True)
+    name = models.CharField('наимеонвание',  null=True,max_length=255, db_index=True)
+    price_one = models.FloatField('цена за ед', null=True, db_index=True)
+    price_no_nds = models.FloatField('цена  без ндс', null=True, db_index=True)
+    price = models.FloatField('цена',  null=True, db_index=True)
+    nds = models.FloatField('НДС',null=True,db_index=True)
+    ves_nakladnaya = models.FloatField('вес по накладной',  null=True,db_index=True)
+    price_ed = models.CharField('валюта',  null=True, max_length=100)
+    ves_ed = models.CharField('еденицы измерения',  null=True, max_length=100)
+    razreshil = models.CharField('кто разрешил',null=True,max_length=255,db_index=True)
+    pogruzka = models.CharField('место погрузки',null=True,max_length=255,db_index=True)
+    prinyal = models.CharField('кто принял', null=True, max_length=255, db_index=True)
+    putlist = models.BigIntegerField('номер путевого листа', null=True, db_index=True)
+    name_drive =  models.CharField('имя водителя',max_length=255,  null=True, db_index=True)
+    osnovanie = models.CharField('основание',max_length=255,  null=True, db_index=True)
+    date_add = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        verbose_name = 'Данные по накладной'
+        verbose_name_plural = 'Данные по накладным'
+
+class DataNakladnayaVagon(models.Model):
+    id = models.AutoField(primary_key=True)
+    parentId = models.ForeignKey(Vagon, on_delete=models.CASCADE)
+    productionId = models.ForeignKey(Production,null=True, on_delete=models.CASCADE)
     number = models.BigIntegerField('номер в накладной', null=True)
     name = models.CharField('действие', max_length=255, db_index=True)
     price = models.FloatField('цена', db_index=True)
@@ -151,16 +182,4 @@ class DataNakladnayaAuto(models.Model):
         verbose_name = 'Данные по накладной'
         verbose_name_plural = 'Данные по накладным'
 
-class DataNakladnayaVagon(models.Model):
-    id = models.AutoField(primary_key=True)
-    parentId = models.ForeignKey(Vagon, on_delete=models.CASCADE)
-    number = models.BigIntegerField('номер в накладной', null=True)
-    name = models.CharField('действие', max_length=255, db_index=True)
-    price = models.FloatField('цена', db_index=True)
-    ves_nakladnaya = models.BigIntegerField('вес по накладной')
-    price_ed = models.CharField('валюта', max_length=100)
-    ves_ed = models.CharField('еденицы измерения', max_length=100)
-    date_add = models.DateTimeField(auto_now_add=True)
-    class Meta:
-        verbose_name = 'Данные по накладной'
-        verbose_name_plural = 'Данные по накладным'
+

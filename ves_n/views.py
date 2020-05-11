@@ -18,7 +18,8 @@ from docxtpl import DocxTemplate
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
-from apps.ves.models import ActionUser, Auto, Agent, DataNakladnayaAuto, Vagon, DataNakladnayaVagon, User, GlobalData
+from apps.ves.models import ActionUser, Auto, Agent, DataNakladnayaAuto, Vagon, DataNakladnayaVagon, User, GlobalData, \
+    Production
 
 
 def logout_view(request):
@@ -46,15 +47,24 @@ def addAutoView(request):
         in_ter[0].netto = abs(in_ter[0].ves_in-int(form['ves']))
         in_ter.update(last_out=last_in,ves_out=form['ves'],status_in=False,netto=abs(in_ter[0].ves_in-int(form['ves'])))
     else:
-        agent = Agent.objects.get(id=form['contragent'])
-        auto = Auto(number=form['numAuto'], agents=agent, nakladnaya=form['nakladnaya'], number_pricep=form['numPricep'], last_in=last_in, ves_in=form['ves'],
+        dataNakl = form.getlist('nakladnaya')
+        agent = Agent.objects.get(pk=form['contragent'])
+        print(form)
+        auto = Auto(number=form['numAuto'], agents=agent,
+                    number_pricep=form['numPricep'], last_in=last_in, ves_in=float(form['ves']),
                 status_in=True)
         auto.save()
-        dataNakl = form.getlist('dataNakladnay')
+
         arr=[]
         for a in dataNakl:
             r = a.split(",")
-            arr.append(DataNakladnayaAuto(number=r[0],name=r[1],price=r[2],price_ed=r[3],ves_nakladnaya=r[4],ves_ed=r[5], parentId = auto))
+            product = Production.objects.get(id=r[18])
+            arr.append(DataNakladnayaAuto(type=r[8],number=r[10],seria=r[9],
+                                          name=r[0],ves_ed=r[2],ves_nakladnaya=r[1],
+                                          name_drive=r[15], osnovanie=r[17], pogruzka=r[12],
+                                          prinyal=r[14], putlist=r[13], razreshil=r[11],
+                                          price_ed=r[5],price_one=r[3],price_no_nds=r[4],nds=r[7],
+                                          price=r[6], parentId = auto,productionId_id=r[18]))
         DataNakladnayaAuto.objects.bulk_create(arr)
     payload = {'success': True}
     return HttpResponse(json.dumps(payload), content_type='application/json')
