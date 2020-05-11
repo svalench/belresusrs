@@ -1,39 +1,26 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <div class="container">
-    <div class="m-5">
-     <a href="{% url 'ves:menu_ves' %}">
-    <div class="border blockmenu row m-2" >
 
-    <img style="width: 200px;" class="border col-3" src="{% static 'img/vesy.jpg' %}">
-        <div class="col-4"><h4>Меню взвешивания</h4></div>
-            <div class="col-5">Перейдя в это меню Вы сможете выбрать пункт управления весовой станцией автомобильного транспорта или пункт управления весовой станцией железнодорожного транспорта</div>
-    </div>
-           </a>
-  <a href="{% url 'ves:menu_data' %}">
-    <div class="border blockmenu row m-2">
-    <img style="width: 200px;" class="border col-3" src="{% static 'img/data.jpg'  %}">
-        <div class="col-4"><h4>Меню БД</h4></div>
-         <div class="col-5">Перейдя в это меню Вы сможете выбрать пункты управления информацией</div>
+    <div class="article-list">
+        <div class="container">
 
-    </div>
-      </a>
-  <a href="{% url 'ves:menu_data' %}">
-        <div class="border blockmenu row m-2">
-    <img style="width: 200px;" class="border col-3" src="{% static 'img/params.png' %}">
-    <div class="col-4"><h4>Настройки</h4></div>
-             <div class="col-5">Перейдя в это меню вы сможете настроить управление системой</div>
+      <div class="row articles">
+                <div class="col-sm-6 col-md-4 item"><a href="{% url 'ves:menu_ves' %}"><img class="img-fluid" src="{% static 'img/img/weight.svg' %}"></a>
+                    <h3 class="name">ВЗВЕШИВАНИЕ</h3>
+                    <p class="description" style="padding-bottom: 20px;">Пункт управления весовой станцией автомобильного и железнодорожного транспорта</p>
+                </div>
+                <div class="col-sm-6 col-md-4 item"><a href="{% url 'ves:menu_data' %}"><img class="img-fluid" src="{% static 'img/img/database.svg' %}"></a>
+                    <h3 class="name">БАЗА ДАННЫХ</h3>
+                    <p class="description">Пункт управления информацией</p>
+                </div>
+                <div class="col-sm-6 col-md-4 item"><a href="{% url 'ves:menu_data' %}"><img class="img-fluid" src="{% static 'img/img/setting.svg' %}"></a>
+                    <h3 class="name">НАСТРОЙКИ</h3>
+                    <p class="description">Пункт управления системой</p>
+                </div>
+            </div>
         </div>
-</a>
-
-</div>
-
-
-</div>
-
-
-
+    </div>
 
 
 

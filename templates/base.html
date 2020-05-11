@@ -6,6 +6,12 @@
     <title>{% block title %}{% endblock %} || System</title>
     <head>
    <link rel="stylesheet" href="{% static 'boostrap/css/bootstrap.min.css' %}">
+         <link rel="stylesheet" href="{% static '/css/Article-List.css' %}">
+        <link rel="stylesheet" href="{% static '/css/datatables.min.css' %}">
+        <link rel="stylesheet" href="{% static '/css/Features-Boxed.css' %}">
+        <link rel="stylesheet" href="{% static '/css/mdb.min.css' %}">
+        <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+        <link rel="stylesheet" href="{% static '/css/table-css.css' %}">
         <script src="{% static 'jq.js' %}"></script>
     <script src="{% static 'boostrap/js/bootstrap.min.js' %}"></script>
 </head>
@@ -115,6 +121,7 @@
                 }
             });
 }
+let statusGlobalJs;
    function getstatus(){
     let data ={"avto":false,"zd":false,"all":true};
               $.ajax({
@@ -124,6 +131,7 @@
                 dataType: 'json',
                 data: data,
                 success: function (dat) {
+                    statusGlobalJs=dat;
                     if(dat.auto) {
                         document.getElementById('automenu').classList.remove("badge-success");
                         document.getElementById('automenu').classList.add("badge-warning");
