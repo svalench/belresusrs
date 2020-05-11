@@ -67,18 +67,16 @@
                 <input class="form-control-sm shadow-sm" type="text" id="nakladnaya" style="width: 80%;"></div>
         </div>
         <div class="row">
-            <div class="col"><span style="font-size: 21px;">поля накданой</span>
+            <div class="col"><span style="font-size: 21px;">поля накланой</span>
                 <hr style="margin-top: 0;">
             </div>
         </div>
         <div class="row">
-            <div class="col-6"><label class="text-center shadow">наименование товара</label>
+            <div class="col"><label class="text-center shadow">наименование товара</label>
                 <hr style="margin-top: 0;">
-                <input type="text" id="name_tovar" class="shadow-sm" style="width: 80%;"
-                       placeholder="наименование"></div>
-            <div class="col-6"><label class="text-center shadow">товар к доставке принял</label>
-                <hr style="margin-top: 0;">
-                <input type="text" id="prinyal" class="shadow-sm" style="width: 80%;" placeholder=" принял"></div>
+                <textarea  type="text" id="name_tovar"  rows="4" class="shadow-sm" style="width: 80%;"
+                           placeholder="наименование"></textarea></div>
+
             <div class="col-1 text-center" id="ed"><label class="text-center shadow">ед&nbsp;</label>
                 <hr style="margin-top: 0;">
                 <select id="ed_ves" style="width:100%;">
@@ -87,7 +85,7 @@
                         <option value="2">тн</option>
                     </optgroup>
                 </select></div>
-            <div class="col-2 text-center"><label class="text-center shadow">количество</label>
+            <div class="col-1 text-center"><label class="text-center shadow">количество</label>
                 <hr style="margin-top: 0;">
                 <input class="form-control-sm shadow-sm" type="text" id="ves_nakladnaya" style="width: 90%;"></div>
             <div class="col-1 text-center" id="ed"><label class="text-center shadow">валюта</label>
@@ -99,7 +97,7 @@
                         <option value="3">eur</option>
                     </optgroup>
                 </select></div>
-            <div class="col-2 text-center"><label class="text-center shadow">цена</label>
+            <div class="col-1 text-center"><label class="text-center shadow">цена</label>
                 <hr style="margin-top: 0;">
                 <input class="form-control-sm shadow-sm" type="text" id="cena" style="width: 90%;"></div>
             <div class="col-2 text-center"><label class="text-center shadow">стоимость</label>
@@ -121,6 +119,9 @@
                 <hr style="margin-top: 0;">
                 <input type="text" id="osnovanie" class="form-control-sm shadow-sm"
                        style="margin-bottom: 20px; width:90%;"></div>
+            <div class="col"><label class="text-center shadow">товар к доставке принял</label>
+                <hr style="margin-top: 0;">
+                <input type="text" id="prinyal" class="shadow-sm" style="width: 80%;" placeholder=" принял"></div>
         </div>
     </div>
 </div>
@@ -192,6 +193,19 @@
         let price = $("#cena").val();
         let nds = $("#nds").val();
         let price_nds = $("#cena_nds").val();
+        let nameDrive = $("#name_driver").val();
+        let numberPricep = $("#gos_num_pricep").html();
+        var num = $('#gos_num_avto').html();
+        var arrAuto = num.split('-');
+        var arrPricep = num.split('-');
+        let numAuto = arrAuto.join("");
+        let nunu= numAuto;
+        let numPricep = arrPricep.join("");
+        let prov =parseInt(nunu);
+        if(!prov  || prov==0){
+            alert('ошибка с номером автотранспорта');
+            return;
+        }
         Table[0] = {
             "count": 1,
             "name": name,
@@ -204,10 +218,24 @@
             "type": ttn,
             "nakladnaya_type": ttn,
             "nakladnaya_seria": seria,
-            "nakladnaya": nakladnaya
+            "nakladnaya": nakladnaya,
+            "razreshil":$("#razreshil").val(),
+            'pogruzka':$("#pogruzka").val(),
+            "putevoy_list":$("#N_p_lista").val(),
+            "prinyal":$("#prinyal").val(),
+            'nameDrive':nameDrive,
+            "sdal":$('#sdal').val(),
+            "osnovanie":$('#osnovanie').val()
 
         };
-        console.log(Table);
+        let data = {
+            "nakladnaya":Table,
+            "agent":$("#agent").attr('data-id'),
+            "numAvto":numAuto,
+            "numtrailer":numPricep
+
+        };
+        console.log(data);
     }
 
     function  show_serchAgent(agent) {
@@ -247,6 +275,7 @@
             return;
         }
          $("#agent").val(agents[pk].fields.name);
+         $("#agent").attr("data-id",pk);
           $("#serchAgent").modal("hide");
     }
 
