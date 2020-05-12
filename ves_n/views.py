@@ -50,7 +50,7 @@ def addAutoView(request):
         dataNakl = form.getlist('nakladnaya')
         agent = Agent.objects.get(pk=form['contragent'])
         print(form)
-        auto = Auto(number=form['numAuto'], agents=agent,
+        auto = Auto(number=form['numAuto'], agents=agent, tara=int(form['typeCar']),
                     number_pricep=form['numPricep'], last_in=last_in, ves_in=float(form['ves']),
                 status_in=True)
         auto.save()
@@ -63,7 +63,7 @@ def addAutoView(request):
                                           name=r[0],ves_ed=r[2],ves_nakladnaya=r[1],
                                           name_drive=r[15], osnovanie=r[17], pogruzka=r[12],
                                           prinyal=r[14], putlist=r[13], razreshil=r[11],
-                                          price_ed=r[5],price_one=r[3],price_no_nds=r[4],nds=r[7],
+                                          price_ed=r[5],price_one=r[3],price_no_nds=r[4],nds=r[7], date=r[19],
                                           price=r[6], parentId = auto,productionId_id=r[18]))
         DataNakladnayaAuto.objects.bulk_create(arr)
     payload = {'success': True}

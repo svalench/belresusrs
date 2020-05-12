@@ -11,9 +11,6 @@ class GlobalData(models.Model):
     Auto = models.BooleanField('Авто занято',default=False)
     Zd   = models.BooleanField("ЖД занято", default=False)
 
-class Production(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField('название', max_length=255, db_index=True)
 
 class User(AbstractUser):
     id = models.AutoField(primary_key=True)
@@ -98,6 +95,7 @@ class Auto(models.Model):
     last_in = models.DateTimeField('время последнего въезда', null=True, db_index=True)
     last_out = models.DateTimeField('время последнего выезда',  null=True, db_index=True)
     ves_in = models.FloatField('вес на въезде',  null=True)
+    tara = models.IntegerField('Порожний',null=True)
     ves_out = models.FloatField('вес на выезде', null=True)
     nakladnaya = models.CharField('Накладная', max_length=255, default=0, db_index=True)
     netto = models.FloatField("полсденее нетто",  null=True)
@@ -130,6 +128,15 @@ class Vagon(models.Model):
         verbose_name = 'Вагон'
         verbose_name_plural = 'Вагоны'
 
+
+
+
+class Production(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField('название', max_length=255, db_index=True)
+    auto_id = models.ForeignKey('Auto', on_delete=models.CASCADE, null=True, blank=True, db_index=True)
+
+
 class ActionUser(models.Model):
     id = models.AutoField(primary_key=True)
     parentId = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -143,8 +150,8 @@ class ActionUser(models.Model):
 
 class DataNakladnayaAuto(models.Model):
     id = models.AutoField(primary_key=True)
-    parentId = models.ForeignKey(Auto, on_delete=models.CASCADE)
-    productionId = models.ForeignKey(Production, null=True, on_delete=models.CASCADE)
+    parentId = models.ForeignKey('Auto', on_delete=models.CASCADE)
+    productionId = models.ForeignKey('Production', null=True, on_delete=models.CASCADE)
     type = models.IntegerField('тип накладной', null=True,db_index=True)
     number = models.BigIntegerField('номер в накладной', null=True,db_index=True)
     seria = models.CharField('серия накладной',max_length=255,null=True,db_index=True)
@@ -162,6 +169,7 @@ class DataNakladnayaAuto(models.Model):
     putlist = models.BigIntegerField('номер путевого листа', null=True, db_index=True)
     name_drive =  models.CharField('имя водителя',max_length=255,  null=True, db_index=True)
     osnovanie = models.CharField('основание',max_length=255,  null=True, db_index=True)
+    date = models.DateField(null=True)
     date_add = models.DateTimeField(auto_now_add=True)
     class Meta:
         verbose_name = 'Данные по накладной'
@@ -169,7 +177,7 @@ class DataNakladnayaAuto(models.Model):
 
 class DataNakladnayaVagon(models.Model):
     id = models.AutoField(primary_key=True)
-    parentId = models.ForeignKey(Vagon, on_delete=models.CASCADE)
+    parentId = models.ForeignKey('Vagon', on_delete=models.CASCADE)
     productionId = models.ForeignKey(Production,null=True, on_delete=models.CASCADE)
     number = models.BigIntegerField('номер в накладной', null=True)
     name = models.CharField('действие', max_length=255, db_index=True)

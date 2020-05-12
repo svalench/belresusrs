@@ -6,12 +6,7 @@
     <title>{% block title %}{% endblock %} || System</title>
     <head>
    <link rel="stylesheet" href="{% static 'boostrap/css/bootstrap.min.css' %}">
-         <link rel="stylesheet" href="{% static '/css/Article-List.css' %}">
-        <link rel="stylesheet" href="{% static '/css/datatables.min.css' %}">
-        <link rel="stylesheet" href="{% static '/css/Features-Boxed.css' %}">
-        <link rel="stylesheet" href="{% static '/css/mdb.min.css' %}">
-        <link rel="stylesheet" href="{% static '/css/styles.css' %}">
-        <link rel="stylesheet" href="{% static '/css/table-css.css' %}">
+
         <script src="{% static 'jq.js' %}"></script>
     <script src="{% static 'boostrap/js/bootstrap.min.js' %}"></script>
 </head>
@@ -50,6 +45,7 @@
               <a class="nav-link " href="{% url 'ves:contragents' %}">Контрагенты</a>
               <a class="nav-link " href="{% url 'ves:actions' %}">События</a>
             <a class="nav-link " href="{% url 'ves:users' %}">Пользователи</a>
+            <a class="nav-link " href="{% url 'ves:catalogAuto' %}">Католог автотранспорта</a>
             <a class="nav-link " href="{% url 'ves:actions' %}">Сообщения</a>
         </div>
       </li>

@@ -21,7 +21,8 @@
                                 <button class="btn btn-link" type="button" data-toggle="collapse"
                                         data-target="#collapseOne_{{ a.id }}"
                                         aria-expanded="true" aria-controls="collapseOne_{{ a.id }}">
-                                    {{ a.number }}
+                                    {{ a.number }}  --
+                                    {{ a.datanakladnayaauto_set.get.productionId.name}}
                                 </button>
                             </h2>
                         </div>
@@ -32,17 +33,35 @@
                                 <table class="table">
                                     <thead>
                                     <tr>
-                                        <th scope="col">агент</th>
-                                        <th scope="col">накладная</th>
-                                        <th scope="col">время</th>
-                                        <th scope="col">масса, кг</th>
+                                        <th rowspan="2"  scope="col">агент</th>
+                                        <th colspan="4" scope="col">накладная</th>
+
+                                        <th rowspan="2" scope="col">время</th>
+                                        <th rowspan="2" scope="col">загружен</th>
+                                        <th rowspan="2" scope="col">масса, кг</th>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">тип </th>
+                                        <th scope="col">номер</th>
+                                        <th scope="col">вес</th>
+                                        <th scope="col">дата</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr>
                                         <td>{{ a.agents.name }}</td>
-                                        <td>{{ a.nakladnaya }}</td>
+                                    <td>{% if a.datanakladnayaauto_set.get.type == 1 %}ТН{% else %}ТТН{% endif %}</td>
+                                        <td>
+                                            {{ a.datanakladnayaauto_set.get.seria }}-{{ a.datanakladnayaauto_set.get.number }}</td>
+
+                                     <td>{{ a.datanakladnayaauto_set.get.ves_nakladnaya }}</td>
+                                     <td>{{ a.datanakladnayaauto_set.get.date }}</td>
+
                                         <td>{{ a.last_in }}</td>
+                                     <td>{% if a.tara == 1 %}
+                                         <span class="bg-warning"> груженый</span>
+                                     {% else %} <span class="bg-success">пустой </span>
+                                     {% endif %}</td>
                                         <td>{{ a.ves_in }}</td>
                                     </tr>
                                     </tbody>
@@ -439,11 +458,11 @@ $(document).ready(function(){$("[data-bs-hover-animate]").mouseenter(function(){
             margin: 0;
 
             box-sizing: border-box;
-            width: 40%;
+            width: 60%;
             background-color: #eee;
             height: 100%;
             top: 10%;
-            left: -40%;
+            left: -60%;
             transition: left .2s;
             z-index: 2;
             -webkit-transform: translateZ(0);
@@ -462,9 +481,9 @@ $(document).ready(function(){$("[data-bs-hover-animate]").mouseenter(function(){
             top: 10%;
             left: 5px;
             cursor: pointer;
-            transition: left .23s;
+            transition: left .43s;
             z-index: 3;
-            width: 60px;
+            width: 100px;
             -webkit-transform: translateZ(0);
             -webkit-backface-visibility: hidden;
         }
@@ -474,7 +493,7 @@ $(document).ready(function(){$("[data-bs-hover-animate]").mouseenter(function(){
             height: 3px;
             background-color: #fff;
             margin: 5px 0 0;
-            transition: all .1s linear .23s;
+            transition: all .1s linear .43s;
             position: relative;
         }
 
@@ -483,7 +502,7 @@ $(document).ready(function(){$("[data-bs-hover-animate]").mouseenter(function(){
         }
 
         .hidden-menu-ticker:checked ~ .btn-menu {
-            left: 35%;
+            left: 55%;
         }
 
         .hidden-menu-ticker:checked ~ .hidden-menu {

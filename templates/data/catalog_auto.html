@@ -1,0 +1,263 @@
+{% extends 'base.html' %}
+{% block title %}Каталог автотрансопрта{% endblock %}
+{% load static %}
+{% block content %}
+  <link rel="stylesheet" href="{% static 'css/Article-List.css' %}">
+        <link rel="stylesheet" href="{% static 'css/datatables.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/Features-Boxed.css' %}">
+        <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        <link rel="stylesheet" href="{% static 'css/table-css.css' %}">
+       <script src="{% static 'js/all.js' %}"></script>
+    <script src="{% static 'js/datatables.min.js' %}"></script>
+    <script src="{% static 'js/table-equipment.js' %}"></script>
+    <script src="{% static 'js/mdb.min.js' %}"></script>
+
+
+  <!-- End: Navigation with Button -->
+    <div class="container-fluid" style="padding-top: 20px;">
+        <div class="row">
+            <div class="col-12" id="otchetTableContragent"><div class="wrapper-modal-editor">
+
+   <div class="row d-flex justify-content-center modalWrapper">
+    <div class="modal fade addNewInputs" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="modalAdd"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold text-primary ml-5">Добавить транспорт</h4>
+            <button type="button" class="close text-primary" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body mx-3">
+            <div class="md-form mb-5">
+<input type="text" id="contragent"  list="browsers"   class="form-control validate">
+                <datalist id="browsers">
+                    {% for i in agent %}
+                        <option value="{{ i.id }}">{{ i.name }}</option>
+                    {% endfor %}
+                </datalist>
+              <label data-error="измените" data-success="принято" for="contragent">выберите контрагента</label>
+            </div>
+
+              <div class="md-form mb-5">
+              <input type="text" id="number" class="form-control validate">
+              <label data-error="измените" data-success="принято" for="number">номер авто</label>
+            </div>
+
+		    <div class="md-form mb-5">
+              <input type="text" id="model" class="form-control validate">
+              <label data-error="измените" data-success="принято" for="model">модель и серия транспорта</label>
+            </div>
+
+
+		     <div class="md-form mb-5">
+              <input type="text" id="tara" class="form-control validate">
+              <label data-success="принято" for="tara">Вес тара</label>
+            </div>
+
+
+          </div>
+          <div class="modal-footer d-flex justify-content-center buttonAddFormWrapper">
+            <button class="btn btn-outline-primary btn-block buttonAdd"  onclick="addAuto()" data-dismiss="modal">Добавить
+              <i class="fas fa-paper-plane-o ml-1"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <a href="" class="btn btn-info btn-rounded btn-sm" data-toggle="modal" data-target="#modalAdd">Добавить<i
+          class="fas fa-plus-square ml-1"></i></a>
+    </div>
+
+    <div class="modal fade modalEditClass" id="modalEdit" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold text-secondary ml-5">Изменить</h4>
+            <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+           <div class="modal-body mx-3">
+            <div class="md-form mb-5">
+            <input type="text" id="auto_id" hidden>
+<input type="text" id="contragent_upd"  list="browsers"   class="form-control validate">
+                <datalist id="browsers">
+                    {% for i in agent %}
+                        <option value="{{ i.id }}">{{ i.name }}</option>
+                    {% endfor %}
+                </datalist>
+              <label data-error="измените" data-success="принято" for="contragent_upd">выберите контрагента</label>
+            </div>
+
+              <div class="md-form mb-5">
+              <input type="text" id="number_upd" class="form-control validate">
+              <label data-error="измените" data-success="принято" for="number">номер авто</label>
+            </div>
+
+		    <div class="md-form mb-5">
+              <input type="text" id="model_upd" class="form-control validate">
+              <label data-error="измените" data-success="принято" for="model">модель и серия транспорта</label>
+            </div>
+
+
+		     <div class="md-form mb-5">
+              <input type="text" id="tara_upd" class="form-control validate">
+              <label data-success="принято" for="tara">Вес тара</label>
+            </div>
+
+
+          </div>
+          <div class="modal-footer d-flex justify-content-center editInsideWrapper">
+            <button onclick="updAuto()" class="btn btn-outline-secondary btn-block editInside" data-dismiss="modal">Изменить
+              <i class="fas fa-paper-plane-o ml-1"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center buttonEditWrapper">
+      <button class="btn btn-info btn-rounded btn-sm buttonEdit" data-toggle="modal" data-target="#modalEdit"
+        disabled>Изменить<i class="fas fa-pencil-square-o ml-1"></i></button>
+    </div>
+
+    <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="modalDelete"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold ml-5 text-danger">Удалить</h4>
+            <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body mx-3">
+            <p class="text-center h4">Вы уверены что хотите удалить выбранного контрагента?</p>
+
+          </div>
+          <div class="modal-footer d-flex justify-content-center deleteButtonsWrapper">
+            <button type="button" class="btn btn-danger btnYesClass" id="btnYes" data-dismiss="modal">Да</button>
+            <button type="button" class="btn btn-primary btnNoClass" id="btnNo" data-dismiss="modal">Нет</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <button class="btn btn-danger btn-sm btn-rounded buttonDelete" data-toggle="modal" disabled data-target="#modalDelete"
+        disabled>Удалить<i class="fas fa-times ml-1"></i></button>
+    </div>
+  </div>
+
+<table id="editibleTable" class="table table-bordered table-hover table-sm text-center" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+         <th class="th-sm">id</th>
+      <th class="th-sm">контрагент</th>
+      <th class="th-sm">номер</th>
+        <th class="th-sm">модель</th>
+	  <th class="th-sm">тара</th>
+      <th class="th-sm">дата добавления</th>
+
+    </tr>
+  </thead>
+  <tbody>
+  {% for a in auto %}
+    <tr>
+     <td>{{ a.id }}</td>
+      <td>{{ a.agent.name }}</td>
+      <td>{{ a.number }}</td>
+         <td>{{ a.model }}</td>
+      <td>{{ a.tara }}</td>
+      <td>{{ a.date_add }}</td>
+    </tr>
+  {% endfor %}
+
+
+  </tbody>
+	<tfoot>
+		<tr>
+   <th >id</th>
+      <th >контрагент</th>
+      <th >номер</th>
+        <th >модель</th>
+	  <th >тара</th>
+      <th >дата добавления</th>
+			</tr>
+      </tfoot>
+</table>
+
+
+	</div>
+        </div>
+    </div>
+
+
+<script>
+    function addAuto() {
+        let agent = $("#contragent").val();
+        let number = $('#number').val();
+        let model = $("#model").val();
+        let ves = $("#tara").val();
+        let data={
+            'agent':agent,
+            'number':number,
+            'model':model,
+            'ves':ves
+        };
+        $.ajax({
+                type: "POST",
+                url: '{% url 'ves:catalogAutoAdd' %}',
+                traditional: true,
+                dataType: 'json',
+                data: data,
+                success: function (dat) {
+                    console.log("auto added");
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+    }
+
+    function updAuto() {
+        let id = $("#auto_id").val();
+        let agent = $("#contragent_upd").val();
+        let number = $('#number_upd').val();
+        let model = $("#model_upd").val();
+        let ves = $("#tara_upd").val();
+        let data={
+            'id':id,
+            'agent':agent,
+            'number':number,
+            'model':model,
+            'ves':ves
+        };
+        $.ajax({
+                type: "POST",
+                url: '{% url 'ves:catalogAutoUpd' %}',
+                traditional: true,
+                dataType: 'json',
+                data: data,
+                success: function (dat) {
+                    console.log("auto added");
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+    }
+</script>
+
+
+
+     {% endblock %}
