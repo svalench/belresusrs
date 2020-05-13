@@ -244,6 +244,7 @@
 
 
     function save() {
+        let catalogId = $('#data_auto').attr('data-id');
         let typeCar = $("[name='cheks']:checked").val();
         let ves = $("#vesFix").html();
         let name = $("#name_tovar").val();
@@ -299,7 +300,8 @@
             'typeCar': typeCar,
             'numAuto': numAuto,
             'numPricep': numberPricep,
-            "ves": ves
+            "ves": ves,
+            "catalogId":catalogId
         };
         console.log(data);
         $.ajax({

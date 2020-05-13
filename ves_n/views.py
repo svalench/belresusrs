@@ -50,7 +50,7 @@ def addAutoView(request):
         dataNakl = form.getlist('nakladnaya')
         agent = Agent.objects.get(pk=form['contragent'])
         print(form)
-        auto = Auto(number=form['numAuto'], agents=agent, tara=int(form['typeCar']),
+        auto = Auto(number=form['numAuto'], agents=agent, tara=int(form['typeCar']), catalog_id=int(form['catalogId']),
                     number_pricep=form['numPricep'], last_in=last_in, ves_in=float(form['ves']),
                 status_in=True)
         auto.save()

@@ -155,6 +155,9 @@ agents = JSON.parse(agents);
 let tovar = "{{ production }}";
 tovar = tovar.replace(/&quot;/g,'"');
 tovar = JSON.parse(tovar);
+let catalogAuto = "{{ catalog }}";
+catalogAuto = catalogAuto.replace(/&quot;/g,'"');
+catalogAuto = JSON.parse(catalogAuto);
 let newAgents =[];
     agents.forEach(function(a){
         newAgents.push(a.fields);

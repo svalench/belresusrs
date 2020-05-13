@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from apps.ves.catalog import  CatalogAutoView
+from apps.ves.catalog import CatalogAutoView, CatalogTrailerView
 from apps.ves.views import StartView, DataView
 
 app_name = 'ves'
@@ -38,7 +38,11 @@ urlpatterns = [
     #catalog views
     path('data/catalog/auto',CatalogAutoView.showAuto,name='catalogAuto'),
     path('data/catalog/auto/addAuto',CatalogAutoView.addAuto,name='catalogAutoAdd'),
-    path('data/catalog/auto/addAuto',CatalogAutoView.addUpdate,name='catalogAutoUpd'),
+    path('data/catalog/auto/updAuto',CatalogAutoView.addUpdate,name='catalogAutoUpd'),
+
+    path('data/catalog/trailer',CatalogTrailerView.showTrailer,name='catalogTrailer'),
+    path('data/catalog/trailer/addTrailer',CatalogTrailerView.addTrailer,name='catalogTrailerAdd'),
+    path('data/catalog/trailer/updTrailer',CatalogTrailerView.addUpdate,name='catalogTrailerUpd'),
 
 
 ]

@@ -191,6 +191,17 @@
                 $('#gos_num_pricep').html(num);
 
             } else {
+                let retval=[];
+                catalogAuto.forEach(function (a) {
+                if (a.fields.number.indexOf($('#gosNavto').val()+$("#seriaAvto").val()+$("#regionAvto").val()) > -1) {
+                    retval.push(a);
+                    $("#data_auto").val(a.fields.model);
+                    $("#data_auto").attr('data-id',a.pk);
+                }
+                 });
+                if(!retval[0]){
+                      alert('автотрансопрт не найден в каталоге авто');
+                 }
                 addAction('корректировка номера авто');
                 $('#gos_num_avto').html(num);
             }
