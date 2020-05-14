@@ -135,6 +135,7 @@ class Vagon(models.Model):
 class Production(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField('название', max_length=255, db_index=True)
+    number = models.CharField('номер',null=True ,max_length=255, db_index=True)
     auto_id = models.ForeignKey('Auto', on_delete=models.CASCADE, null=True, blank=True, db_index=True)
 
 

@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import CreateView
 
-from apps.ves.models import CatalogAuto, Agent, CatalogTrailer
+from apps.ves.models import CatalogAuto, Agent, CatalogTrailer, Production
 
 
 class CatalogAutoView(LoginRequiredMixin, CreateView):
@@ -70,5 +70,28 @@ class CatalogTrailerView(LoginRequiredMixin, CreateView):
         form = request.POST
         auto = CatalogTrailer.objects.filter(pk=request.POST['id']).update(number=form['number'], agent_id=form['agent'],
                                                                         tara=form['ves'], model=form['model'])
+        payload = {'success': True}
+        return HttpResponse(json.dumps(payload), content_type='application/json')
+
+
+class CatalogProductView(LoginRequiredMixin, CreateView):
+    template_name = 'data/catalog_trailer.html'
+    login_url = '/accounts/login/'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def sowCatalog(request):
+        catalog = Production.objects.all()
+        data = {'catalog':catalog}
+        return render(request, 'data/catalog_production.html', data)
+
+    @login_required
+    def addProduction(request):
+        form = request.POST
+        print("-----------===================-=-==============----------------------")
+        auto = Production(name=form['name'], number=form['number'])
+        auto.save()
         payload = {'success': True}
         return HttpResponse(json.dumps(payload), content_type='application/json')
