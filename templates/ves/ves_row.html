@@ -1,47 +1,55 @@
- <div class="row">
-            <div class="col text-center">
-                <h3>Вес</h3>
+ <div class="container-fluid">
+        <div class="row" style="padding-top: 5px;">
+            <div class="col-12 d-xl-flex justify-content-xl-center">
+                <h3 style="color: rgb(46,158,239);">Определение веса и номера транспорта</h3>
             </div>
         </div>
         <hr style="margin-top: 0px;">
-        <div class="row align-content-center" id="lineVes" style="background-color: rgba(3,1,1,0.72);">
-            <div class="col align-self-center" id="ves" style="padding: 0;margin: 0;">
-                <div class="row">
-                    <div class="col-8 text-right" style="letter-spacing: 0px;background-color: #e6c100;"><span  id="vesOnline" style="font-family: Montserrat, sans-serif;font-size: 51px;cursor:not-allowed;">140</span></div>
-                    <div class="col-4"><span style="font-family: Montserrat, sans-serif;font-size: 24px;color: rgb(225,227,230);">кг</span></div>
+        <div class="row no-gutters" id="lineVes" style="background-color: rgba(3,1,1,0.72);">
+            <div class="col-2 align-self-center" id="ves">
+                <div class="row no-gutters">
+                    <div class="col-10 text-right" style="letter-spacing: 0px;background-color: #e6c100;margin-left: 10px;"><span id="vesOnline" style="font-family: Montserrat, sans-serif;font-size: 51px;cursor: not-allowed;padding-right: 10px;">140</span></div>
+                    <div class="col-1 d-xl-flex justify-content-xl-end align-items-xl-end" style="margin-left: 2px;"><span style="font-family: Montserrat, sans-serif;font-size: 24px;color: rgb(225,227,230);">кг</span></div>
                 </div>
             </div>
-            <div class="col-3 align-self-center" id="brutto-netto" style="background-color: #ffffff;">
-                <div class="row" style="background-color: #146500;color: rgb(255,255,255);">
-                    <div class="col-7 text-right align-self-center"><span data-bs-hover-animate="flash" onclick="correct()" id="vesFix" style="font-family: Montserrat, sans-serif;font-size: 51px;cursor:pointer;">140</span></div>
-                    <div class="col-5">
+            <div class="col-2 col-xl-2 align-self-center" id="brutto-netto" style="margin: 0px 30px;">
+                <div class="row" style="color: rgb(255,255,255);">
+                    <div class="col-8 text-right" style="background-color: #2f6017;"><span data-bs-hover-animate="flash" id="vesFix" style="font-family: Montserrat, sans-serif;font-size: 51px;cursor:pointer;">140</span></div>
+                    <div class="col-4 d-xl-flex align-items-xl-center">
                         <div class="row">
                             <div class="col-12 text-center" style="background-color: #210445;"><span id="status" style="font-family: Montserrat, sans-serif;font-size: 24px;">брутто</span></div>
-                            <div class="col-12 text-center" style="background-color: #170000;"><span style="font-family: Montserrat, sans-serif;font-size: 24px;">кг</span></div>
+                            <div class="col-12 text-center"><span style="font-family: Montserrat, sans-serif;font-size: 24px;">кг</span></div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-2 align-self-center" id="buttons"><button onclick="fixVes()" class="btn btn-success btn-block" type="button">Зафиксировать</button><button onclick="destroyFixVes()" class="btn btn-warning btn-block" type="button">Сброс</button></div>
-            <div class="col-2" id="numbers" style="color: rgb(236,238,241);">
-                <div class="row">
-                    <div class="col-12"><span>Авто</span></div>
-                    <div class="col-12 text-right" style="font-size: 25px;"><span class="border rounded border-primary shadow" data-bs-hover-animate="flash" id="gos_num_avto" onclick="correct_num();" style="font-size: 30px;cursor: pointer;">****-**-*</span></div>
-                    <div class="col-12"><span>Прицеп</span></div>
-                    <div class="col-12 text-right"><span class="border rounded border-primary shadow" data-bs-hover-animate="flash" onclick="correct_num_pricep();" id="gos_num_pricep" style="font-size: 30px;cursor: pointer;">****-**-*</span></div>
-                </div>
+            <div class="col-2 col-xl-2 align-self-center" id="buttons" style="margin: 0px 20px;margin-left: 30px;margin-right: 30px;"><button class="btn btn-success btn-block btn-lg" type="button" onclick="fixVes()">Зафиксировать</button><button class="btn btn-outline-warning btn-block btn-lg" type="button" onclick="destroyFixVes()">Сброс</button></div>
+            <div class="col-auto">
+                <div style="border-left: 2px solid #007bff;height: 100%;"></div>
             </div>
-            <div class="col-2 align-items-center align-self-center" style="color: rgb(240,244,248);">
-                <div class="text-left border rounded border-info pulse animated">
-                    <div class="form-check border-primary"><input class="form-check-input" type="radio" value="1" id="brutto" checked="" name="cheks"><label class="form-check-label" for="status">груженый</label></div>
-                    <div class="form-check text-truncate"><input class="form-check-input" type="radio" id="tara" value="2" name="cheks"><label class="form-check-label" for="status">порожний</label></div>
-                </div>
-                <div class="text-left border rounded border-info pulse animated">
-                    <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-4" name="derection"><label class="form-check-label" for="derection">с территории</label></div>
-                    <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-3" name="derection" checked=""><label class="form-check-label" for="derection">на территорию</label></div>
-                </div>
+            <div class="col-3" id="numbers" style="color: rgb(236,238,241);padding: 0px 50px;">
+                <div class="row">
+                    <div class="col-12 text-center" style="font-size: 25px;padding: 0px;"><label class="col-form-label text-left" for="gos_num_avto" style="font-size: 16px;">Авто<input class="border rounded border-primary text-right form-control" type="text" id="gos_num_avto" style="font-size: 30px;cursor: pointer;background-color: transparent;color: rgb(255,255,255);" placeholder="1234 AB-7" maxlength="8" minlength="8" pattern="[A-Z]{,8}" required=""></label></div>
+                    <div
+                        class="col-12 text-center" style="font-size: 25px;padding: 0px;"><label class="col-form-label text-left" for="gos_num_pricep" style="font-size: 16px;">Прицеп<input class="border rounded border-primary text-right form-control" type="text" id="gos_num_pricep" style="font-size: 30px;cursor: pointer;background-color: transparent;color: rgb(255,255,255);" placeholder="1234 AB-7" maxlength="8" minlength="8" pattern="[A-Z]{,8}" required=""></label></div>
             </div>
         </div>
+        <div class="col-auto">
+            <div style="border-left: 2px solid #007bff;height: 100%;"></div>
+        </div>
+        <div class="col-2 align-items-center align-self-center" style="color: rgb(240,244,248);padding-left: 20px;">
+            <div class="text-left border rounded border-info" style="padding: 5px 0px;">
+                <div class="form-check d-flex align-items-center" style="font-size: 20px;padding: 2px 30px;"><input class="form-check-input" type="radio" id="brutto" checked="" name="cheks"><label class="form-check-label" for="brutto" style="font-size: 20px;">Груженый</label></div>
+                <div class="form-check text-truncate d-flex align-items-center"
+                    style="padding: 2px 30px;"><input class="form-check-input" type="radio" id="tara" name="cheks"><label class="form-check-label" for="tara" style="font-size: 20px;">Порожний</label></div>
+            </div>
+            <div class="text-left border rounded border-info" style="padding: 5px 0px;width: 294px;">
+                <div class="form-check d-flex align-items-center" style="padding: 2px 30px;"><input class="form-check-input" type="radio" id="formCheck-4" name="derection"><label class="form-check-label" for="formCheck-4" style="font-size: 20px;">C территории</label></div>
+                <div class="form-check d-flex align-items-center" style="padding: 2px 30px;"><input class="form-check-input" type="radio" id="formCheck-3" name="derection" checked=""><label class="form-check-label" for="formCheck-3" style="font-size: 20px;">На территорию</label></div>
+            </div>
+        </div>
+    </div>
+    </div>
 
 
 
