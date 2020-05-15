@@ -20,6 +20,7 @@ from django.shortcuts import redirect, render
 
 from apps.ves.models import ActionUser, Auto, Agent, DataNakladnayaAuto, Vagon, DataNakladnayaVagon, User, GlobalData, \
     Production
+from apps.ves.snap7_plc import PlcRemoteUse
 
 
 def logout_view(request):
@@ -196,10 +197,11 @@ def GetDataStatus(request):
         one_entry = GlobalData.objects.get(id=1)
     except ObjectDoesNotExist:
         one_entry = GlobalData(Auto=False)
-    print()
+    ves = PlcRemoteUse('192.168.0.1')
     dataRecive = {
         'plc':"1200",
         "type":"vrs",
+        'ves':ves.getWeight(),
         'auto':one_entry.Auto,
         'zd': one_entry.Zd,
     }
