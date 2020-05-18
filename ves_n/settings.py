@@ -168,3 +168,4 @@ CHANNEL_LAYERS = {
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 
+print('=================================SETTINGS=======================================')

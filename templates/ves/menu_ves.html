@@ -2,68 +2,75 @@
 {% load static %}
 {% block content %}
       <link rel="stylesheet" href="{% static 'boostrap/css/bootstrap.min.css' %}">
-
+    <link rel="stylesheet" href="{% static 'css/Features-Boxed.css' %}">
     <script src="{% static 'boostrap/js/bootstrap.min.js' %}"></script>
- <div class="container">
- <div class="row align-items-center m-5 ">
-
-         <div class="col-6 menu">
-             <div onclick="gotoavto()" class="card" style="width: 25rem;">
-  <div class="card-body">
-    <h4 class="card-title">Автомобильный транспорт</h4>
-
-    <h6 class="card-subtitle mb-2 text-muted">Пункт весвого контроля</h6>
-           <hr>
-    <p class="card-text">Управление пунктом весового контроля</p>
-        <hr>
-
-   <p>Статутс   -    <span class="badge badge-success">Свободно</span></p>
-  </div>
-</div>
-         </div>
-
-
-         <div class="col-6 menu">
-             <div onclick="gotozd()" class="card" style="width: 25rem;">
-  <div class="card-body">
-    <h4 class="card-title">Железнодорожный транспорт</h4>
-
-    <h6 class="card-subtitle mb-2 text-muted">Пункт весвого контроля</h6>
-       <hr>
-    <p class="card-text">Меню управления станцией весового контроля</p>
-       <hr>
-
-   <p>Статутс   -    <span class="badge badge-success">Свободно</span></p>
-
-
-
-  </div>
-</div>
-         </div>
- </div>
-  </div>
-      </div>
-
-
-    <script src="{% static 'popper.js' %}" ></script>
-<script src="{% static 'b.min.js' %}" ></script>
-
-
-        <style>
-    .menu:hover {
-  -webkit-transform: scale(1.05);
-  -ms-transform: scale(1.05);
-  transform: scale(1.05);
-}
-</style>
-
+  <!-- Start: Features Boxed -->
+    <div class="features-boxed" style="background-color: rgb(255,255,255);">
+        <div class="container">
+            <!-- Start: Features -->
+            <div class="row justify-content-center features" style="padding-bottom: 0px;">
+                <div onclick="gotoavto()" class="col-sm-12 col-md-6 col-lg-6 col-xl-6 item">
+                    <div class="box" style="padding: 20px;"><img src="{% static 'img/img/car_weight.svg'%}" style="width: 260px;">
+                        <h3 class="name">Автотранспорт - весовой контроль</h3>
+                        <p class="description">Управление пунктом весового контроля</p><span id="statusAuto" class="bg-success border rounded" style="font-size: 24px;padding: 5px;">СВОБОДЕН</span></div>
+                </div>
+                <div onclick="gotozd()" class="col-sm-12 col-md-6 col-lg-6 col-xl-6 item">
+                    <div class="box" style="padding: 20px;"><img src="{% static 'img/img/train_weight.svg'%}" style="width: 260px;">
+                        <h3 class="name">Ж/Д транспорт- весовой контроль</h3>
+                        <p class="description">Управление пунктом весового контроля</p><span id="statusZd" class="bg-danger border rounded" style="font-size: 24px;padding: 5px;">ЗАНЯТ</span></div>
+                </div>
+                <div onclick="gotoavtoData()" class="col-sm-12 col-md-6 col-lg-6 col-xl-6 item">
+                    <div class="box" style="padding: 20px;"><img src="{% static 'img/img/car_data.svg'%}" style="width: 260px;">
+                        <h3 class="name">Автотранспорт - сводные данные</h3>
+                        <p class="description">Просмотр данных в табличном виде</p>
+                    </div>
+                </div>
+                <div onclick="gotozdData()" class="col-sm-12 col-md-6 col-lg-6 col-xl-6 item">
+                    <div class="box" style="padding: 20px;"><img src="{% static 'img/img/train_data.svg'%}" style="width: 260px;">
+                        <h3 class="name">Ж/Д транспорт - сводные данные</h3>
+                        <p class="description">Просмотр данных в табличном виде</p>
+                    </div>
+                </div>
+            </div>
+            <!-- End: Features -->
+        </div>
+    </div>
+    <!-- End: Features Boxed -->
     <script>
 function gotoavto() {
     window.location.href = "/ves/avto";
 }
+function gotoavtoData() {
+    window.location.href = "/ves/avtodata";
+}
 function gotozd() {
     window.location.href = "/ves/zd";
 }
+function gotozdData() {
+    window.location.href = "/ves/zddata";
+}
+function statusUpd(){
+    if(!statusGlobalJs.auto){
+        $("#statusAuto").removeClass('bg-danger');
+        $("#statusAuto").addClass('bg-success');
+        $("#statusAuto").html('СВОБОДЕН');
+    }else{
+        $("#statusAuto").removeClass('bg-success');
+        $("#statusAuto").addClass('bg-danger');
+        $("#statusAuto").html('ЗАНЯТ');
+    }
+    if(!statusGlobalJs.zd){
+        $("#statusZd").removeClass('bg-danger');
+        $("#statusZd").addClass('bg-success');
+        $("#statusZd").html('СВОБОДЕН');
+    }else{
+        $("#statusZd").removeClass('bg-success');
+        $("#statusZd").addClass('bg-danger');
+        $("#statusZd").html('ЗАНЯТ');
+    }
+}
+
+setInterval(statusUpd,1000);
     </script>
 
 {% endblock %}

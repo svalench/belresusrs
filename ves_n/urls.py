@@ -35,4 +35,18 @@ urlpatterns = [
     path('addcontragentPOST/',addContragentView, name='addcontragentPOST'),
     path('updcontragentPOST/',updContragentView, name='updcontragentPOST'),
     path('getDataAuto/', GetDataAuto, name='getDataAuto'),
+    path('getDataZd/', GetDataZd, name='getDataZd'),
+    path('getDataStatus/', GetDataStatus, name='getDataStatus'),
+    path('getDataZd/getzdnumbler', GetZdNumber, name='getZdNumber'),
+    path('getDataZd/getzdagent', GetZdAgent, name='getZdAgent'),
+    path('getDataZd/getzddate', GetZdDate, name='getZdDate'),
+
+    path('getDataAuto/getautonumbler', GetAutoNumber, name='getAutoNumber'),
+    path('getDataAuto/getautoagent', GetAutoAgent, name='getAutoAgent'),
+    path('getDataAuto/getautodate', GetAutoDate, name='getAutoDate'),
+
+    #отчеты
+    path('reportAutoAgent/get', reportAutoAgent, name='reportAutoAgent'),
+
+    path('search/', serchAuto, name='search'),
 ]
