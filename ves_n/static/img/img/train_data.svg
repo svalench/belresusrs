@@ -1,0 +1,12 @@
+<svg width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M71.5649 35H52V69H77.5V40.933L71.5649 35ZM71.1229 37.5638L74.9351 41.375H71.1229V37.5638V37.5638ZM54.125 66.875V37.1229H69V43.4989H75.375V66.875H54.125Z" fill="black"/>
+<rect x="13" y="20" width="43" height="38" fill="white"/>
+<path d="M45 26C45 26.552 44.553 27 44 27H32C31.448 27 31 26.552 31 26V24C31 23.448 31.448 23 32 23H44C44.553 23 45 23.448 45 24V26Z" stroke="black" stroke-width="2" stroke-miterlimit="10"/>
+<path d="M41.033 17H35.123M29.991 17H28C24.688 17 22 19.56 22 22.714V51.286C22 54.44 24.688 57 28 57H48C51.312 57 54 54.44 54 51.286V22.714C54 19.56 51.312 17 48 17H46.068H29.991Z" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M43.5 19C44.8807 19 46 17.8807 46 16.5C46 15.1193 44.8807 14 43.5 14C42.1193 14 41 15.1193 41 16.5C41 17.8807 42.1193 19 43.5 19Z" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M32.5 19C33.8807 19 35 17.8807 35 16.5C35 15.1193 33.8807 14 32.5 14C31.1193 14 30 15.1193 30 16.5C30 17.8807 31.1193 19 32.5 19Z" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M26 28.833C26 27.821 26.896 27 28 27H48C49.104 27 50 27.821 50 28.833V37.166C50 38.178 49.104 39 48 39H28C26.896 39 26 38.178 26 37.166V28.833Z" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M29 52C30.6569 52 32 50.6569 32 49C32 47.3431 30.6569 46 29 46C27.3431 46 26 47.3431 26 49C26 50.6569 27.3431 52 29 52Z" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M47 52C48.6569 52 50 50.6569 50 49C50 47.3431 48.6569 46 47 46C45.3431 46 44 47.3431 44 49C44 50.6569 45.3431 52 47 52Z" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="0.5" y="0.5" width="89" height="89" stroke="black"/>
+</svg>
