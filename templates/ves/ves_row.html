@@ -1,0 +1,217 @@
+ <div class="row">
+            <div class="col text-center">
+                <h3>Вес</h3>
+            </div>
+        </div>
+        <hr style="margin-top: 0px;">
+        <div class="row align-content-center" id="lineVes" style="background-color: rgba(3,1,1,0.72);">
+            <div class="col align-self-center" id="ves" style="padding: 0;margin: 0;">
+                <div class="row">
+                    <div class="col-8 text-right" style="letter-spacing: 0px;background-color: #e6c100;"><span  id="vesOnline" style="font-family: Montserrat, sans-serif;font-size: 51px;cursor:not-allowed;">140</span></div>
+                    <div class="col-4"><span style="font-family: Montserrat, sans-serif;font-size: 24px;color: rgb(225,227,230);">кг</span></div>
+                </div>
+            </div>
+            <div class="col-3 align-self-center" id="brutto-netto" style="background-color: #ffffff;">
+                <div class="row" style="background-color: #146500;color: rgb(255,255,255);">
+                    <div class="col-7 text-right align-self-center"><span data-bs-hover-animate="flash" onclick="correct()" id="vesFix" style="font-family: Montserrat, sans-serif;font-size: 51px;cursor:pointer;">140</span></div>
+                    <div class="col-5">
+                        <div class="row">
+                            <div class="col-12 text-center" style="background-color: #210445;"><span id="status" style="font-family: Montserrat, sans-serif;font-size: 24px;">брутто</span></div>
+                            <div class="col-12 text-center" style="background-color: #170000;"><span style="font-family: Montserrat, sans-serif;font-size: 24px;">кг</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2 align-self-center" id="buttons"><button onclick="fixVes()" class="btn btn-success btn-block" type="button">Зафиксировать</button><button onclick="destroyFixVes()" class="btn btn-warning btn-block" type="button">Сброс</button></div>
+            <div class="col-2" id="numbers" style="color: rgb(236,238,241);">
+                <div class="row">
+                    <div class="col-12"><span>Авто</span></div>
+                    <div class="col-12 text-right" style="font-size: 25px;"><span class="border rounded border-primary shadow" data-bs-hover-animate="flash" id="gos_num_avto" onclick="correct_num();" style="font-size: 30px;cursor: pointer;">****-**-*</span></div>
+                    <div class="col-12"><span>Прицеп</span></div>
+                    <div class="col-12 text-right"><span class="border rounded border-primary shadow" data-bs-hover-animate="flash" onclick="correct_num_pricep();" id="gos_num_pricep" style="font-size: 30px;cursor: pointer;">****-**-*</span></div>
+                </div>
+            </div>
+            <div class="col-2 align-items-center align-self-center" style="color: rgb(240,244,248);">
+                <div class="text-left border rounded border-info pulse animated">
+                    <div class="form-check border-primary"><input class="form-check-input" type="radio" value="1" id="brutto" checked="" name="cheks"><label class="form-check-label" for="status">груженый</label></div>
+                    <div class="form-check text-truncate"><input class="form-check-input" type="radio" id="tara" value="2" name="cheks"><label class="form-check-label" for="status">порожний</label></div>
+                </div>
+                <div class="text-left border rounded border-info pulse animated">
+                    <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-4" name="derection"><label class="form-check-label" for="derection">с территории</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" id="formCheck-3" name="derection" checked=""><label class="form-check-label" for="derection">на территорию</label></div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+ <!-- Modal ves -->
+    <div class="modal fade" id="ves_modal" tabindex="-1" role="dialog" aria-labelledby="ves_modal"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ves_modal">Изменения веса</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label>Введите вес для установки</label>
+                    <input type="number" id="vesKorrect">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">отмена</button>
+                    <button type="button" onclick="changeVes()" class="btn btn-primary">Изменить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+ <script>
+
+
+     function correct() {
+            addAction('Попытка изменить вес');
+            $('#ves_modal').modal('show');
+            $("#vesKorrect").val($("#vesFix").html());
+        }
+     // при изменении веса добавляем событие и проверяем введеное значение
+           function changeVes() {
+            if (filterInt($("#vesKorrect").val())) {
+                addAction('изменен вес');
+                $("#vesFix").html($("#vesKorrect").val());
+                $('#ves_modal').modal('hide');
+            } else {
+                alert('не целое число');
+            }
+
+        }
+
+
+
+        function fixVes() {
+            addAction('вес зафиквсирован');
+            $("#vesFix").html($("#vesOnline").html());
+        }
+
+        function destroyFixVes() {
+            addAction('вес сброшен');
+            $("#vesFix").html(0);
+        }
+
+
+        var status = true;
+        $("#brutto").click(function () {
+            status = true;
+            addAction('оператор указал авто как груженый');
+            $("#status").html('брутто');
+            $("#dov_otpr").css('display', 'block');
+            $("#div_pol").css('display', 'none');
+        });
+
+        $("#tara").click(function () {
+            status = false;
+            addAction('оператор указал авто как порожний');
+            $("#status").html('тара');
+            $("#div_pol").css('display', 'block');
+            $("#dov_otpr").css('display', 'none');
+        });
+
+
+
+
+
+        function correct_num() {
+            addAction('Попытка корректировки номера авто');
+            $('#gosnomeravto').modal('toggle');
+            var num = $('#gos_num_avto').html();
+            var arr = num.split('-');
+            $("#seriaAvto").val(arr[1]);
+            $('#gosNavto').val(arr[0]);
+            $('#regionAvto').val(arr[2]);
+        }
+
+
+        function correct_num_pricep() {
+            addAction('Попытка корректировки номера прицепа');
+            $('#gosnomeravto').modal('toggle');
+            var num = $('#gos_num_pricep').html();
+            var arr = num.split('-');
+            $("#seriaAvto").val(arr[1]);
+            $('#gosNavto').val(arr[0]);
+            $('#regionAvto').val(arr[2]);
+            pricep = true;
+        }
+
+        function changeNumAvto() {
+            if (!$('#gosNavto').val()) {
+                addAction('оператор не указал номер');
+                alert('Вы не указали номер ');
+                $('#gosNavto').focus();
+                return;
+            }
+            if (!$('#gosNavto').val().match(/[0-9]{4}/)) {
+                addAction('оператор не правльно указал номер');
+                alert("В поле  должны быть введены только  4 цифры");
+                $('#gosNavto').focus();
+                return;
+            }
+
+            if (!$('#seriaAvto').val()) {
+                addAction('оператор не указал серию');
+                alert('Вы не указали номер ');
+                $('#seriaAvto').focus();
+                return;
+            }
+            if (!$('#seriaAvto').val().match(/[A-Z]{2}/)) {
+                addAction('оператор не правильно ввел буквенный указатель номера');
+                alert("В поле  должны быть введены только 2 латинские буквы капс локом");
+                $('#seriaAvto').focus();
+                return;
+            }
+
+            if (!$('#regionAvto').val()) {
+                addAction('оператор не указал регион');
+                alert('Вы не указали номер ');
+                $('#regionAvto').focus();
+                return;
+            }
+            if (!$('#regionAvto').val().match(/[0-7]{1}/)) {
+                addAction('оператор не правильно ввел регион');
+                alert("В поле  должны быть введены только 1 цифрa от 0 до 7");
+                $('#regionAvto').focus();
+                return;
+            }
+            let num = $('#gosNavto').val() + "-" + $("#seriaAvto").val() + "-" + $("#regionAvto").val();
+            if (pricep) {
+                addAction('корректировка номера прицепа');
+                $('#gos_num_pricep').html(num);
+
+            } else {
+                let retval=[];
+                catalogAuto.forEach(function (a) {
+                if (a.fields.number.indexOf($('#gosNavto').val()+$("#seriaAvto").val()+$("#regionAvto").val()) > -1) {
+                    retval.push(a);
+                    $("#data_auto").val(a.fields.model);
+                    $("#data_auto").attr('data-id',a.pk);
+                }
+                 });
+                if(!retval[0]){
+                      alert('автотрансопрт не найден в каталоге авто');
+                 }
+                addAction('корректировка номера авто');
+                $('#gos_num_avto').html(num);
+            }
+            $('#gosnomeravto').modal('hide');
+        }
+
+        $('#gosnomeravto').on('hidden.bs.modal', function (e) {
+            pricep = false;
+        })
+
+
+
+ </script>

@@ -2,43 +2,50 @@
 {% load static %}
 {% block content %}
       <link rel="stylesheet" href="{% static 'boostrap/css/bootstrap.min.css' %}">
-
+  <link rel="stylesheet" href="{% static 'css/Article-List.css' %}">
+        <link rel="stylesheet" href="{% static 'css/datatables.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/Features-Boxed.css' %}">
+        <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        <link rel="stylesheet" href="{% static 'css/table-css.css' %}">
     <script src="{% static 'boostrap/js/bootstrap.min.js' %}"></script>
- <div class="container">
- <div class="row align-items-center m-5 ">
-
-         <div class="col-6 menu">
-             <div onclick="gotoaddAgent()" class="card" style="width: 25rem;">
-  <div class="card-body">
-    <h4 class="card-title">Контрагенты</h4>
-
-    <h6 class="card-subtitle mb-2 text-muted">Меню для добавления контрашента</h6>
-           <hr>
-    <p class="card-text">В данном меню вы сможете добавить нового контрагента или отредактировать сущесвующего</p>
-        <hr>
-
-  </div>
-</div>
-         </div>
-
-
-         <div class="col-6 menu">
-             <div onclick="gotoViewActions()" class="card" style="width: 25rem;">
-  <div class="card-body">
-    <h4 class="card-title">Журнал событий</h4>
-
-    <h6 class="card-subtitle mb-2 text-muted">Меню просмотра журнала событий</h6>
-       <hr>
-    <p class="card-text">В данном меню вы смоежете просмотреть все действия которые были совершены в сисетме</p>
-       <hr>
-  </div>
-</div>
-         </div>
- </div>
-  </div>
-      </div>
+  <!-- End: Navigation with Button -->
+    <!-- Start: Features Boxed -->
+    <div class="features-boxed" style="background-color: rgb(255,255,255);">
+        <div class="container">
+            <!-- Start: Features -->
+            <div  class="row justify-content-center features">
+                <div onclick="gotoaddAgent()" class="col-sm-12 col-md-6 col-lg-6 col-xl-6 item" style="padding: 10px 15px;">
+                    <div class="box" style="padding: 0px;"><img src="{% static 'img/img/conteragent.svg' %}" style="width: 260px;padding-top: 20px;">
+                        <h3 class="name">Контрагенты</h3>
+                        <p class="description" style="padding-bottom: 20px;">Добавление и редактирование списков контрагентов</p>
+                    </div>
+                </div>
+                <div onclick="gotoViewActions()" class="col-sm-12 col-md-6 col-lg-6 col-xl-6 item" style="padding: 10px 15px;">
+                    <div class="box" style="padding: 0px;"><img src="{% static 'img/img/magazine.svg' %}" style="width: 260px;padding-top: 20px;">
+                        <h3 class="name">Журнал событий</h3>
+                        <p class="description" style="padding-bottom: 20px;">Журнал действий зарегистрированных в системе</p>
+                    </div>
+                </div>
 
 
+                 <div onclick="gotoUserAdd()" class="col-sm-12 col-md-6 col-lg-6 col-xl-6 item" style="padding: 10px 15px;">
+                    <div class="box" style="padding: 0px;"><img src="{% static 'img/img/users.svg' %}" style="width: 260px;padding-top: 20px;">
+                        <h3 class="name">Журнал пользователей</h3>
+                        <p class="description" style="padding-bottom: 20px;">Журнал пользователей. Добавление, удаление, редактирование пользователей системы.</p>
+                    </div>
+                 </div>
+                      <div onclick="gotoEventSys()" class="col-sm-12 col-md-6 col-lg-6 col-xl-6 item" style="padding: 10px 15px;">
+                    <div class="box" style="padding: 0px;"><img src="{% static 'img/img/systemEvent.svg' %}" style="width: 260px;padding-top: 20px;">
+                        <h3 class="name">Журнал системных сообщений</h3>
+                        <p class="description" style="padding-bottom: 20px;">Журнал системных сообщений. Просмотр сообщений ситемы. Бд системы.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- End: Features -->
+        </div>
+    </div>
+    <!-- End: Features Boxed -->
     <script src="{% static 'popper.js' %}" ></script>
 <script src="{% static 'b.min.js' %}" ></script>
 
@@ -57,6 +64,12 @@ function gotoaddAgent() {
 }
 function gotoViewActions() {
     window.location.href = "{% url 'ves:actions' %}";
+}
+function gotoUserAdd() {
+window.location.href = "{% url 'ves:users' %}";
+}
+function gotoEventSys() {
+window.location.href = "{% url 'ves:users' %}";
 }
     </script>
 

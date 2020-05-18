@@ -1,0 +1,456 @@
+<div class="row">
+    <div class="col-12 text-center align-self-center"><span class="text-center shadow" style="font-size: 30px;">Накладная</span>
+        <hr style="margin-top: 0;">
+    </div>
+</div>
+<div class="row">
+    <div class="col-6 border border-primary">
+        <div class="row">
+            <div class="col text-center"><span style="font-size: 21px;">Данные по трансопрту</span>
+                <hr style="margin-top: 0px;">
+            </div>
+        </div>
+        <div class="row border border-primary">
+            <div class="col-4 text-center" style="margin-bottom: 0;"><label class="shadow">водитель</label>
+                <hr style="margin-top: 0;">
+                <input type="text" id="name_driver" class="form-control-sm shadow-sm"
+                       style="margin-bottom: 20px;width:100%;"></div>
+            <div class="col text-center"><label class="shadow">автомобиль</label>
+                <hr style="margin-top: 0;">
+                <input type="text" id="data_auto" class="form-control-sm shadow-sm"
+                       style="margin-bottom: 20px;width:100%" readonly=""></div>
+            <div class="col"><label class="text-center d-block shadow">прицеп</label>
+                <hr style="margin-top: 0;">
+                <input type="text" id="data_pricep" class="form-control-sm" style="margin-bottom: 20px;width:100%;"
+                       readonly=""></div>
+             <div class="col-4 text-center"><label id="shadow" class="shadow">путевой лист №</label>
+                <hr style="margin-top: 0;">
+                <input type="text" id="N_p_lista" class="form-control-sm shadow-sm"
+                       style="margin-bottom: 20px; width:90%;"></div>
+        </div>
+        <div class="row">
+            <div class="col text-center"><label class="shadow">пункт погрузки</label>
+                <hr style="margin-top: 0;">
+                <textarea type="text" id="pogruzka" class="form-control-sm shadow-sm"
+                          style="margin-bottom: 20px; width:90%;"></textarea></div>
+            <div class="col text-center"><label class="shadow">пункт разгрузки</label>
+                <hr style="margin-top: 0;">
+                <textarea type="text" id="razgruzka" class="form-control-sm shadow-sm"
+                          style="margin-bottom: 20px; width:90%;"></textarea></div>
+
+        </div>
+        <div class="row">
+
+            <div class="col text-center border border-primary"><label id="shadow"
+                                                                      class="shadow">Грузоотправитель</label>
+                <hr style="margin-top: 0;">
+                <textarea type="text" id="agent" class="form-control-sm shadow-sm"
+                          style="margin-bottom: 20px; width:90%;" readonly=""></textarea>
+                <button class="btn btn-primary" type="button" onclick="show_serchAgent()" style="margin-bottom: 5px;;">
+                    выбрать
+                </button>
+            </div>
+            <div class="col text-center border border-primary"><label id="shadow"
+                                                                      class="shadow">Грузополучатель</label>            <!--- грузополучатель!!! -->
+                <hr style="margin-top: 0;">
+                <textarea type="text" id="agentPoluchit" class="form-control-sm shadow-sm"
+                          style="margin-bottom: 20px; width:90%;" readonly=""></textarea>
+                <button class="btn btn-primary" type="button" onclick="show_serchAgent()" style="margin-bottom: 5px;;">
+                    выбрать
+                </button>
+            </div>
+        </div>
+        <div class="row">
+        <div class="col-6 text-center border border-primary"><label id="shadow" class="shadow">Отпуск
+                разрешил</label>
+                <hr style="margin-top: 0;">
+                <input type="text" id="razreshil" class="form-control-sm shadow-sm"
+                       style="margin-bottom: 20px; width:90%;"></div>
+
+            <div class="col"><label id="shadow" class="shadow">Основание отпуска</label>
+                <hr style="margin-top: 0;">
+                <input type="text" id="osnovanie" class="form-control-sm shadow-sm"
+                       style="margin-bottom: 20px; width:90%;"></div>
+        </div>
+        <div class="row">
+             <div class="col"><label class="text-center shadow">товар к доставке принял</label>
+                <hr style="margin-top: 0;">
+                <input type="text" id="prinyal" class="shadow-sm" style="width: 80%;" placeholder=" принял"></div>
+            <div class="col"><label id="shadow" class="shadow">Сдал грузоотправитель</label>
+                <hr style="margin-top: 0;">
+                <input type="text" id="sdal" class="form-control-sm shadow-sm" style="margin-bottom: 20px; width:90%;">
+            </div>
+             <div class="col"><label id="shadow" class="shadow">Принял грузополучатель</label>
+                <hr style="margin-top: 0;">
+                <input type="text" id="gruzopoluchatel" class="form-control-sm shadow-sm" style="margin-bottom: 20px; width:90%;">
+            </div>
+            <div class="col"><label class="text-center shadow">Доверенность</label>
+                <hr style="margin-top: 0;">
+                <textarea type="text" id="doverennost" class="shadow-sm" style="width: 80%;" placeholder=" доверенность"></textarea></div>
+        </div>
+        <div class="row">
+
+        </div>
+    </div>
+    <div class="col text-center border border-primary">
+        <div class="row">
+            <div class="col-2 text-center"><label class="text-center shadow">тип накладной</label>
+                <hr style="margin-top: 0;">
+                <select id="ttn" style="width:100%;">
+                    <optgroup label="выберите">
+                        <option value="1" selected="">ТН</option>
+                        <option value="2">ТТН</option>
+                    </optgroup>
+                </select></div>
+            <div class="col-3 text-center"><label class="text-center shadow">серия накладной</label>
+                <hr style="margin-top: 0;">
+                <input class="form-control-sm shadow-sm" type="text" id="seria" style="width: 50%;"></div>
+            <div class="col text-center"><label class="text-center shadow">номер накладной</label>
+                <hr style="margin-top: 0;">
+                <input class="form-control-sm shadow-sm" type="text" id="nakladnaya" style="width: 80%;"></div>
+            <div class="col text-center">
+                <label class="text-center shadow">дата накладной</label>
+                <hr style="margin-top: 0;">
+                <input type="date" id="dateNakladnaya">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col"><span style="font-size: 21px;">поля накланой</span>
+                <hr style="margin-top: 0;">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-5"><label class="text-center shadow">наименование товара</label>
+                <hr style="margin-top: 0;">
+                <textarea type="text" readonly id="name_tovar" rows="2" class="shadow-sm" style="width: 80%;"
+                          placeholder="наименование"></textarea>
+            <button class="btn btn-primary" onclick="show_serchTovar();">выбрать</button>
+            </div>
+
+            <div class="col-1 text-center" id="ed"><label class="text-center shadow">ед&nbsp;</label>
+                <hr style="margin-top: 0;">
+                <select id="ed_ves" style="width:100%;">
+                    <optgroup label="выберите">
+                        <option value="kg" selected="">кг</option>
+                        <option value="t">тн</option>
+                    </optgroup>
+                </select></div>
+            <div class="col-2 text-center"><label class="text-center shadow">количество</label>
+                <hr style="margin-top: 0;">
+                <input class="form-control-sm shadow-sm" type="text" id="ves_nakladnaya" style="width: 90%;"></div>
+            <div class="col-1 text-center" id="ed"><label class="text-center shadow">валюта</label>
+                <hr style="margin-top: 0;">
+                <select id="valuta" style="width:100%;">
+                    <optgroup label="выберите">
+                        <option value="br" selected="">br</option>
+                        <option value="usd">usd</option>
+                        <option value="eur">eur</option>
+                    </optgroup>
+                </select></div>
+            <div class="col-3 text-center"><label class="text-center shadow">цена</label>
+                <hr style="margin-top: 0;">
+                <input class="form-control-sm shadow-sm" type="text" id="cena" style="width: 90%;"></div>
+            <div class="col-3 text-center"><label class="text-center shadow">стоимость</label>
+                <hr style="margin-top: 0;">
+                <input readonly class="form-control-sm shadow-sm" type="text" id="price_no_nds" style="width: 90%;"></div>
+            <div class="col-2 text-center"><label class="text-center shadow">ставка НДС</label>
+                <hr style="margin-top: 0;">
+                <input class="form-control-sm shadow-sm" type="text" id="nds" style="width: 90%;" value="20"></div>
+            <div class="col-3 text-center"><label class="text-center shadow">сумма НДС</label>
+                <hr style="margin-top: 0;">
+                <input class="form-control-sm shadow-sm" type="text" id="summ_nds" style="width: 90%;" readonly></div>
+
+            <div class="col-3 text-center"><label class="text-center shadow">стоимость с НДС</label>
+                <hr style="margin-top: 0;">
+                <input class="form-control-sm shadow-sm" type="text" id="cena_nds" style="width: 90%;" readonly value="0"></div>
+
+            <div class="col-3 text-center"><label class="text-center shadow">количество  мест</label>
+                <hr style="margin-top: 0;">
+                <input class="form-control-sm shadow-sm" type="text" id="kol_mest" style="width: 90%;" ></div>
+            <div class="col-3 text-center"><label class="text-center shadow">масса груза</label>
+                <hr style="margin-top: 0;">
+                <input class="form-control-sm shadow-sm" type="text" id="mass_gruza" style="width: 90%;" ></div>
+            <div class="col-6 text-center"><label class="text-center shadow">описание</label>
+                <hr style="margin-top: 0;">
+                <textarea class="form-control-sm shadow-sm" type="text" rows="4" id="description" style="width: 90%;" ></textarea></div>
+        </div>
+        <div class="row">
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<div class="row text-center" styel="">
+    <div class="col" type=""><span>Действия</span>
+        <hr>
+        <button class="btn btn-success btn-lg text-left text-sm-center d-xl-flex justify-content-xl-start btn-success"
+                onclick="save()" type="button" style="width:100%;">Сохранить
+        </button>
+        <button class="btn btn-primary d-xl-flex justify-content-xl-start btn-warning"
+                type="button" style="width:40%;">Сброс
+        </button>
+    </div>
+    <div class="col" type="">
+        <div class="row" style="height:100%;">
+            <div class="col-3">
+                <button class="btn btn-success btn-lg" type="button" style="width:100%; height:100%;">Включить светофор
+                    на въезд с улицы
+                </button>
+            </div>
+            <div class="col-3">
+                <button class="btn btn-success btn-lg" type="button" style="width:100%; height:100%;">Включить светофор
+                    на выезд на улицы
+                </button>
+            </div>
+            <div class="col-3">
+                <button class="btn btn-success btn-lg" type="button" style="width:100%; height:100%;">Включить светофор
+                    на въезд с территории
+                </button>
+            </div>
+            <div class="col-3">
+                <button class="btn btn-success btn-lg" type="button" style="width:100%; height:100%;">Включить светофор
+                    на выезд на территорию
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+
+    $("#cena").keyup(function () {
+        let kol = $("#ves_nakladnaya").val();
+        let res = $(this).val() * kol * ((($("#nds").val()) / 100) + 1);
+        let sumnds = $(this).val() * kol * ((($("#nds").val()) / 100) );
+        let nonds = $("#cena").val() * kol;
+        $("#cena_nds").val(res);
+        $("#price_no_nds").val(nonds);
+        $("#summ_nds").val(sumnds);
+
+    });
+    $("#nds").keyup(function () {
+        let kol = $("#ves_nakladnaya").val();
+        let res = $("#cena").val() * kol * ((($("#nds").val()) / 100) + 1);
+        let sumnds = $("#cena").val() * kol * ((($("#nds").val()) / 100) );
+        let nonds = $("#cena").val() * kol;
+        $("#cena_nds").val(res);
+        $("#price_no_nds").val(nonds);
+         $("#summ_nds").val(sumnds);
+    });
+
+
+    function save() {
+        let catalogId = $('#data_auto').attr('data-id');
+        let typeCar = $("[name='cheks']:checked").val();
+        let ves = $("#vesFix").html();
+        let name = $("#name_tovar").val();
+        let nakladnaya = $("#nakladnaya").val();
+        let seria = $("#seria").val();
+        let ttn = $("#ttn").val();
+        let ed = $("#ed_ves").val();
+        let ves_nakladnaya = $("#ves_nakladnaya").val();
+        let valuta = $("#valuta").val();
+        let price = $("#cena").val();
+        let nds = $("#nds").val();
+        let price_nds = $("#cena_nds").val();
+        let nameDrive = $("#name_driver").val();
+        let numberPricep = $("#gos_num_pricep").html();
+        var num = $('#gos_num_avto').html();
+        var arrAuto = num.split('-');
+        var arrPricep = num.split('-');
+        let numAuto = arrAuto.join("");
+        let nunu = numAuto;
+        let numPricep = arrPricep.join("");
+        let prov = parseInt(nunu);
+        if (!prov || prov == 0) {
+            alert('ошибка с номером автотранспорта');
+            return;
+        }
+        Table[0] = [
+            name,                                       //1
+            ves_nakladnaya,                             //2
+            ed,                                         //3
+            price,                                      //4
+            $('#price_no_nds').val(),                   //5
+            valuta,                                     //6
+            price_nds,                                  //7
+            nds,                                        //8
+            ttn,                                        //9
+            seria,                                      //10
+            nakladnaya,                                 //11
+            $("#razreshil").val(),                      //12
+            $("#pogruzka").val(),                       //13
+            $("#N_p_lista").val(),                      //14
+            $("#prinyal").val(),                        //15
+            nameDrive,                                  //16
+            $('#sdal').val(),                           //17
+            $('#osnovanie').val()   ,                    //18
+            $("#name_tovar").attr('data-id') ,          //19
+            $("#dateNakladnaya").val()                  //20
+        ]
+        ;
+
+        let data = {
+            "nakladnaya": Table,
+            "contragent": $("#agent").attr('data-id'),
+            'typeCar': typeCar,
+            'numAuto': numAuto,
+            'numPricep': numberPricep,
+            "ves": ves,
+            "catalogId":catalogId
+        };
+        console.log(data);
+        $.ajax({
+            type: "POST",
+            url: urlAjaxAdd,
+            traditional: true,
+            dataType: 'json',
+            data: data,
+            success: function () {
+                console.log('Auto Add in DB');
+            },
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+
+    }
+
+    function show_serchAgent(agent) {
+        if (agent == undefined) {
+            agent = agents;
+        }
+        $("#serchAgent").modal("show");
+        let html = "";
+        agent.forEach(function (a, i) {
+            html += "<li><button class='btn btn-info' onclick='selectAgent(" + i + ")'>" + a.pk + " = " + a.fields.name + "</button></li>";
+        });
+        $("#agents_list").html(html);
+    }
+
+    function selectAgent(pk) {
+        $("#succes").attr("data-value", pk);
+        $("#succes").html("agent  -" + agents[pk].fields.name);
+    }
+
+    function serchStr(e) {
+        let str = $(e).val();
+        let obj = newAgents.find(obj => obj.name == str);
+        let retval = [];
+        agents.forEach(function (a) {
+            if (a.fields.name.indexOf(str) > -1) {
+                retval.push(a);
+            }
+        });
+        show_serchAgent(retval);
+
+    };
+
+    function addAgent() {
+        let pk = $("#succes").attr("data-value");
+        if (pk == undefined) {
+            alert("не выбран агент");
+            return;
+        }
+        $("#agent").val(agents[pk].fields.name);
+        $("#agent").attr("data-id", agents[pk].pk);
+        $("#serchAgent").modal("hide");
+    }
+
+    //===========================================tovar serch=================================================
+     function show_serchTovar(tavar) {
+        if (tavar == undefined) {
+            tavar = tovar;
+        }
+        $("#serchTovar").modal("show");
+        let html = "";
+        tavar.forEach(function (a, i) {
+            html += "<li><button class='btn btn-info' onclick='selectTovar(" + i + ")'>" + a.pk + " = " + a.fields.name + "</button></li>";
+        });
+        $("#tovar_list").html(html);
+    }
+       function selectTovar(pk) {
+        $("#succesTovar").attr("data-value", pk);
+        $("#succesTovar").html("продукция  -" + tovar[pk].fields.name);
+    }
+    function addTovar() {
+        let pk = $("#succesTovar").attr("data-value");
+        if (pk == undefined) {
+            alert("не выбрана продукция");
+            return;
+        }
+        $("#name_tovar").val(tovar[pk].fields.name);
+        $("#name_tovar").attr("data-id", tovar[pk].pk);
+        $("#serchTovar").modal("hide");
+    }
+</script>
+
+
+<!-- Modal -->
+<div class="modal fade" id="serchAgent" tabindex="-1" role="dialog" aria-labelledby="serchAgent" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="serchAgent">Выбор контрагента</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="bodySerchModal" class="modal-body">
+                <label>Поиск</label>
+                <input type="text" onkeyup="serchStr(this)" id="modalSerchAgent" placeholder="Поиск">
+                <br>
+                <div id="succes">
+                </div>
+                <br>
+                <label>Список агентов</label>
+                <ul id="agents_list">
+                </ul>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">отмена</button>
+                <button type="button" onclick="addAgent();" class="btn btn-primary">выбрать</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="serchTovar" tabindex="-1" role="dialog" aria-labelledby="serchAgent" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="serchTovarTitle">Выбор имнования товара</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="bodyTovar" class="modal-body">
+                <label>Поиск</label>
+                <input type="text" onkeyup="serchStr(this)" id="modalSerchTovar" placeholder="Поиск">
+                <br>
+                <div id="succesTovar">
+                </div>
+                <br>
+                <label>Список наименований товаров</label>
+                <ul id="tovar_list">
+                </ul>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">отмена</button>
+                <button type="button" onclick="addTovar();" class="btn btn-primary">выбрать</button>
+            </div>
+        </div>
+    </div>
+</div>

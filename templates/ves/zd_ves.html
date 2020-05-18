@@ -635,6 +635,30 @@
         };
 
 
+
+    function getData(){
+    let data ={"zanyato":true,"all":false};
+              $.ajax({
+                type: "POST",
+                url: '{% url 'getDataZd' %}',
+                traditional: true,
+                dataType: 'json',
+                data: data,
+                success: function (dat) {
+                    console.log(dat);
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+}
+getData();
+
+setInterval(getData, 1000);
+
+
     </script>
 
 
