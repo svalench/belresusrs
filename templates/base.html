@@ -6,6 +6,7 @@
     <title>{% block title %}{% endblock %} || System</title>
     <head>
    <link rel="stylesheet" href="{% static 'boostrap/css/bootstrap.min.css' %}">
+
         <script src="{% static 'jq.js' %}"></script>
     <script src="{% static 'boostrap/js/bootstrap.min.js' %}"></script>
 </head>
@@ -29,8 +30,9 @@
         </a>
         <div class="dropdown-menu " aria-labelledby="navbarDropdown1">
             <a class="nav-link " href="{% url 'ves:menu_ves' %}">Меню</a>
-            <a class="nav-link " href="{% url 'ves:avto_ves' %}">Автотранспорт  <span class="badge badge-success">v</span></a>
-              <a class="nav-link " href="{% url 'ves:zd_ves' %}">Ж/Д транспорт <span class="badge badge-success">v</span></a>
+            <a class="nav-link "   href="{% url 'ves:avto_ves' %}">Автотранспорт  <span id="automenu" class="badge badge-success">v</span></a>
+            <a class="nav-link " href="{% url 'ves:avto_data' %}">Данные по авто</a>
+              <a class="nav-link "  href="{% url 'ves:zd_ves' %}">Ж/Д транспорт <span id="zdmenu" class="badge badge-success">v</span></a>
         </div>
       </li>
 
@@ -43,6 +45,9 @@
               <a class="nav-link " href="{% url 'ves:contragents' %}">Контрагенты</a>
               <a class="nav-link " href="{% url 'ves:actions' %}">События</a>
             <a class="nav-link " href="{% url 'ves:users' %}">Пользователи</a>
+            <a class="nav-link " href="{% url 'ves:catalogAuto' %}">Католог автотранспорта</a>
+            <a class="nav-link " href="{% url 'ves:catalogTrailer' %}">Католог прицепов</a>
+            <a class="nav-link " href="{% url 'ves:catalogProduction' %}">Католог продукции</a>
             <a class="nav-link " href="{% url 'ves:actions' %}">Сообщения</a>
         </div>
       </li>
@@ -114,8 +119,42 @@
                 }
             });
 }
+let statusGlobalJs;
+   function getstatus(){
+    let data ={"avto":false,"zd":false,"all":true};
+              $.ajax({
+                type: "POST",
+                url: '{% url 'getDataStatus' %}',
+                traditional: true,
+                dataType: 'json',
+                data: data,
+                success: function (dat) {
+                    statusGlobalJs=dat;
+                    if(dat.auto) {
+                        document.getElementById('automenu').classList.remove("badge-success");
+                        document.getElementById('automenu').classList.add("badge-warning");
+                    }else{
+                        document.getElementById('automenu').classList.add("badge-success");
+                        document.getElementById('automenu').classList.remove("badge-warning");
+                    }
+                    if(dat.zd) {
+                        document.getElementById('zdmenu').classList.remove("badge-success");
+                        document.getElementById('zdmenu').classList.add("badge-warning");
+                    }else{
+                        document.getElementById('zdmenu').classList.add("badge-success");
+                        document.getElementById('zdmenu').classList.remove("badge-warning");
+                    }
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+}
+getstatus();
 setTimeout(falseAll,2000);
-//setInterval(falseAll, 2000);
+setInterval(getstatus, 2000);
 </script>
 </body>
 </html>

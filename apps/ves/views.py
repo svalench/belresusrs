@@ -5,10 +5,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.core import exceptions
 from GLOBAL import GlobalAutoUse
-from apps.ves.models import User, GlobalData
+from apps.ves.models import User, GlobalData, Production, DataNakladnayaAuto, CatalogAuto
 from django.core import serializers
 from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.translation import gettext as _
 # Create your views here.
@@ -47,20 +47,65 @@ class StartView(LoginRequiredMixin, CreateView):
     def avto_ves(request):
         one_entry = GlobalData.objects.get(id=1)
         auto = Auto.objects.filter(status_in=True)
+        json = serializers.serialize('json', auto)
         agents = Agent.objects.all()
-        print(GlobalAutoUse)
+        production  = Production.objects.all()
+        catalog = CatalogAuto.objects.all()
+        catalogJ = serializers.serialize('json', catalog)
+        agentsJ = serializers.serialize('json', agents)
+        productionJ = serializers.serialize('json', production)
+        #print(auto[0].datanakladnayaauto_set.get().productionId.name)
         if (one_entry.Auto == True):
             print('woops')
-            raise exceptions.PermissionDenied
-        data = {'auto_in': auto, 'agetns':agents}
+            #raise exceptions.PermissionDenied
+        data = {'auto_in': auto,'catalog':catalogJ , 'agentsJ':agentsJ,'production':productionJ,'agents':agents,'JAuto':json}
         return render(request, 'ves/avto_ves.html', data)
+
+
+
+    @login_required
+    def avto_data(request):
+        autoAll = Auto.objects.all()
+        agent = Agent.objects.all()
+        uniqZd = Auto.objects.raw(
+            'SELECT number, id FROM ves_auto WHERE id IN (SELECT   MIN(id) FROM ves_auto GROUP BY number)')
+        json =serializers.serialize('json', uniqZd)
+        jsonAgent = serializers.serialize('json', agent)
+        paginator = Paginator(autoAll, 10)  # Show 25 contacts per page
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        data = {'page_obj': page_obj,"data":json,"uniq":uniqZd,'Jagents':jsonAgent,"agents":agent}
+        return render(request, 'ves/avto_data.html', data)
+
+
 
     @login_required
     def zd_ves(request):
+        one_entry = GlobalData.objects.get(id=1)
+        if (one_entry.Zd == True):
+            print('woops')
+            raise exceptions.PermissionDenied
         zd = Vagon.objects.filter(status_in=True)
         agents = Agent.objects.all()
+
         data = {'zd_in': zd, 'agetns': agents}
         return render(request, 'ves/zd_ves.html',data)
+
+
+    @login_required
+    def zd_data(request):
+        autoAll = Vagon.objects.all().order_by("-date_add")
+        uniqZd = Vagon.objects.raw('SELECT number, id FROM ves_vagon WHERE id IN (SELECT   MIN(id) FROM ves_vagon GROUP BY number)')
+        agent = Agent.objects.all()
+        jsonAgent = serializers.serialize('json', agent)
+        json =serializers.serialize('json', uniqZd)
+        paginator = Paginator(autoAll, 10)  # Show 25 contacts per page
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        data = {'page_obj': page_obj,"data":json,"agents":agent,"uniq":uniqZd,'Jagents':jsonAgent}
+        return render(request, 'ves/zd_data.html', data)
+
+
 
 
 

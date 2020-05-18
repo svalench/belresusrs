@@ -1,15 +1,18 @@
 {% extends 'base.html' %}
 {#{% load static %}#}
+
 {% block title %}
     Автотранспорт
+
 {% endblock %}
+
 {% block content %}
 
     <div id="body" class="container-fluid" style="text-align: center;">
         <input type="checkbox" id="hmt" class="hidden-menu-ticker">
 
         <label class="btn-menu" for="hmt">
-            авто
+            авто на территории
         </label>
         <div class="hidden-menu" style="overflow: auto;">
 
@@ -21,7 +24,8 @@
                                 <button class="btn btn-link" type="button" data-toggle="collapse"
                                         data-target="#collapseOne_{{ a.id }}"
                                         aria-expanded="true" aria-controls="collapseOne_{{ a.id }}">
-                                    {{ a.number }}
+                                    {{ a.number }}  --
+                                    {{ a.datanakladnayaauto_set.get.productionId.name}}
                                 </button>
                             </h2>
                         </div>
@@ -32,17 +36,35 @@
                                 <table class="table">
                                     <thead>
                                     <tr>
-                                        <th scope="col">агент</th>
-                                        <th scope="col">накладная</th>
-                                        <th scope="col">время</th>
-                                        <th scope="col">масса, кг</th>
+                                        <th rowspan="2"  scope="col">агент</th>
+                                        <th colspan="4" scope="col">накладная</th>
+
+                                        <th rowspan="2" scope="col">время</th>
+                                        <th rowspan="2" scope="col">загружен</th>
+                                        <th rowspan="2" scope="col">масса, кг</th>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">тип </th>
+                                        <th scope="col">номер</th>
+                                        <th scope="col">вес</th>
+                                        <th scope="col">дата</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr>
                                         <td>{{ a.agents.name }}</td>
-                                        <td>{{ a.nakladnaya }}</td>
+                                    <td>{% if a.datanakladnayaauto_set.get.type == 1 %}ТН{% else %}ТТН{% endif %}</td>
+                                        <td>
+                                            {{ a.datanakladnayaauto_set.get.seria }}-{{ a.datanakladnayaauto_set.get.number }}</td>
+
+                                     <td>{{ a.datanakladnayaauto_set.get.ves_nakladnaya }}</td>
+                                     <td>{{ a.datanakladnayaauto_set.get.date }}</td>
+
                                         <td>{{ a.last_in }}</td>
+                                     <td>{% if a.tara == 1 %}
+                                         <span class="bg-warning"> груженый</span>
+                                     {% else %} <span class="bg-success">пустой </span>
+                                     {% endif %}</td>
                                         <td>{{ a.ves_in }}</td>
                                     </tr>
                                     </tbody>
@@ -57,230 +79,14 @@
 
 
         </div>
+</div>
 
 
-        <hr>
-        <h3 style="margin-left: 2%;">Вес</h3>
-        <hr>
-        <div class="row">
-            <div class="col-1"></div>
-            <span class="badge badge-warning">нестабильный<br>_______________</span>
-            <div class="col-2" style="background-color: #1b1e21; color:white; text-align: right; font-size: 3rem;">
-                <span id="vesOnline" style="cursor: not-allowed;">140 </span><br><span> кг</span>
-            </div>
+{% include  'ves/ves_row.html' %}
+{% include 'ves/nakladnaya_row.html' %}
+{% include 'ves/svet_row.html' %}
+{% include 'ves/cam_row.html' %}
 
-            <div class="col-2" style="background-color: #1c7430; color:white; text-align: right; font-size: 3rem;">
-                <span id="vesFix" style="cursor: pointer;" onclick="correct();">0 </span><br><span
-                    id="label_ves">брутто</span><span> кг</span>
-            </div>
-
-            <div class="col-2">
-                <button class="btn btn-success" onclick="fixVes()" style="width: 100%; height: 40%;">Зафиксировать
-                </button>
-                <hr>
-                <button class="btn btn-warning" onclick="destroyFixVes()" style="width: 100%; height: 40%; ">Сброс
-                </button>
-            </div>
-
-            <div class="col-2" style="background-color: #1b1e21; color:white; text-align: right; border-radius: 2%;">
-                <div style="margin-top: 1%;  font-size: 1rem;  ">
-
-                    <div class="col-3"> Авто</div>
-                    <span id="gos_num_avto" class="col-8" style="cursor: pointer;  font-size: 2rem;  "
-                          onclick="correct_num();">****-**-*</span>
-                </div>
-
-                <div style="margin-top: 1%;  font-size: 1rem;  ">
-                    <div class="col-3"> Прицеп</div>
-                    <span id="gos_num_pricep" class="col-8" style="cursor: pointer;  font-size: 2rem;  "
-                          onclick="correct_num_pricep();">****-**-*</span>
-                </div>
-            </div>
-            <div class="col-2">
-                <h4>Состояние транспорта</h4>
-                <div class="form-check ">
-                    <input class="form-check-input" type="radio" name="cheks" id="brutto" value="1" checked>
-                    <label class="form-check-label" for="brutto">
-                        Груженый
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="cheks" id="netto" value="2">
-                    <label class="form-check-label" for="netto">
-                        Порожний
-                    </label>
-                </div>
-            </div>
-
-        </div>
-        <hr>
-        <h3 style="margin-left: 2%;">Данные по транспорту</h3>
-        <hr>
-        <div class="row">
-            <div class="col-1"></div>
-
-            <div class="col-2">
-                <div class="form-group">
-                    <label for="nameDriver"><b>Имя водителя</b></label>
-                    <hr style="width: 80%;">
-                    <input id="nameDriver" class="form-control">
-                </div>
-
-                <div class="form-group">
-                    <label for="nakladnaya"><b>№ накладной</b></label>
-                    <hr style="width: 80%;">
-                    <input id="nakladnaya" pattern="[0-9]{7}" type="text" maxlength="7" class="form-control">
-                </div>
-
-                <div id="dov_otpr" class="form-group">
-                    <label for="otpravitel"><b>Отправитель</b></label>
-                    <hr style="width: 80%;">
-                    <input id="searchingOtpr">
-                    <select multiple  id="otpravitel" class="form-control" style="display: none;">
-                        {% for a in agetns %}
-                        <span><option value="{{ a.id }}"> {{ a.name }}</option></span>
-                        {% endfor %}
-                    </select>
-                </div>
-
-
-                <div id="div_pol" class="form-group" style="display: none;">
-                    <label for="poluchatel"><b>Получатель</b></label>
-                    <hr style="width: 80%;">
-                     <input id="searchingPol">
-                    <select multiple  id="poluchatel" class="form-control" style="display: none;">
-                        {% for a in agetns %}
-                        <option value="{{ a.id }}"> {{ a.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="description"><b>Примечания</b></label>
-                    <hr style="width: 80%; height: 20%;">
-                    <textarea id="description" rows="1" class="form-control"></textarea>
-                </div>
-                <button onclick="addAuto()" style="width: 100%;" class="btn btn-success">Добавить транспорт</button>
-            </div>
-
-            <div class="col-2">
-                <div class="form-group">
-                    <label for="nameGruz"><b>Наименование</b></label>
-                    <hr style="width: 80%; height: 20%;">
-                    <textarea id="nameGruz" rows="1" class="form-control"></textarea>
-                </div>
-                <div>
-                    <div class="d-inline-block  form-group col-7">
-                        <label for="price"><b>Цена</b></label>
-                        <hr style="width: 80%;">
-                        <input id="price" type="text" class="form-control">
-                    </div>
-
-                    <div class="d-inline-block  form-group col-3 ">
-                        <label for="valuta"><b>ед</b></label>
-
-                        <select id="valuta">
-                            <option value="br">Br</option>
-                            <option value="eu">Eu</option>
-                            <option value="dol">$</option>
-                        </select>
-                    </div>
-                </div>
-
-
-                <div>
-                    <div class="d-inline-block  form-group col-7 ">
-                        <label for="price"><b>Вес</b></label>
-                        <hr style="width: 80%;">
-                        <input id="ves_nakladnaia" type="text" class="form-control">
-                    </div>
-
-                    <div class="d-inline-block  form-group col-3 ">
-                        <label for="ed"><b>ед</b></label>
-
-                        <select id="ed">
-                            <option value="kg">кг</option>
-                            <option value="t">т</option>
-                        </select>
-                    </div>
-                </div>
-                <label><b>Добавить в табилцу</b></label>
-                <hr>
-                <div>
-                    <button onclick="addNakladnayaRow()" class="btn btn-success">Добавить</button>
-                </div>
-
-            </div>
-            <div class="col-1">
-                <button class="btn btn-success" style="width: 100%; margin-top: 1%;">Въезд</button>
-                <button class="btn btn-danger" style="width: 100%; margin-top: 1%;">Въезд</button>
-                <hr>
-                <button class="btn btn-success" style="width: 100%; margin-top: 1%;">Выезд</button>
-                <button class="btn btn-danger" style="width: 100%; margin-top: 1%;">Выезд</button>
-
-
-            </div>
-
-
-            <div class="d-inline-flex col-6 border ">
-                <div class="col-6">
-                    <div class="border">
-                        <video width="400" height="300" controls="controls" poster="video/duel.jpg"></video>
-                    </div>
-                    <div style="width:400px; height:300px; overflow: auto;" class="border">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th scope="col">№</th>
-                                <th scope="col">наименование</th>
-                                <th scope="col">вес</th>
-                                <th scope="col">цена</th>
-                                <th scope="col">delete</th>
-                            </tr>
-                            </thead>
-                            <tbody id="table-nakladnaya">
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="col-6 ">
-                    <div class="border">
-                        <video width="400" height="300" controls="controls" poster="video/duel.jpg"></video>
-                    </div>
-
-                    <div class="border">
-                        <video width="400" height="300" controls="controls" poster="video/duel.jpg"></video>
-                    </div>
-                </div>
-                <br>
-
-            </div>
-
-        </div>
-
-    </div>
-    <!-- Modal ves -->
-    <div class="modal fade" id="ves_modal" tabindex="-1" role="dialog" aria-labelledby="ves_modal"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ves_modal">Изменения веса</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <label>Введите вес для установки</label>
-                    <input type="number" id="vesKorrect">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">отмена</button>
-                    <button type="button" onclick="changeVes()" class="btn btn-primary">Изменить</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
     <!-- Modal change GosNomAvto -->
@@ -323,10 +129,169 @@
 
 
     {% csrf_token %}
+{#Visible block nakladnay, camera, svetofor#}
+<script>
+$("#clickDataNakladnaya").click(function(){
+   displayBlock("#DanniePoTransporty");
+});
 
+$("#clickDataSvet").click(function(){
+   displayBlock("#svetControl");
+});
 
+$("#clickDataCamera").click(function(){
+   displayBlock("#cameraControl");
+});
 
+const displayBlock = (blockId) => {
+    if ($(blockId).css('display') == 'none')
+        {
+            $(blockId).animate({height: 'show'}, 300);
+        }
+    else
+        {
+            $(blockId).animate({height: 'hide'}, 300);
+        }
+};
+</script>
+{#check Field#}
+    <script>
+        const arrayInputId=["name_driver","data_auto","data_pricep","Nputev","pogruzka","razgruzka","agent","agentPoluchit","razreshil","osnovanie","prinal","sdal","gruzopoluchatel","doverennost","ttn","seria","nakladnaya","dateNakladnaya","name_tovar","ves_nakladnaya","ed_ves","cena","valuta","price_no_nds","nds","summ_nds","cena_nds","kol_mest","mass_gruza","description"];
+const arrayLabelTrue=["Водитель","Автомобиль","Прицеп","№ путевого листа","Пункт погрузки","Пункт разгрузки","Грузоотправитель","Грузополучатель","Отпуск разрешил","Основание отпуска","Товар к доставке принял","Сдал грузоотправитель","Принял грузопучатель","Доверенность","Тип накладной","Серия накладной","Номер накладной","Дата накладной","Наименование товара","Количество","Ед","Цена","Валюта","Стоимость","Ставка НДС","Сумма НДС","Стоимость с НДС","Количествово мест","Масса груза","Описание"]
+const arrayLabelFalse=["Водитель: Фамилия И.О.","Автомобиль","Прицеп","№ путевого листа","Пункт погрузки","Пункт разгрузки","Грузоотправитель","Грузополучатель","Отпуск разрешил","Основание отпуска","Товар к доставке принял","Сдал грузоотправитель","Принял грузопучатель","Доверенность","Тип накладной","Серия накладной","Номер накладной","Дата накладной","Наименование товара","Количество","Ед","Цена","Валюта","Стоимость","Ставка НДС","Сумма НДС","Стоимость с НДС","Количествово мест","Масса груза","Описание"]
 
+$("#name_driver").change(function(e) {
+   let regexp = /^[А-Яа-я\s.]+$/i;
+    let lT=arrayLabelTrue[arrayInputId.indexOf(this.id)];
+    let lF=arrayLabelFalse[arrayInputId.indexOf(this.id)];
+    checkFieldRegexp(this,regexp,e);
+    changeLabel(this,$("label[for="+this.id+"]"),lT,lF)
+});
+
+$("#data_auto").change(function(e) {
+    let lT=arrayLabelTrue[arrayInputId.indexOf(this.id)];
+    let lF=arrayLabelFalse[arrayInputId.indexOf(this.id)];
+    checkFieldEmpty(this,e);
+    changeLabel(this,$("label[for="+this.id+"]"),lT,lF)
+});
+
+$("#Nputev").change(function(e) {
+    let regexp = /^[0-9]+$/i;
+    let lT=arrayLabelTrue[arrayInputId.indexOf(this.id)];
+    let lF=arrayLabelFalse[arrayInputId.indexOf(this.id)];
+    checkFieldRegexp(this,regexp,e);
+    changeLabel(this,$("label[for="+this.id+"]"),lT,lF)
+});
+
+$("#seria").change(function(e) {
+   let regexp = /^[A-Z]{2}/i;
+    let lT=arrayLabelTrue[arrayInputId.indexOf(this.id)];
+    let lF=arrayLabelFalse[arrayInputId.indexOf(this.id)];
+    checkFieldRegexp(this,regexp,e);
+    changeLabel(this,$("label[for="+this.id+"]"),lT,lF)
+});
+
+$("#nakladnaya").change(function(e) {
+    let regexp = /^[0-9]+$/i;
+    let lT=arrayLabelTrue[arrayInputId.indexOf(this.id)];
+    let lF=arrayLabelFalse[arrayInputId.indexOf(this.id)];
+    checkFieldRegexp(this,regexp,e);
+    changeLabel(this,$("label[for="+this.id+"]"),lT,lF)
+});
+
+$("#ves_nakladnaya").change(function(e) {
+    let regexp = /^[0-9]+$/i;
+    let lT=arrayLabelTrue[arrayInputId.indexOf(this.id)];
+    let lF=arrayLabelFalse[arrayInputId.indexOf(this.id)];
+    checkFieldRegexp(this,regexp,e);
+    changeLabel(this,$("label[for="+this.id+"]"),lT,lF)
+});
+
+$("#cena").change(function(e) {
+    let regexp = /^[0-9]+$/i;
+    let lT=arrayLabelTrue[arrayInputId.indexOf(this.id)];
+    let lF=arrayLabelFalse[arrayInputId.indexOf(this.id)];
+    checkFieldRegexp(this,regexp,e);
+    changeLabel(this,$("label[for="+this.id+"]"),lT,lF)
+});
+
+const checkFieldEmpty = (id,e) => {
+    red = $(this).hasClass("border-danger");
+    green = $(this).hasClass("border-success")
+    if($(id).val() ==='' || $(id).val() ===0 || $(id).val() ===false) {
+       e.preventDefault();
+       if ((green==true) || (green==false && red==false)){
+           $(id).removeClass("border-success");
+            $(id).addClass("border-danger");
+       };
+   } else {
+       if ((red==true) || (green==false && red==false)){
+           $(id).removeClass("border-danger");
+            $(id).addClass("border-success");
+       };
+   }
+};
+
+const checkFieldRegexp = (id, regexp,e) => {
+    red = $(this).hasClass("border-danger");
+    green = $(this).hasClass("border-success")
+    if(!regexp.test($(id).val())) {
+       e.preventDefault();
+       if ((green==true) || (green==false && red==false)){
+           $(id).removeClass("border-success");
+            $(id).addClass("border-danger");
+       };
+   } else {
+       if ((red==true) || (green==false && red==false)){
+           $(id).removeClass("border-danger");
+            $(id).addClass("border-success");
+       };
+   }
+};
+
+const changeLabel = (idInput,idLabel,labelTextTrue,labelTextFalse) =>{
+    red = $(idInput).hasClass("border-danger");
+    green = $(idInput).hasClass("border-success")
+    if (green==true){
+           $(idLabel).text(labelTextTrue);
+           $(idLabel).css("color","#212529");
+
+   } else {
+       $(idLabel).text(labelTextFalse);
+       $(idLabel).css("color","#dc3545");
+       }
+   };
+
+{#const checkAllFields = () => {#}
+{#    let status=0;#}
+{#    arrayInputId.forEach(function(item,i){#}
+{#        if (($("#"+item+"").val()==='') || ($("#"+item+"").val()===0)) {#}
+{#            status++#}
+{#            $("#"+item+"").addClass('border-danger');#}
+{#            $("label[for="+item+"]").text(arrayLabelFalse[i]).css("color","#dc3545");#}
+{#                                          };#}
+{#                                          });#}
+{#    if (status>0){#}
+{#        return false;#}
+{#    } else {#}
+{#        return true;#}
+{#    }#}
+{#        };#}
+
+const clearFields = () => {
+    arrayInputId.forEach(function(item,i){
+        $("#"+item+"").val('').removeClass("border-success").removeClass("border-danger");
+        $("label[for="+item+"]").text(arrayLabelTrue[i]).css("color","#212529");
+        // console.log(item+" - "+arrayLabelTrue[i])
+    });
+    $("#ttn").val('1');
+    $("#ed_ves").val('1');
+    $("#valuta").val('1');
+    $("#nds").val('20');
+    // alert('done');
+};
+
+    </script>
 
 
 
@@ -337,6 +302,21 @@
         var count = 1;
         var rowsTable = [];
         var Table = [];
+        var urlAjaxAdd= '{% url 'addautoPOST' %}';
+
+        let agents = "{{ agentsJ }}";
+agents = agents.replace(/&quot;/g,'"');
+agents = JSON.parse(agents);
+let tovar = "{{ production }}";
+tovar = tovar.replace(/&quot;/g,'"');
+tovar = JSON.parse(tovar);
+let catalogAuto = "{{ catalog }}";
+catalogAuto = catalogAuto.replace(/&quot;/g,'"');
+catalogAuto = JSON.parse(catalogAuto);
+let newAgents =[];
+    agents.forEach(function(a){
+        newAgents.push(a.fields);
+    });
         var filterInt = function (value) {
             if (/^(\-|\+)?([0-9]+|Infinity)$/.test(value))
                 return Number(value);
@@ -365,107 +345,40 @@
             });
         }
 
-        function addNakladnayaRow() {
-            let typeCar = $("[name='cheks']:checked").val();
-            if (typeCar == 2) {
-                alert('Транспорт порожний');
-                return;
-            }
-            let valuta = $("#valuta").val();
-            let price = $('#price').val();
-            let ed = $("#ed").val();
-            let ves_nakladnay = $("#ves_nakladnaia").val();
-            let nakladnay = $("#nakladnaya").val();
-            let name = $("#nameGruz").val();
-            if (!name) {
-                addAction('оператор добавляя запись в список не указал название ');
-                alert("Вы не указали название товара.");
-                $("#nameGruz").focus();
-                return;
-            }
-            if (!price) {
-                addAction('оператор добавляя запись в список не указал цену ');
-                alert('Вы не указали цену товара');
-                $("#price").focus();
-                return;
-            }
-            if (!price.match(/^(0$|-?[1-9]\d*(\.\d*[1-9]$)?|-?0\.\d*[1-9])$/)) {
-                alert("В поле цена должны быть введены только цифры");
-                $("#price").focus();
-                return;
-            }
-            if (!ves_nakladnay) {
-                addAction('оператор добавляя запись в список не указал вес по накладной ');
-                if (!confirm('Вы не уакзали вес по надклдной. Продолжить?')) {
-                    return;
-                }
-            }
-            if (!ves_nakladnay.match(/^(0$|-?[1-9]\d*(\.\d*[1-9]$)?|-?0\.\d*[1-9])$/)) {
-                alert("В поле вес должны быть введены только цифры");
-                $("#ves_nakladnaia").focus();
-                return;
-            }
-            addAction('оператор добавил запись в список накладной');
-            Table[count] = {
-                "count": count,
-                "name": name,
-                "ves": ves_nakladnay,
-                "ed": ed,
-                "price": price,
-                "valuta": valuta
-            };
-            let row = "<tr><td>" + count + "</td><td>" + name + "</td><td>" + ves_nakladnay + " ," + ed + "</td><td>" + price + " ," + valuta + "</td><td><button id='row_" + count + "' onclick='deleteRow(this)'>x</button></td>";
-            let table = $("#table-nakladnaya").html();
-            rowsTable[count] = row;
-            let newtable = rowsTable.join("");
-            $("#table-nakladnaya").html(newtable);
-            count++;
-        }
-
-        function deleteRow(e) {
-            addAction('оператор удалил запись из списка накладной');
-            let ar = e.id.split('_');
-            rowsTable = [];
-            delete Table[ar[1]];
-            console.log(Table);
-            var newTable = [];
-            var c = 1;
-            Table.forEach(function (a, v) {
-                a.count = c;
-                rowsTable[c] = "<tr><td>" + a.count + "</td><td>" + a.name + "</td><td>" + a.ves_nakladnay + " ," + a.ed + "</td><td>" + a.price + " ," + a.valuta + "</td><td><button id='row_" + a.count + "' onclick='deleteRow(this)'>x</button></td>";
-                ;
-                c++;
-            });
 
 
-            let newtable = rowsTable.join("");
-            $("#table-nakladnaya").html(newtable);
-            count--;
-        }
 
-
+let status1=false;
         function addAuto() {
-            let numberPricep = $("#gos_num_pricep").html();
-            var num = $('#gos_num_avto').html();
+            let numberPricep = $("#gos_num_pricep").val();
+            var num = $('#gos_num_avto').val();
             var arrAuto = num.split('-');
             var arrPricep = num.split('-');
             let numAuto = arrAuto.join("");
+
+            let nunu= numAuto;
             let numPricep = arrPricep.join("");
+            let prov =parseInt(nunu);
+
+            if(!prov  || prov==0){
+                alert('ошибка с номером автотранспорта');
+                 return;
+            }
             let agent;
             let ves = $("#vesFix").html();
             let ves_nakladnay = $("#ves_nakladnaia").val();
             let nakladnay = $("#nakladnaya").val();
-            if (!nakladnay) {
+            if (!nakladnay && !status1) {
                 alert('Вы не указали номер накладной');
                 $("#nakladnaya").focus();
                 return;
             }
-            if (!nakladnay.match(/[0-9]{7}/)) {
+            if (!nakladnay.match(/[0-9]{7}/) && !status1) {
                 alert("В поле накладная должны быть введены только цифры");
                 $("#nakladnaya").focus();
                 return;
             }
-            if(count<2){
+            if(count<2 && !status1){
                 alert('данные по накладной пусты'); $("#nameGruz").focus(); return;
             }
             let typeCar = $("[name='cheks']:checked").val();
@@ -488,11 +401,11 @@
                 'nakladnaya': nakladnay,
                 'typeCar': typeCar,
                 'numAuto': numAuto,
-                'numPricep': numPricep,
+                'numPricep': numberPricep,
                 'contragent': agent,
                 "dataNakladnay":obj,
             };
-            console.log(data);
+console.log(data);
             $.ajax({
                 type: "POST",
                 url: '{% url 'addautoPOST' %}',
@@ -512,124 +425,9 @@
         }
 
 
-        function changeVes() {
-            if (filterInt($("#vesKorrect").val())) {
-                addAction('изменен вес');
-                $("#vesFix").html($("#vesKorrect").val());
-                $('#ves_modal').modal('hide');
-            } else {
-                alert('не целое число');
-            }
-
-        }
-
-        function fixVes() {
-            addAction('вес зафиквсирован');
-            $("#vesFix").html($("#vesOnline").html());
-        }
-
-        function destroyFixVes() {
-            addAction('вес сброшен');
-            $("#vesFix").html(0);
-        }
-
-        function correct() {
-            addAction('Попытка изменить вес');
-            $('#ves_modal').modal('show');
-            $("#vesKorrect").val($("#vesFix").html());
-        }
-
-        function correct_num() {
-            addAction('Попытка корректировки номера авто');
-            $('#gosnomeravto').modal('toggle');
-            var num = $('#gos_num_avto').html();
-            var arr = num.split('-');
-            $("#seriaAvto").val(arr[1]);
-            $('#gosNavto').val(arr[0]);
-            $('#regionAvto').val(arr[2]);
-        }
 
 
-        function correct_num_pricep() {
-            addAction('Попытка корректировки номера прицепа');
-            $('#gosnomeravto').modal('toggle');
-            var num = $('#gos_num_pricep').html();
-            var arr = num.split('-');
-            $("#seriaAvto").val(arr[1]);
-            $('#gosNavto').val(arr[0]);
-            $('#regionAvto').val(arr[2]);
-            pricep = true;
-        }
 
-        function changeNumAvto() {
-            if (!$('#gosNavto').val()) {
-                addAction('оператор не указал номер');
-                alert('Вы не указали номер ');
-                $('#gosNavto').focus();
-                return;
-            }
-            if (!$('#gosNavto').val().match(/[0-9]{4}/)) {
-                addAction('оператор не правльно указал номер');
-                alert("В поле  должны быть введены только  4 цифры");
-                $('#gosNavto').focus();
-                return;
-            }
-
-            if (!$('#seriaAvto').val()) {
-                addAction('оператор не указал серию');
-                alert('Вы не указали номер ');
-                $('#seriaAvto').focus();
-                return;
-            }
-            if (!$('#seriaAvto').val().match(/[A-Z]{2}/)) {
-                addAction('оператор не правильно ввел буквенный указатель номера');
-                alert("В поле  должны быть введены только 2 латинские буквы капс локом");
-                $('#seriaAvto').focus();
-                return;
-            }
-
-            if (!$('#regionAvto').val()) {
-                addAction('оператор не указал регион');
-                alert('Вы не указали номер ');
-                $('#regionAvto').focus();
-                return;
-            }
-            if (!$('#regionAvto').val().match(/[0-7]{1}/)) {
-                addAction('оператор не правильно ввел регион');
-                alert("В поле  должны быть введены только 1 цифрa от 0 до 7");
-                $('#regionAvto').focus();
-                return;
-            }
-            let num = $('#gosNavto').val() + "-" + $("#seriaAvto").val() + "-" + $("#regionAvto").val();
-            if (pricep) {
-                addAction('корректировка номера прицепа');
-                $('#gos_num_pricep').html(num);
-
-            } else {
-                addAction('корректировка номера авто');
-                $('#gos_num_avto').html(num);
-            }
-            $('#gosnomeravto').modal('hide');
-        }
-
-        $('#gosnomeravto').on('hidden.bs.modal', function (e) {
-            pricep = false;
-        })
-
-
-        $("#brutto").click(function () {
-            addAction('оператор указал авто как груженый');
-            $("#label_ves").html('брутто');
-            $("#dov_otpr").css('display', 'block');
-            $("#div_pol").css('display', 'none');
-        });
-
-        $("#netto").click(function () {
-            addAction('оператор указал авто как порожний');
-            $("#label_ves").html('тара');
-            $("#div_pol").css('display', 'block');
-            $("#dov_otpr").css('display', 'none');
-        });
 
 
 
@@ -673,8 +471,30 @@ if($('#searchingPol').val().length==0){
                 option.hide() }
         } }
 });
-
+let auto_in = "{{ JAuto }}";
+auto_in = auto_in.replace(/&quot;/g,'"');
+auto_in = JSON.parse(auto_in);
 function getData(){
+    var num = $('#gos_num_avto').html();
+    if(status!="true"){
+        auto_in.forEach(function (a) {
+            console.log(a);
+            if(a.fields.number==num.replace(/-/g,'')){
+                 console.log(num.replace(/-/g,''));
+                status1 = true;
+                $("#DataNakladnaya").hide();
+                $("#dataTransport").hide();
+                return;
+            }else{
+                status1= false;
+                $("#DataNakladnaya").show();
+                 $("#dataTransport").show();
+            }
+        });
+    }else{
+        $("#DataNakladnaya").show();
+        $("#dataTransport").show();
+    }
     let data ={"zanyato":true,"all":false};
               $.ajax({
                 type: "POST",
@@ -702,37 +522,13 @@ setInterval(getData, 1000);
 
 
 
+$(document).ready(function(){$("[data-bs-hover-animate]").mouseenter(function(){var a=$(this);a.addClass("animated "+a.attr("data-bs-hover-animate"))}).mouseleave(function(){var a=$(this);a.removeClass("animated "+a.attr("data-bs-hover-animate"))})});
 
 
 
 
 
 
-
-
-
-
-
-
-
-        {##}
-        {##}
-        {##}
-        {#var roomName = "wert";#}
-        {#var chatSocket = new WebSocket(#}
-        {#    'ws://' + window.location.host +#}
-        {#    '/ws/');#}
-        {##}
-        {#chatSocket.onmessage = function (e) {#}
-        {#    var data = JSON.parse(e.data);#}
-        {#    var message = data['message'];#}
-        {#    document.querySelector('#chat-log').value += (message + '\n');#}
-        {#};#}
-        {##}
-        {#chatSocket.onclose = function (e) {#}
-        {##}
-        {#    console.error('Chat socket closed unexpectedly');#}
-        {#};#}
 
 
     </script>
@@ -747,11 +543,11 @@ setInterval(getData, 1000);
             margin: 0;
 
             box-sizing: border-box;
-            width: 40%;
+            width: 60%;
             background-color: #eee;
             height: 100%;
             top: 10%;
-            left: -40%;
+            left: -60%;
             transition: left .2s;
             z-index: 2;
             -webkit-transform: translateZ(0);
@@ -767,12 +563,12 @@ setInterval(getData, 1000);
             background-color: #0058B9;
             padding: 7px;
             position: fixed;
-            top: 10%;
+            top: 8%;
             left: 5px;
             cursor: pointer;
-            transition: left .23s;
+            transition: left .43s;
             z-index: 3;
-            width: 60px;
+            width: 100px;
             -webkit-transform: translateZ(0);
             -webkit-backface-visibility: hidden;
         }
@@ -782,7 +578,7 @@ setInterval(getData, 1000);
             height: 3px;
             background-color: #fff;
             margin: 5px 0 0;
-            transition: all .1s linear .23s;
+            transition: all .1s linear .43s;
             position: relative;
         }
 
@@ -791,7 +587,7 @@ setInterval(getData, 1000);
         }
 
         .hidden-menu-ticker:checked ~ .btn-menu {
-            left: 35%;
+            left: 55%;
         }
 
         .hidden-menu-ticker:checked ~ .hidden-menu {
@@ -820,4 +616,16 @@ setInterval(getData, 1000);
             margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
         }
     </style>
+
+
+
+
+
+
+
+
+
+
+
+
 {% endblock %}

@@ -1,0 +1,345 @@
+
+
+{#Roma v2#}
+<div class="container-fluid">
+            <div class="row no-gutters">
+                <div class="col-12 text-center align-self-center" id="clickDataNakladnaya" style="padding-top: 5px; cursor: pointer;"><span class="text-center text-black-50" style="font-size: 30px;">Заполнение накладной</span>
+                    <hr style="margin-top: 0;">
+                </div>
+            </div>
+            <div class="row no-gutters" id="DanniePoTransporty" style="display:none;">
+                <div class="col-6 border border-primary" style="background-image: url(&quot;assets/img/back1.svg&quot;);background-repeat: no-repeat;">
+                    <div class="row no-gutters">
+                        <div class="col-12 text-center"><span style="font-size: 21px;">Данные по транспорту</span></div>
+                    </div>
+                    <div class="row no-gutters border border-secondary border-right-0 border-left-0 border-bottom-0" style="padding-bottom: 5px;">
+                        <div class="col-4 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="name_driver">Водитель</label></div>
+                        <div class="col-3 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="data_auto">Автомобиль</label></div>
+                        <div class="col-3 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="data_pricep">Прицеп</label></div>
+                        <div class="col-2 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="N_p_lista">№ путевого листа</label></div>
+                        <div class="col-4 d-flex justify-content-center align-items-center"><input type="text" id="name_driver" class="form-control text-center" style="width: 98%" placeholder="Фамилия И.О."></div>
+                        <div class="col-3 d-flex justify-content-center align-items-center"><input type="text" id="data_auto" class="form-control text-center" style="width: 98%" readonly=""></div>
+                        <div class="col-3 d-flex justify-content-center align-items-center"><input class="form-control text-center" type="text" id="data_pricep" style="width: 98%;" readonly=""></div>
+                        <div class="col-2 d-flex justify-content-center align-items-center"><input class="form-control text-center" type="text" id="N_p_lista" style="width: 98%;"></div>
+                    </div>
+                    <div class="row no-gutters border border-primary border-left-0 border-right-0" style="padding-bottom: 5px;">
+                        <div class="col-6 d-flex justify-content-center align-items-center"><label class="col-form-label" for="pogruzka">Пункт погрузки</label></div>
+                        <div class="col-6 d-flex justify-content-center align-items-center"><label class="col-form-label" for="razgruzka">Пункт разгрузки</label></div>
+                        <div class="col-6 d-flex justify-content-center align-items-center"><textarea id="pogruzka" class="form-control" style="width: 98%;min-height: 38px;height: 38px;"></textarea></div>
+                        <div class="col-6 d-flex justify-content-center align-items-center"><textarea id="razgruzka" class="form-control" style="width: 98%;min-height: 38px;height: 38px;"></textarea></div>
+                    </div>
+                    <div class="row no-gutters border border-primary border-left-0 border-right-0 border-top-0" style="padding-bottom: 5px;">
+                        <div class="col-6 d-flex justify-content-center align-items-center"><label class="col-form-label" for="agent">Грузоотправитель</label></div>
+                        <div class="col-6 d-flex justify-content-center align-items-center"><label class="col-form-label" for="agentPoluchit">Грузополучатель</label></div>
+                        <div class="col-6 d-flex justify-content-center align-items-center"><textarea id="agent" class="form-control" style="width: 98%;min-height: 38px;height: 38px;" readonly=""></textarea></div>
+                        <div class="col-6 d-flex justify-content-center align-items-center"><textarea id="agentPoluchit" class="form-control" style="width: 98%;min-height: 38px;height: 38px;" readonly=""></textarea></div>
+                        <div class="col-6 text-center d-xl-flex justify-content-xl-center" style="padding-top: 5px;padding-bottom: 5px;"><button class="btn btn-outline-primary" type="button" style="width: 70%;min-height: 38px;height: 38px;" onclick="show_serchAgent()">Выбрать</button></div>
+                        <div class="col-6 text-center d-xl-flex justify-content-xl-center" style="padding-top: 5px;padding-bottom: 5px;"><button class="btn btn-outline-primary" type="button" style="width: 70%;min-height: 38px;height: 38px;" onclick="show_serchAgent()">Выбрать</button></div>
+                    </div>
+                    <div class="row no-gutters border border-primary border-left-0 border-right-0 border-top-0" style="padding-bottom: 5px;">
+                        <div class="col-6 d-flex justify-content-center align-items-center"><label class="col-form-label" for="razreshil">Отпуск разрешил</label></div>
+                        <div class="col-6 d-flex justify-content-center align-items-center"><label class="col-form-label" for="osnovanie">Основание отпуска</label></div>
+                        <div class="col-6 d-flex justify-content-center align-items-center"><input type="text" id="razreshil" class="form-control text-center" style="width: 98%"></div>
+                        <div class="col-6 d-flex justify-content-center align-items-center"><input type="text" id="osnovanie" class="form-control text-center" style="width: 98%"></div>
+                    </div>
+                    <div class="row no-gutters border border-secondary border-right-0 border-left-0 border-top-0" style="padding-bottom: 5px;">
+                        <div class="col-3 d-flex justify-content-center align-items-center"><label class="col-form-label" for="prinal">Товар к доставке принял</label></div>
+                        <div class="col-3 d-flex justify-content-center align-items-center"><label class="col-form-label" for="sdal">Сдал грузоотправитель</label></div>
+                        <div class="col-3 d-flex justify-content-center align-items-center"><label class="col-form-label" for="gruzopoluchatel">Принял грузопучатель</label></div>
+                        <div class="col-3 d-flex justify-content-center align-items-center"><label class="col-form-label" for="doverennost">Доверенность</label></div>
+                        <div class="col-3 d-xl-flex justify-content-xl-center"><input type="text" id="prinal" class="form-control text-center" style="width: 98%"></div>
+                        <div class="col-3 col-xl-3 offset-xl-0 d-xl-flex justify-content-xl-center"><input type="text" id="sdal" class="form-control text-center" style="width: 98%"></div>
+                        <div class="col-3 offset-xl-0 d-xl-flex justify-content-xl-center"><input class="form-control text-center" type="text" id="gruzopoluchatel" style="width: 98%;"></div>
+                        <div class="col-3 offset-xl-0 d-xl-flex justify-content-xl-center"><textarea id="doverennost" class="form-control" style="width: 98%;min-height: 38px;height: 38px;"></textarea></div>
+                    </div>
+                </div>
+                <div class="col-6 text-center border border-primary border-left-0" style="background-image: url(&quot;assets/img/back2.svg&quot;);">
+                    <div class="row no-gutters">
+                        <div class="col"><span style="font-size: 21px;">Поля накладной</span></div>
+                    </div>
+                    <div class="row no-gutters border border-secondary border-right-0 border-left-0 border-bottom-0" style="padding-bottom: 5px;">
+                        <div class="col-2 d-flex justify-content-center align-items-center"><label class="col-form-label text-center" for="ttn">Тип накладной</label></div>
+                        <div class="col-3 d-flex justify-content-center align-items-center"><label class="col-form-label text-center" for="seria">Серия накладной</label></div>
+                        <div class="col-4 d-flex justify-content-center align-items-center"><label class="col-form-label text-center" for="nakladnaya">Номер накладной</label></div>
+                        <div class="col-3 d-flex justify-content-center align-items-center"><label class="col-form-label text-center" for="dateNakladnaya">Дата накладной</label></div>
+                        <div class="col-2 d-flex justify-content-center align-items-center"><select id="ttn" class="form-control" style="width:80%;"><option value="1" selected="">ТН</option><option value="2">ТТН</option></select></div>
+                        <div class="col-3 d-flex justify-content-center align-items-center"><input type="text" id="seria" class="form-control text-center" style="width: 60%;"></div>
+                        <div class="col-4 d-flex justify-content-center align-items-center"><input type="text" id="nakladnaya" class="form-control text-center" style="width: 98%;"></div>
+                        <div class="col-3 d-flex justify-content-center align-items-center"><input id="dateNakladnaya" class="form-control" type="date" style="width:98%"></div>
+                    </div>
+                    <div class="row no-gutters border border-primary border-left-0 border-right-0 border-bottom-0" style="padding-bottom:5px">
+                        <div class="col-4 d-flex justify-content-center align-items-end justify-content-center"><label class="col-form-label" for="name_tovar">Наименование товара</label></div>
+                        <div class="col-2 offset-2 d-flex justify-content-center align-items-center"><label class="col-form-label" for="ves_nakladnaya">Количество</label></div>
+                        <div class="col-1 d-flex justify-content-center align-items-center"><label class="col-form-label" for="ed_ves">Ед.</label></div>
+                        <div class="col-2 d-flex justify-content-center align-items-center"><label class="col-form-label" for="cena">Цена</label></div>
+                        <div class="col-1 d-flex justify-content-center align-items-center"><label class="col-form-label" for="valuta">Валюта</label></div>
+                        <div class="col-4 d-flex justify-content-center"><textarea id="name_tovar" class="form-control" style="width: 98%;min-height: 38px;height: 38px;" readonly=""></textarea></div>
+                        <div class="col-2 text-center d-flex justify-content-start"><button class="btn btn-outline-primary d-xl-flex justify-content-xl-center align-items-xl-center" type="button" style="width: 70%;min-height: 38px;height: 38px;" onclick="show_serchTovar();">Выбрать</button></div>
+                        <div class="col-2 d-flex justify-content-center align-items-center"><input type="text" id="ves_nakladnaya" class="form-control text-center" style="width: 98%;"></div>
+                        <div class="col-1 d-flex justify-content-center align-items-center"><select id="ed_ves" class="form-control" style="width: 98%;padding-left: 6px;"><option value="1" selected="">кг</option><option value="3">тн</option></select></div>
+                        <div class="col-2 d-flex justify-content-center align-items-center"><input type="text" id="cena" class="form-control text-center" style="width: 98%;"></div>
+                        <div class="col-1 d-flex justify-content-center align-items-center"><select id="valuta" class="form-control" style="width: 98%;padding-left: 6px;"><option value="1" selected="">BYN</option><option value="2">USD</option><option value="3">EUR</option></select></div>
+                    </div>
+                    <div class="row no-gutters border border-danger" style="padding-bottom: 5px;">
+                        <div class="col-3 d-flex justify-content-center align-items-center"><label class="col-form-label" for="price_no_nds">Стоимость</label></div>
+                        <div class="col-3 d-flex justify-content-center align-items-center"><label class="col-form-label" for="nds">Ставка НДС</label></div>
+                        <div class="col-3 d-flex justify-content-center align-items-center"><label class="col-form-label" for="summ_nds">Сумма НДС</label></div>
+                        <div class="col-3 d-flex justify-content-center align-items-center"><label class="col-form-label" for="cena_nds" for="">Стоимость с НДС</label></div>
+                        <div class="col-3 d-flex justify-content-center align-items-center"><input type="text" id="price_no_nds" class="form-control text-center" style="width: 98%" readonly=""></div>
+                        <div class="col-3 d-flex justify-content-center align-items-center"><input type="text" id="nds" class="form-control text-center" style="width: 98%" value="20"></div>
+                        <div class="col-3 d-flex justify-content-center align-items-center"><input class="form-control text-center" type="text" id="summ_nds" style="width: 98%;" readonly=""></div>
+                        <div class="col-3 d-flex justify-content-center align-items-center"><input class="form-control text-center" type="text" id="cena_nds" style="width: 98%;" readonly=""></div>
+                    </div>
+                    <div class="row no-gutters border border-primary border-right-0 border-left-0 border-top-0" style="padding-bottom: 5px;">
+                        <div class="col-3 d-flex justify-content-center align-items-center"><label class="col-form-label" for="kol_mest">Количествово мест</label></div>
+                        <div class="col-3 d-flex justify-content-center align-items-center"><label class="col-form-label" for="mass_gruza">Масса груза</label></div>
+                        <div class="col-6 d-flex justify-content-center align-items-center"><label class="col-form-label" for="description">Описание</label></div>
+                        <div class="col-3 d-flex justify-content-center align-items-center"><input type="text" id="kol_mest" class="form-control text-center" style="width: 98%"></div>
+                        <div class="col-3 d-flex justify-content-center align-items-center"><input type="text" id="mass_gruza" class="form-control text-center" style="width: 98%"></div>
+                        <div class="col-6 d-flex justify-content-center align-items-center"><textarea id="description" class="form-control" style="width: 98%;min-height: 38px;height: 38px;"></textarea></div>
+                    </div>
+                    <div class="row no-gutters" style="padding-top: 1.5%;">
+                        <div class="col-6 offset-4 offset-xl-3 d-flex justify-content-xl-center" type=""><span style="font-size: 21px;margin-top: 0px;margin-bottom: 10px;">Действие над формой</span></div>
+                        <div class="col-3 offset-4 offset-xl-3"><button class="btn btn-success btn-lg text-sm-center d-xl-flex justify-content-xl-center btn-success" type="button" style="width: 98%;font-size: 26px;" onclick="save()">Сохранить</button></div>
+                        <div class="col-3"><button class="btn btn-outline-warning btn-lg" type="button" style="width: 98%;font-size: 26px;" onclick="clearFields()">Очистить</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+<script>
+
+
+    $("#cena").keyup(function () {
+        let kol = $("#ves_nakladnaya").val();
+        let res = $(this).val() * kol * ((($("#nds").val()) / 100) + 1);
+        let sumnds = $(this).val() * kol * ((($("#nds").val()) / 100) );
+        let nonds = $("#cena").val() * kol;
+        $("#cena_nds").val(res);
+        $("#price_no_nds").val(nonds);
+        $("#summ_nds").val(sumnds);
+
+    });
+    $("#nds").keyup(function () {
+        let kol = $("#ves_nakladnaya").val();
+        let res = $("#cena").val() * kol * ((($("#nds").val()) / 100) + 1);
+        let sumnds = $("#cena").val() * kol * ((($("#nds").val()) / 100) );
+        let nonds = $("#cena").val() * kol;
+        $("#cena_nds").val(res);
+        $("#price_no_nds").val(nonds);
+         $("#summ_nds").val(sumnds);
+    });
+
+
+    function save() {
+        let catalogId = $('#data_auto').attr('data-id');
+        let typeCar = $("[name='cheks']:checked").val();
+        let ves = $("#vesFix").html();
+        let name = $("#name_tovar").val();
+        let nakladnaya = $("#nakladnaya").val();
+        let seria = $("#seria").val();
+        let ttn = $("#ttn").val();
+        let ed = $("#ed_ves").val();
+        let ves_nakladnaya = $("#ves_nakladnaya").val();
+        let valuta = $("#valuta").val();
+        let price = $("#cena").val();
+        let nds = $("#nds").val();
+        let price_nds = $("#cena_nds").val();
+        let nameDrive = $("#name_driver").val();
+        let numberPricep = $("#gos_num_pricep").val();
+        var num = $('#gos_num_avto').val();
+        var arrAuto = num.split('-');
+        var arrPricep = num.split('-');
+        let numAuto = arrAuto.join("");
+        let nunu = numAuto;
+        let numPricep = arrPricep.join("");
+        let prov = parseInt(nunu);
+        if (!prov || prov == 0) {
+            alert('ошибка с номером автотранспорта');
+            return;
+        }
+        Table[0] = [
+            name,                                       //1
+            ves_nakladnaya,                             //2
+            ed,                                         //3
+            price,                                      //4
+            $('#price_no_nds').val(),                   //5
+            valuta,                                     //6
+            price_nds,                                  //7
+            nds,                                        //8
+            ttn,                                        //9
+            seria,                                      //10
+            nakladnaya,                                 //11
+            $("#razreshil").val(),                      //12
+            $("#pogruzka").val(),                       //13
+            $("#N_p_lista").val(),                      //14
+            $("#prinyal").val(),                        //15
+            nameDrive,                                  //16
+            $('#sdal').val(),                           //17
+            $('#osnovanie').val()   ,                    //18
+            $("#name_tovar").attr('data-id') ,          //19
+            $("#dateNakladnaya").val()                  //20
+        ]
+        ;
+
+        let data = {
+            "nakladnaya": Table,
+            "contragent": $("#agent").attr('data-id'),
+            'typeCar': typeCar,
+            'numAuto': numAuto,
+            'numPricep': numberPricep,
+            "ves": ves,
+            "catalogId":catalogId
+        };
+        console.log(data);
+        $.ajax({
+            type: "POST",
+            url: urlAjaxAdd,
+            traditional: true,
+            dataType: 'json',
+            data: data,
+            success: function () {
+                console.log('Auto Add in DB');
+            },
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+
+    }
+
+    function show_serchAgent(agent) {
+        if (agent == undefined) {
+            agent = agents;
+        }
+        $("#serchAgent").modal("show");
+        let html = "";
+        agent.forEach(function (a, i) {
+            html += "<li><button class='btn btn-info' onclick='selectAgent(" + i + ")'>" + a.pk + " = " + a.fields.name + "</button></li>";
+        });
+        $("#agents_list").html(html);
+    }
+
+    function selectAgent(pk) {
+        $("#succes").attr("data-value", pk);
+        $("#succes").html("agent  -" + agents[pk].fields.name);
+    }
+
+    function serchStr(e) {
+        let str = $(e).val();
+        let obj = newAgents.find(obj => obj.name == str);
+        let retval = [];
+        agents.forEach(function (a) {
+            if (a.fields.name.indexOf(str) > -1) {
+                retval.push(a);
+            }
+        });
+        show_serchAgent(retval);
+
+    };
+
+    function addAgent() {
+        let pk = $("#succes").attr("data-value");
+        if (pk == undefined) {
+            alert("не выбран агент");
+            return;
+        }
+        $("#agent").val(agents[pk].fields.name);
+        $("#agent").attr("data-id", agents[pk].pk);
+        $("#serchAgent").modal("hide");
+    }
+
+    //===========================================tovar serch=================================================
+     function show_serchTovar(tavar) {
+        if (tavar == undefined) {
+            tavar = tovar;
+        }
+        $("#serchTovar").modal("show");
+        let html = "";
+        tavar.forEach(function (a, i) {
+            html += "<li><button class='btn btn-info' onclick='selectTovar(" + i + ")'>" + a.pk + " = " + a.fields.name + "</button></li>";
+        });
+        $("#tovar_list").html(html);
+    }
+       function selectTovar(pk) {
+        $("#succesTovar").attr("data-value", pk);
+        $("#succesTovar").html("продукция  -" + tovar[pk].fields.name);
+    }
+    function addTovar() {
+        let pk = $("#succesTovar").attr("data-value");
+        if (pk == undefined) {
+            alert("не выбрана продукция");
+            return;
+        }
+        $("#name_tovar").val(tovar[pk].fields.name);
+        $("#name_tovar").attr("data-id", tovar[pk].pk);
+        $("#serchTovar").modal("hide");
+    }
+</script>
+
+
+<!-- Modal -->
+<div class="modal fade" id="serchAgent" tabindex="-1" role="dialog" aria-labelledby="serchAgent" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="serchAgent">Выбор контрагента</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="bodySerchModal" class="modal-body">
+                <label>Поиск</label>
+                <input type="text" onkeyup="serchStr(this)" id="modalSerchAgent" placeholder="Поиск">
+                <br>
+                <div id="succes">
+                </div>
+                <br>
+                <label>Список агентов</label>
+                <ul id="agents_list">
+                </ul>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">отмена</button>
+                <button type="button" onclick="addAgent();" class="btn btn-primary">выбрать</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="serchTovar" tabindex="-1" role="dialog" aria-labelledby="serchAgent" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="serchTovarTitle">Выбор имнования товара</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="bodyTovar" class="modal-body">
+                <label>Поиск</label>
+                <input type="text" onkeyup="serchStr(this)" id="modalSerchTovar" placeholder="Поиск">
+                <br>
+                <div id="succesTovar">
+                </div>
+                <br>
+                <label>Список наименований товаров</label>
+                <ul id="tovar_list">
+                </ul>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">отмена</button>
+                <button type="button" onclick="addTovar();" class="btn btn-primary">выбрать</button>
+            </div>
+        </div>
+    </div>
+</div>
