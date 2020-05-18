@@ -197,11 +197,13 @@ def GetDataStatus(request):
         one_entry = GlobalData.objects.get(id=1)
     except ObjectDoesNotExist:
         one_entry = GlobalData(Auto=False)
-    ves = PlcRemoteUse('192.168.0.1')
+    ves =2
+    #ves = PlcRemoteUse('192.168.0.1')
+
     dataRecive = {
         'plc':"1200",
         "type":"vrs",
-        'ves':ves.getWeight(),
+        'ves':ves,
         'auto':one_entry.Auto,
         'zd': one_entry.Zd,
     }
