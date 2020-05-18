@@ -93,34 +93,33 @@
     <div class="modal fade" id="gosnomeravto" tabindex="-1" role="dialog" aria-labelledby="gosnomeravto"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <div class="modal-content" style="width: 70%;">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="gosnomeravto">Изменить номер авто</h5>
+                    <h5 class="modal-title" id="gosnomeravto">Измение номера авто</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group col-md-7">
+                    <div class="form-group col-12">
                         <label for="gosNavto">Номер авто</label>
-                        <input type="text" class="form-control" id="gosNavto"
-                               pattern="([0-9][0-9][0-9][0-9])" maxlength='4' name="gosNavto"
+                        <input type="text" class="form-control text-left" style="width:30%" id="gosNavto" pattern="([0-9]{4})" maxlength='4'
                         >
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-12">
                         <label for="seriaAvto">Серия </label>
                         <input type="text" class="form-control" id="seriaAvto" maxlength="2"
-                               pattern="([a-zA-Z][a-zA-Z])" name="seriaAvto">
+                               pattern="([a-zA-Z]{4})" name="seriaAvto" style="width:30%">
                     </div>
-                    <div class="form-group col-md-2 ">
+                    <div class="form-group col-12">
                         <label for="regionAvto">Регион</label>
-                        <input type="text" class="form-control" pattern="([0-7])"
-                               id="regionAvto" maxlength="1" name="regionAvto">
+                        <input type="text" class="form-control" pattern="([0-7]$)"
+                               id="regionAvto" maxlength="1" name="regionAvto" style="width:30%">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">отмена</button>
-                    <button type="button" onclick="changeNumAvto()" class="btn btn-primary">Изменить</button>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Отмена</button>
+                    <button type="button" onclick="changeNumAvto()" class="btn btn-primary">Изменить номер</button>
                 </div>
             </div>
         </div>
@@ -563,12 +562,12 @@ $(document).ready(function(){$("[data-bs-hover-animate]").mouseenter(function(){
             background-color: #0058B9;
             padding: 7px;
             position: fixed;
-            top: 8%;
+            top: 75px;
             left: 5px;
             cursor: pointer;
             transition: left .43s;
             z-index: 3;
-            width: 100px;
+            width: 200px;
             -webkit-transform: translateZ(0);
             -webkit-backface-visibility: hidden;
         }

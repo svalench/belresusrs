@@ -145,6 +145,7 @@
         $("#" + $(e.target).closest(".wrapper-row-editor").find("table").attr("id")).DataTable().row.add($newRow).draw()
     })
 }(jQuery);
+
 $(document).ready(function() {
     $('#editibleTable').mdbEditor();
     $('.dataTables_length').addClass('bs-select');

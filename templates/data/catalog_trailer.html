@@ -27,36 +27,48 @@
         <div class="modal-content">
           <div class="modal-header text-center">
             <h4 class="modal-title w-100 font-weight-bold text-primary ml-5">Добавить прицеп</h4>
-            <button type="button" class="close text-primary" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close text-primary" data-dismiss="modal" aria-label="Close" onclick="clearFieldModalAdd()">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body mx-3">
+
+          <div class="md-form mb-5">
+              <input type="text" id="idInvis" class="form-control" style="cursor: not-allowed" readonly="">
+              <label data-error="измените" data-success="принято" for="idInvis"></label>
+            </div>
+
             <div class="md-form mb-5">
-<input type="text" id="contragent"  list="browsers"   class="form-control validate">
-                <datalist id="browsers">
+        <input type="text" id="contragent"  list="browsersAdd"   class="form-control">
+                <datalist id="browsersAdd">
                     {% for i in agent %}
-                        <option value="{{ i.id }}">{{ i.name }}</option>
+                        <option id="{{ i.id }}" value="{{ i.name }}">
                     {% endfor %}
                 </datalist>
-              <label data-error="измените" data-success="принято" for="contragent">выберите контрагента</label>
+              <label data-error="измените" data-success="принято" for="contragent">Контрагент</label>
             </div>
 
               <div class="md-form mb-5">
-              <input type="text" id="number" class="form-control validate">
-              <label data-error="измените" data-success="принято" for="number">номер прицепа</label>
+              <input type="text" id="number" class="form-control">
+              <label data-error="измените" data-success="принято" for="number">Номер прицепа</label>
             </div>
 
 		    <div class="md-form mb-5">
-              <input type="text" id="model" class="form-control validate">
-              <label data-error="измените" data-success="принято" for="model">модель и серия прицепа</label>
+              <input type="text" id="model" class="form-control">
+              <label data-error="измените" data-success="принято" for="model">Модель и серия прицепа</label>
             </div>
 
 
 		     <div class="md-form mb-5">
-              <input type="text" id="tara" class="form-control validate">
+              <input type="text" id="tara" class="form-control">
               <label data-success="принято" for="tara">Вес тара</label>
             </div>
+
+          <div class="md-form mb-5">
+              <input type="date" id="dateAdd" class="form-control" readonly="" required style="cursor: not-allowed;">
+              <label data-error="измените" data-success="принято" for="dateAdd"></label>
+            </div>
+
 
 
           </div>
@@ -78,31 +90,31 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header text-center">
-            <h4 class="modal-title w-100 font-weight-bold text-secondary ml-5">Изменить</h4>
-            <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close">
+            <h4 class="modal-title w-100 font-weight-bold text-secondary ml-5">Измение данных прицепа</h4>
+            <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close" onclick="clearFieldModalAdd()">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
            <div class="modal-body mx-3">
             <div class="md-form mb-5">
             <input type="text" id="auto_id" hidden>
-<input type="text" id="contragent_upd"  list="browsers"   class="form-control validate">
-                <datalist id="browsers">
+            <input type="text" id="contragent_upd"  list="browsersUpd"   class="form-control">
+                <datalist id="browsersUpd">
                     {% for i in agent %}
-                        <option value="{{ i.id }}">{{ i.name }}</option>
+                        <option id="{{ i.name }}" value="{{ i.id }}">
                     {% endfor %}
                 </datalist>
-              <label data-error="измените" data-success="принято" for="contragent_upd">выберите контрагента</label>
+              <label data-error="измените" data-success="принято" for="contragent_upd">Контрагент</label>
             </div>
 
               <div class="md-form mb-5">
-              <input type="text" id="number_upd" class="form-control validate">
-              <label data-error="измените" data-success="принято" for="number">номер прицепа</label>
+              <input type="text" id="number_upd" class="form-control">
+              <label data-error="измените" data-success="принято" for="number">Номер прицепа</label>
             </div>
 
 		    <div class="md-form mb-5">
-              <input type="text" id="model_upd" class="form-control validate">
-              <label data-error="измените" data-success="принято" for="model">модель и серия прицепа</label>
+              <input type="text" id="model_upd" class="form-control">
+              <label data-error="измените" data-success="принято" for="model">Модель и серия прицепа</label>
             </div>
 
 
@@ -111,6 +123,10 @@
               <label data-success="принято" for="tara">Вес тара</label>
             </div>
 
+           <div class="md-form mb-5">
+              <input type="date" id="dateUpd" class="form-control" readonly="" required style="cursor: not-allowed;">
+              <label data-error="измените" data-success="принято" for="dateUpd"></label>
+            </div>
 
           </div>
           <div class="modal-footer d-flex justify-content-center editInsideWrapper">
@@ -138,11 +154,11 @@
             </button>
           </div>
           <div class="modal-body mx-3">
-            <p class="text-center h4">Вы уверены что хотите удалить выбранного контрагента?</p>
+            <p class="text-center h4">Вы уверены что хотите удалить выбранный прицеп?</p>
 
           </div>
           <div class="modal-footer d-flex justify-content-center deleteButtonsWrapper">
-            <button type="button" class="btn btn-danger btnYesClass" id="btnYes" data-dismiss="modal">Да</button>
+            <button type="button" class="btn btn-danger btnYesClass" id="btnYes" data-dismiss="modal" onclick="deleteAuto()">Да</button>
             <button type="button" class="btn btn-primary btnNoClass" id="btnNo" data-dismiss="modal">Нет</button>
           </div>
         </div>
@@ -159,11 +175,11 @@
   <thead>
     <tr>
          <th class="th-sm">id</th>
-      <th class="th-sm">контрагент</th>
-      <th class="th-sm">номер</th>
-        <th class="th-sm">модель</th>
-	  <th class="th-sm">тара</th>
-      <th class="th-sm">дата добавления</th>
+      <th class="th-sm">Контрагент</th>
+      <th class="th-sm">Номер прицепа</th>
+        <th class="th-sm">Модель прицепа</th>
+	  <th class="th-sm">Тара</th>
+      <th class="th-sm">Дата добавления</th>
 
     </tr>
   </thead>
@@ -184,11 +200,11 @@
 	<tfoot>
 		<tr>
    <th >id</th>
-      <th >контрагент</th>
-      <th >номер</th>
-        <th >модель</th>
-	  <th >тара</th>
-      <th >дата добавления</th>
+      <th >Контрагент</th>
+      <th >Номер прицепа</th>
+        <th >Модель прицепа</th>
+	  <th >Тара</th>
+      <th >Дата добавления</th>
 			</tr>
       </tfoot>
 </table>
@@ -197,11 +213,22 @@
 	</div>
         </div>
     </div>
-
+    </div>
 
 <script>
+
+const clearFieldModalAdd = () => {
+    $('#contragent').val('');
+        $('#number').val('');
+        $("#model").val('');
+        $("#tara").val('');
+};
+
+
     function addAuto() {
-        let agent = $("#contragent").val();
+        let findIdContragent=$('#contragent').val();
+
+        let agent = $('option[value='+findIdContragent+']').attr("id");
         let number = $('#number').val();
         let model = $("#model").val();
         let ves = $("#tara").val();
@@ -218,7 +245,8 @@
                 dataType: 'json',
                 data: data,
                 success: function (dat) {
-                    console.log("auto added");
+                    console.log("pricep added");
+                    clearFieldModalAdd();
                 },
                 beforeSend: function (xhr, settings) {
                     if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
@@ -229,8 +257,10 @@
     }
 
     function updAuto() {
+        let findIdContragent=$('#contragent_upd').val();
+
         let id = $("#auto_id").val();
-        let agent = $("#contragent_upd").val();
+        let agent = $('option[value='+findIdContragent+']').attr("id");
         let number = $('#number_upd').val();
         let model = $("#model_upd").val();
         let ves = $("#tara_upd").val();
@@ -257,8 +287,63 @@
                 }
             });
     }
+
+    {#САША ДОПИШИ УДАЛЕНИЕ, селекторы забирают все переменные выделенной строки#}
+function deleteAuto() {
+        let id = $("tr + .tr-color-selected > td:eq(0)").text();
+        let agent = $("tr + .tr-color-selected > td:eq(1)").text()
+        let number = $("tr + .tr-color-selected > td:eq(2)").text()
+        let model = $("tr + .tr-color-selected > td:eq(3)").text()
+        let ves = $("tr + .tr-color-selected > td:eq(4)").text()
+        let data={
+            'id':id,
+            'agent':agent,
+            'number':number,
+            'model':model,
+            'ves':ves
+        };
+        console.log(data);
+        {#$.ajax({#}
+        {#        type: "POST",#}
+        {#        url: '{% url 'ves:catalogAutoDelete' %}',#}
+        {#        traditional: true,#}
+        {#        dataType: 'json',#}
+        {#        data: data,#}
+        {#        success: function (dat) {#}
+        {#            console.log("auto update");#}
+        {#        },#}
+        {#        beforeSend: function (xhr, settings) {#}
+        {#            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {#}
+        {#                xhr.setRequestHeader("X-CSRFToken", csrftoken);#}
+        {#            }#}
+        {#        }#}
+        {#    });#}
+    }
+
+
+</script>
+<script>
+let nowAdd = new Date();
+let dayAdd = ("0" + nowAdd.getDate()).slice(-2);
+let monthAdd = ("0" + (nowAdd.getMonth() + 1)).slice(-2);
+let todayAdd = nowAdd.getFullYear()+"-"+(monthAdd)+"-"+(dayAdd) ;
+
+$('#dateAdd').val(todayAdd);
+$('#dateUpd').val(todayAdd);
+$('#idInvis').val('Id XXXXX');
 </script>
 
+    <style>
+    input[type="time"]{
+    width:120px;
+      border: none;
+      clip-path: inset(0 17px 0 0);
+      outline:none;
+      outline:0;
+}
+
+
+    </style>
 
 
      {% endblock %}
