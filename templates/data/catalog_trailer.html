@@ -2,13 +2,14 @@
 {% block title %}Каталог автотрансопрта{% endblock %}
 {% load static %}
 {% block content %}
-  <link rel="stylesheet" href="{% static 'css/Article-List.css' %}">
+{#  <link rel="stylesheet" href="{% static 'css/Article-List.css' %}">#}
         <link rel="stylesheet" href="{% static 'css/datatables.min.css' %}">
-        <link rel="stylesheet" href="{% static 'css/Features-Boxed.css' %}">
+{#        <link rel="stylesheet" href="{% static 'css/Features-Boxed.css' %}">#}
         <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}">
-        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{#        <link rel="stylesheet" href="{% static 'css/styles.css' %}">#}
         <link rel="stylesheet" href="{% static 'css/table-css.css' %}">
-       <script src="{% static 'js/all.js' %}"></script>
+{#       <script src="{% static 'js/all.js' %}"></script>#}
+    <link rel="stylesheet" href="{% static 'fonts/fontawesome-all.min.css' %}">
     <script src="{% static 'js/datatables.min.js' %}"></script>
     <script src="{% static 'js/table-equipment.js' %}"></script>
     <script src="{% static 'js/mdb.min.js' %}"></script>
@@ -61,7 +62,7 @@
           </div>
           <div class="modal-footer d-flex justify-content-center buttonAddFormWrapper">
             <button class="btn btn-outline-primary btn-block buttonAdd"  onclick="addAuto()" data-dismiss="modal">Добавить
-              <i class="fas fa-paper-plane-o ml-1"></i>
+              <i class="fas fa-plus-square ml-1"></i>
             </button>
           </div>
         </div>
@@ -114,7 +115,7 @@
           </div>
           <div class="modal-footer d-flex justify-content-center editInsideWrapper">
             <button onclick="updAuto()" class="btn btn-outline-secondary btn-block editInside" data-dismiss="modal">Изменить
-              <i class="fas fa-paper-plane-o ml-1"></i>
+              <i class="fas fa-pencil-alt ml-1"></i>
             </button>
           </div>
         </div>
@@ -123,7 +124,7 @@
 
     <div class="text-center buttonEditWrapper">
       <button class="btn btn-info btn-rounded btn-sm buttonEdit" data-toggle="modal" data-target="#modalEdit"
-        disabled>Изменить<i class="fas fa-pencil-square-o ml-1"></i></button>
+        disabled>Изменить<i class="fas fa-pencil-alt ml-1"></i></button>
     </div>
 
     <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="modalDelete"
