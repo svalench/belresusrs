@@ -7,46 +7,66 @@
     <head>
    <link rel="stylesheet" href="{% static 'boostrap/css/bootstrap.min.css' %}">
 <link rel="stylesheet" href="{% static 'css/Article-List.css' %}" >
+
         <script src="{% static 'jq.js' %}"></script>
     <script src="{% static 'boostrap/js/bootstrap.min.js' %}"></script>
 </head>
 <body>
+
+<style>
+    .dropdown:hover > .dropdown-menu {
+    display: block;
+}
+</style>
+
 <header style="padding-bottom: 15px;">
     <nav class="navbar navbar-expand-lg navbar-light bg-light ml-2 mr-2">
-  <a class="navbar-brand" href="#">Белресурсы</a>
+  <a class="navbar-brand" href="{% url 'ves:start' %}">Белресурсы</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent" style="padding-left: 20px;">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url 'ves:start' %}">Стартовая <span class="sr-only">(current)</span></a>
-      </li>
+{#      <li class="nav-item active">#}
+{#        <a class="nav-link" href="{% url 'ves:start' %}">Стартовая <span class="sr-only">(current)</span></a>#}
+{#      </li>#}
+
+
+{#        <li class="nav-item">#}
+{#        <a class="nav-link" href="{% url 'ves:menu_ves'  %}">Взвешивание</a>#}
+{#      </li>#}
 
          <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="{% url 'ves:menu_ves' %}" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Взвешивание
         </a>
         <div class="dropdown-menu " aria-labelledby="navbarDropdown1">
-            <a class="nav-link " href="{% url 'ves:menu_ves' %}">Меню</a>
+{#            <a class="nav-link " href="{% url 'ves:menu_ves' %}">Меню</a>#}
             <a class="nav-link "   href="{% url 'ves:avto_ves' %}">Автотранспорт  <span id="automenu" class="badge badge-success">v</span></a>
+            <a class="nav-link "  href="{% url 'ves:zd_ves' %}">Ж/Д транспорт <span id="zdmenu" class="badge badge-success">v</span></a>
             <a class="nav-link " href="{% url 'ves:avto_data' %}">Данные по авто</a>
-              <a class="nav-link "  href="{% url 'ves:zd_ves' %}">Ж/Д транспорт <span id="zdmenu" class="badge badge-success">v</span></a>
+            <a class="nav-link " href="{% url 'ves:zd_data' %}">Данные по Ж/Д</a>
+
         </div>
-      </li>
+{#      </li>#}
+{##}
+{#        <li class="nav-item">#}
+{#        <a class="nav-link" href="{% url 'ves:menu_data' %}">Данные</a>#}
+{#      </li>#}
+
 
          <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="{% url 'ves:menu_data' %}" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Данные
         </a>
         <div class="dropdown-menu " aria-labelledby="navbarDropdown2">
-            <a class="nav-link " href="{% url 'ves:menu_data' %}">Меню</a>
+{#            <a class="nav-link " href="{% url 'ves:menu_data' %}">Меню</a>#}
               <a class="nav-link " href="{% url 'ves:contragents' %}">Контрагенты</a>
               <a class="nav-link " href="{% url 'ves:actions' %}">События</a>
             <a class="nav-link " href="{% url 'ves:users' %}">Пользователи</a>
-            <a class="nav-link " href="{% url 'ves:catalogAuto' %}">Католог автотранспорта</a>
-            <a class="nav-link " href="{% url 'ves:catalogTrailer' %}">Католог прицепов</a>
+            <a class="nav-link " href="{% url 'ves:catalogAuto' %}">Каталог автотранспорта</a>
+            <a class="nav-link " href="{% url 'ves:catalogTrailer' %}">Каталог прицепов</a>
             <a class="nav-link " href="{% url 'ves:actions' %}">Сообщения</a>
         </div>
       </li>
@@ -89,6 +109,17 @@
 
 <script src="{% static 'popper.js' %}" ></script>
 <script src="{% static 'b.min.js' %}" ></script>
+<script>
+    $('.dropdown-toggle').click(function(e) {
+    if ($(document).width() > 768) {
+        e.preventDefault();
+        let url = $(this).attr('href');
+        if (url !== '#') {
+            window.location.href = url;
+        }
+    }
+});
+</script>
 <script>
 
 
