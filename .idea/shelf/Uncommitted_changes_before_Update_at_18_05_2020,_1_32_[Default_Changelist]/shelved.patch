@@ -1,0 +1,18 @@
+Index: ves_n/static/css/Features-Boxed.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>.features-boxed {\n  color: #313437;\n  background-color: #eef4f7;\n}\n\n.features-boxed p {\n  color: #7d8285;\n}\n\n.features-boxed h2 {\n  font-weight: bold;\n  margin-bottom: 40px;\n  padding-top: 40px;\n  color: inherit;\n}\n\n@media (max-width:767px) {\n  .features-boxed h2 {\n    margin-bottom: 25px;\n    padding-top: 25px;\n    font-size: 24px;\n  }\n}\n\n.features-boxed .intro {\n  font-size: 16px;\n  max-width: 500px;\n  margin: 0 auto;\n}\n\n.features-boxed .intro p {\n  margin-bottom: 0;\n}\n\n.features-boxed .features {\n  padding: 0;\n}\n\n.features-boxed .item {\n  text-align: center;\n}\n\n.features-boxed .item .box {\n  text-align: center;\n  padding: 30px;\n  background-color: #fff;\n  margin-bottom: 30px;\n}\n\n.features-boxed .item .icon {\n  font-size: 60px;\n  color: #1485ee;\n  margin-top: 20px;\n  margin-bottom: 35px;\n}\n\n.features-boxed .item .name {\n  font-weight: bold;\n  font-size: 18px;\n  margin-bottom: 8px;\n  margin-top: 0;\n  color: inherit;\n}\n\n.features-boxed .item .description {\n  font-size: 15px;\n  margin-top: 15px;\n  margin-bottom: 20px;\n}\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ves_n/static/css/Features-Boxed.css	(revision d6bc99af911140f600e76e886142d801d4972331)
++++ ves_n/static/css/Features-Boxed.css	(date 1589789235507)
+@@ -33,7 +33,7 @@
+ }
+ 
+ .features-boxed .features {
+-  padding: 0;
++  padding: 50px 0;
+ }
+ 
+ .features-boxed .item {
