@@ -1,41 +1,172 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-  <div class="container">
-    {% for contact in page_obj %}
+
+    {#  <link rel="stylesheet" href="{% static 'css/Article-List.css' %}">#}
+        <link rel="stylesheet" href="{% static 'css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/fontawesome-all.min.css' %}">
+{#        <link rel="stylesheet" href="{% static 'css/Features-Boxed.css' %}">#}
+        <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}">
+{#        <link rel="stylesheet" href="{% static 'css/styles.css' %}">#}
+        <link rel="stylesheet" href="{% static 'css/table-css.css' %}">
+{#       <script src="{% static 'js/all.js' %}"></script>#}
+    <script src="{% static 'js/datatables.min.js' %}"></script>
+    <script src="{% static 'js/table-equipment.js' %}"></script>
+    <script src="{% static 'js/mdb.min.js' %}"></script>
+
+<h4 style="position: absolute; top: 15px; left: 22%;color:#adb7b7;">События</h4>
+{#  <div class="container">#}
+{#    {% for contact in page_obj %}#}
     {# Each "contact" is a Contact model object. #}
-    {{ contact.action|upper }} - {{ contact.where|upper }} - {{ contact.parentId.username }} :: {{ contact.date_add|upper }}
-        <hr>
-    ...
-{% endfor %}
+{#    {{ contact.action|upper }} - {{ contact.where|upper }} - {{ contact.parentId.username }} :: {{ contact.date_add|upper }}#}
+{#        <hr>#}
+{#    ...#}
+{#{% endfor %}#}
 
-<div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-        {% endif %}
+{#<div class="pagination">#}
+{#    <span class="step-links">#}
+{#        {% if page_obj.has_previous %}#}
+{#            <a href="?page=1">&laquo; first</a>#}
+{#            <a href="?page={{ page_obj.previous_page_number }}">previous</a>#}
+{#        {% endif %}#}
+{##}
+{#        <span class="current">#}
+{#            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.#}
+{#        </span>#}
+{##}
+{#        {% if page_obj.has_next %}#}
+{#            <a href="?page={{ page_obj.next_page_number }}">next</a>#}
+{#            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>#}
+{#        {% endif %}#}
+{#    </span>#}
+{#</div>#}
+{##}
+{#  </div>#}
 
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
+    <div class="container-fluid" style="padding-top: 20px;">
+        <div class="row">
+            <div class="col-12" id="otchetTableContragent"><div class="wrapper-modal-editor">
 
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-</div>
+                <table id="editibleTable" class="table table-bordered table-hover table-sm text-center" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+         <th class="th-sm">Действие</th>
+      <th class="th-sm">Где</th>
+      <th class="th-sm">Пользователь</th>
+        <th class="th-sm">Дата</th>
 
-  </div>
+    </tr>
+  </thead>
+  <tbody>
+
+{#  {% for contact in page_obj %}#}
+    {# Each "contact" is a Contact model object. #}
+{#    {{ contact.action|upper }} - {{ contact.where|upper }} - {{ contact.parentId.username }} :: {{ contact.date_add|upper }}#}
+{#        <hr>#}
+{#    ...#}
+{#{% endfor %}#}
+
+
+
+  {% for contact in page_obj %}
+    <tr>
+     <td>{{ contact.action|upper }}</td>
+      <td>{{ contact.where|upper }}</td>
+      <td>{{ contact.parentId.username }}</td>
+         <td>{{ contact.date_add|upper }}</td>
+    </tr>
+  {% endfor %}
+
+
+  </tbody>
+	<tfoot>
+		<tr>
+        <th >Действие</th>
+      <th >Где</th>
+      <th >Пользователь</th>
+        <th >Дата</th>
+			</tr>
+      </tfoot>
+</table>
+
+
+	</div>
+        </div>
+    </div>
+    </div>
 
 
     <script src="{% static 'popper.js' %}" ></script>
 <script src="{% static 'b.min.js' %}" ></script>
 
 
+{#   запрет на выделение обычного текста #}
     <script>
+    function preventSelection(element){
+            var preventSelection = false;
 
+        function addHandler(element, event, handler){
+         if (element.attachEvent)
+      element.attachEvent('on' + event, handler);
+    else
+      if (element.addEventListener)
+        element.addEventListener(event, handler, false);
+  }
+  function removeSelection(){
+    if (window.getSelection) { window.getSelection().removeAllRanges(); }
+    else if (document.selection && document.selection.clear)
+      document.selection.clear();
+  }
+  function killCtrlA(event){
+    var event = event || window.event;
+    var sender = event.target || event.srcElement;
+
+    if (sender.tagName.match(/INPUT|TEXTAREA/i))
+      return;
+
+    var key = event.keyCode || event.which;
+    if (event.ctrlKey && key == 'A'.charCodeAt(0))  // 'A'.charCodeAt(0) можно заменить на 65
+    {
+      removeSelection();
+
+      if (event.preventDefault)
+        event.preventDefault();
+      else
+        event.returnValue = false;
+    }
+  }
+
+  // не даем выделять текст мышкой
+  addHandler(element, 'mousemove', function(){
+    if(preventSelection)
+      removeSelection();
+  });
+  addHandler(element, 'mousedown', function(event){
+    var event = event || window.event;
+    var sender = event.target || event.srcElement;
+    preventSelection = !sender.tagName.match(/INPUT|TEXTAREA/i);
+  });
+
+  // борем dblclick
+  // если вешать функцию не на событие dblclick, можно избежать
+  // временное выделение текста в некоторых браузерах
+  addHandler(element, 'mouseup', function(){
+    if (preventSelection)
+      removeSelection();
+    preventSelection = false;
+  });
+
+  // борем ctrl+A
+  // скорей всего это и не надо, к тому же есть подозрение
+  // что в случае все же такой необходимости функцию нужно
+  // вешать один раз и на document, а не на элемент
+  addHandler(element, 'keydown', killCtrlA);
+  addHandler(element, 'keyup', killCtrlA);
+}
+
+$(document).ready ( function(){
+ preventSelection(document);
+});
     </script>
 
 {% endblock %}

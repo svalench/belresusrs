@@ -1,156 +1,448 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <div class="container">
-        <button class="btn btn-success" data-toggle="modal" data-target="#addcontragent">Добавить пользователя</button>
-        <hr>
-        <div class="accordion" id="accordionExample">
-            {% for a in page_obj %}
-                <div class="card">
-                    <div class="card-header" id="headingOne_{{ a.id }}">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link" type="button" data-toggle="collapse"
-                                    data-target="#collapseOne_{{ a.id }}"
-                                    aria-expanded="true" aria-controls="collapseOne_{{ a.id }}">
-                                {{ a.username }}
-                            </button>
-                        </h2>
-                    </div>
 
-                    <div id="collapseOne_{{ a.id }}" class="collapse" aria-labelledby="headingOne_{{ a.id }}"
-                         data-parent="#accordionExample">
-                        <div class="card-body">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th scope="col">email</th>
-                                    <th scope="col">адрес</th>
-                                    <th scope="col">описание</th>
-                                    <th scope="col">добавлен</th>
-                                    <th scope="col">обнавлен</th>
-                                    <th scope="col">действие</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>{{ a.email }}</td>
-                                    <td>{{ a.address }}</td>
-                                    <td>{{ a.description }}</td>
-                                    <td>{{ a.date_add }}</td>
-                                    <td>{{ a.date_update }}</td>
-                                    <td>
-                                        <a href="{% url 'ves:usersUpd'  a.id  %}" class="btn btn-warning">Изменить
-                                        </a>
-                                        <button class="btn btn-danger">Удалить</button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
+    {#  <link rel="stylesheet" href="{% static 'css/Article-List.css' %}">#}
+        <link rel="stylesheet" href="{% static 'css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/fontawesome-all.min.css' %}">
+{#        <link rel="stylesheet" href="{% static 'css/Features-Boxed.css' %}">#}
+        <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}">
+{#        <link rel="stylesheet" href="{% static 'css/styles.css' %}">#}
+        <link rel="stylesheet" href="{% static 'css/table-css.css' %}">
+{#       <script src="{% static 'js/all.js' %}"></script>#}
+    <script src="{% static 'js/datatables.min.js' %}"></script>
+    <script src="{% static 'js/table-equipment.js' %}"></script>
+    <script src="{% static 'js/mdb.min.js' %}"></script>
 
+    <h4 style="position: absolute; top: 15px; left: 22%;color:#adb7b7;">Пользователи</h4>
 
-        </div>
+{#    <div class="container">#}
+{#        <button class="btn btn-success" data-toggle="modal" data-target="#addcontragent">Добавить пользователя</button>#}
+{#        <hr>#}
+{#        <div class="accordion" id="accordionExample">#}
+{#            {% for a in page_obj %}#}
+{#                <div class="card">#}
+{#                    <div class="card-header" id="headingOne_{{ a.id }}">#}
+{#                        <h2 class="mb-0">#}
+{#                            <button class="btn btn-link" type="button" data-toggle="collapse"#}
+{#                                    data-target="#collapseOne_{{ a.id }}"#}
+{#                                    aria-expanded="true" aria-controls="collapseOne_{{ a.id }}">#}
+{#                                {{ a.username }}#}
+{#                            </button>#}
+{#                        </h2>#}
+{#                    </div>#}
+{##}
+{#                    <div id="collapseOne_{{ a.id }}" class="collapse" aria-labelledby="headingOne_{{ a.id }}"#}
+{#                         data-parent="#accordionExample">#}
+{#                        <div class="card-body">#}
+{#                            <table class="table">#}
+{#                                <thead>#}
+{#                                <tr>#}
+{#                                    <th scope="col">email</th>#}
+{#                                    <th scope="col">адрес</th>#}
+{#                                    <th scope="col">описание</th>#}
+{#                                    <th scope="col">добавлен</th>#}
+{#                                    <th scope="col">обнавлен</th>#}
+{#                                    <th scope="col">действие</th>#}
+{#                                </tr>#}
+{#                                </thead>#}
+{#                                <tbody>#}
+{#                                <tr>#}
+{#                                    <td>{{ a.email }}</td>#}
+{#                                    <td>{{ a.address }}</td>#}
+{#                                    <td>{{ a.description }}</td>#}
+{#                                    <td>{{ a.date_add }}</td>#}
+{#                                    <td>{{ a.date_update }}</td>#}
+{#                                    <td>#}
+{#                                        <a href="{% url 'ves:usersUpd'  a.id  %}" class="btn btn-warning">Изменить#}
+{#                                        </a>#}
+{#                                        <button class="btn btn-danger">Удалить</button>#}
+{#                                    </td>#}
+{#                                </tr>#}
+{#                                </tbody>#}
+{#                            </table>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            {% endfor %}#}
+{##}
+{##}
+{#        </div>#}
+{#    </div>#}
 
-        <div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-        {% endif %}
-
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
-
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-        </div>
-
+{#    <div class="pagination">#}
+{#    <span class="step-links">#}
+{#        {% if page_obj.has_previous %}#}
+{#            <a href="?page=1">&laquo; first</a>#}
+{#            <a href="?page={{ page_obj.previous_page_number }}">previous</a>#}
+{#        {% endif %}#}
+{##}
+{#        <span class="current">#}
+{#            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.#}
+{#        </span>#}
+{##}
+{#        {% if page_obj.has_next %}#}
+{#            <a href="?page={{ page_obj.next_page_number }}">next</a>#}
+{#            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>#}
+{#        {% endif %}#}
+{#    </span>#}
+{#        </div>#}
 
         <!-- Modal addcontragent -->
-        <div class="modal fade" id="addcontragent" tabindex="-1" role="dialog" aria-labelledby="addcontragent"
-             aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="gosnomeravto">Добавить пользователя</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
+{#    <div class="modal fade" id="addcontragent" tabindex="-1" role="dialog" aria-labelledby="addcontragent"#}
+{#             aria-hidden="true">#}
+{#            <div class="modal-dialog modal-lg" role="document">#}
+{#                <div class="modal-content">#}
+{#                    <div class="modal-header">#}
+{#                        <h5 class="modal-title" id="gosnomeravto">Добавить пользователя</h5>#}
+{#                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+{#                            <span aria-hidden="true">&times;</span>#}
+{#                        </button>#}
+{#                    </div>#}
+{#                    <div class="modal-body">#}
+{##}
+{#                    <form method="post">#}
+{#  {% csrf_token %}#}
+{#                        { userform.as_p }}#}
+{##}
+{#                        <div class="form-group">#}
+{#                            <label>Никнейм</label><br>#}
+{#                            {{ userform.username }}#}
+{#                        </div>#}
+{#                        <div class="form-group">#}
+{#                             <label>Имя</label><br>#}
+{#                            {{ userform.name }}#}
+{#                        </div>#}
+{#                        <div class="form-group">#}
+{##}
+{#                            <label>Отчесвто</label><br>#}
+{#                            {{ userform.secondName }}#}
+{#                        </div>#}
+{#                        <div class="form-group">#}
+{#                             <label>Фамилия</label><br>#}
+{#                            {{ userform.lastName }}#}
+{#                        </div>#}
+{#                        <div class="form-group">#}
+{#                            <label>Должность</label><br>#}
+{#                            {{ userform.role }}#}
+{#                        </div>#}
+{#                        <div class="form-group">#}
+{#                            <label>Роль</label><br>#}
+{#                            {{ userform.user_role }}#}
+{#                        </div>#}
+{#                         <div class="form-group">#}
+{#                             <label>Пароль</label><br>#}
+{#                            {{ userform.password1 }}#}
+{#                        </div>#}
+{#                        <div class="form-group">#}
+{#                             <label>Подтверждение пароля</label><br>#}
+{#                            {{ userform.password2 }}#}
+{#                        </div>#}
+{#                        <div class="form-group">#}
+{#                            <label>Телефон</label><br>#}
+{#                            {{ userform.phone }}#}
+{#                        </div>#}
+{#                        <div class="form-group">#}
+{#                            <label>Дата рождения</label><br>#}
+{#                            {{ userform.birth_date }}#}
+{#                        </div>#}
+{#                        <div class="form-group">#}
+{#                            <label>Дополнительная информация</label><br>#}
+{#                            {{ userform.descriptions }}#}
+{#                        </div>#}
+{##}
+{#  <button type="submit">Добавить</button>#}
+{##}
+{#</form>#}
+{#                    </div>#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{##}
+{#        {% csrf_token %}#}
+{##}
+{##}
+{#    </div>#}
 
-                    <form method="post">
-  {% csrf_token %}
-                        { userform.as_p }}
+      <div class="container-fluid" style="padding-top: 20px;">
+        <div class="row">
+            <div class="col-12" id="otchetTableContragent"><div class="wrapper-modal-editor">
 
-                        <div class="form-group">
-                            <label>Никнейм</label><br>
-                            {{ userform.username }}
-                        </div>
-                        <div class="form-group">
-                             <label>Имя</label><br>
-                            {{ userform.name }}
-                        </div>
-                        <div class="form-group">
+   <div class="row d-flex justify-content-center modalWrapper">
+    <div class="modal fade addNewInputs" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="modalAdd"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold text-primary ml-5">Добавить пользователя</h4>
+            <button type="button" class="close text-primary" data-dismiss="modal" aria-label="Close" onclick="clearFieldModalAdd()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body mx-3">
 
-                            <label>Отчесвто</label><br>
-                            {{ userform.secondName }}
-                        </div>
-                        <div class="form-group">
-                             <label>Фамилия</label><br>
-                            {{ userform.lastName }}
-                        </div>
-                        <div class="form-group">
-                            <label>Должность</label><br>
-                            {{ userform.role }}
-                        </div>
-                        <div class="form-group">
-                            <label>Роль</label><br>
-                            {{ userform.user_role }}
-                        </div>
-                         <div class="form-group">
-                             <label>Пароль</label><br>
-                            {{ userform.password1 }}
-                        </div>
-                        <div class="form-group">
-                             <label>Подтверждение пароля</label><br>
-                            {{ userform.password2 }}
-                        </div>
-                        <div class="form-group">
-                            <label>Телефон</label><br>
-                            {{ userform.phone }}
-                        </div>
-                        <div class="form-group">
-                            <label>Дата рождения</label><br>
-                            {{ userform.birth_date }}
-                        </div>
-                        <div class="form-group">
-                            <label>Дополнительная информация</label><br>
-                            {{ userform.descriptions }}
-                        </div>
-
-  <button type="submit">Добавить</button>
-
-</form>
-                    </div>
+              <div class="md-form mb-5">
+              <input type="text" class="form-control" hidden>
+              <label></label>
             </div>
+
+
+              <div class="md-form mb-5">
+                <input type="text" id="userNickname" class="form-control">
+                <label data-error="измените" data-success="принято" for="userNickname">Пользователь</label>
+            </div>
+
+              <div class="md-form mb-5">
+                <input type="text" id="userPassword1" class="form-control">
+                <label data-error="измените" data-success="принято" for="userPassword1">Пароль</label>
+            </div>
+
+              <div class="md-form mb-5">
+                <input type="text" id="userName" class="form-control">
+                <label data-error="измените" data-success="принято" for="userName">Имя</label>
+            </div>
+
+              <div class="md-form mb-5">
+                <input type="text" id="userOtchestvo" class="form-control">
+                <label data-error="измените" data-success="принято" for="userOtchestvo">Отчество</label>
+            </div>
+
+              <div class="md-form mb-5">
+                <input type="text" id="userFamilia" class="form-control">
+                <label data-error="измените" data-success="принято" for="userFamilia">Фамилия</label>
+            </div>
+
+              <div class="md-form mb-5">
+                <input type="text" id="userProfessia" class="form-control">
+                <label data-error="измените" data-success="принято" for="userProfessia">Должность</label>
+            </div>
+
+              <div class="md-form mb-5">
+                <input type="text" id="userAccess" list="userAccessList" class="form-control">
+                  <datalist id="userAccessList">
+                       <option id="guest" value="Гость">
+                      <option id="operator" value="Оператор">
+                      <option id="admin" value="Админ">
+                      <option id="kladovschik" value="Кладовщик">
+                  </datalist>
+                <label data-error="измените" data-success="принято" for="userAccess">Роль</label>
+            </div>
+
+
+              <div class="md-form mb-5">
+                <input type="text" id="userPhone" class="form-control">
+                <label data-error="измените" data-success="принято" for="userPhone">Телефон</label>
+            </div>
+
+              <div class="md-form mb-5">
+                <input type="text" id="userDescription" class="form-control">
+                <label data-error="измените" data-success="принято" for="userDescription">Доп. информация</label>
+            </div>
+
+
+          </div>
+          <div class="modal-footer d-flex justify-content-center buttonAddFormWrapper">
+            <button class="btn btn-outline-primary btn-block buttonAdd"  onclick="addUser()" data-dismiss="modal">Добавить
+              <i class="fas fa-plus-square ml-1"></i>
+            </button>
+          </div>
         </div>
-
-
-        {% csrf_token %}
-
-
+      </div>
     </div>
+
+    <div class="text-center">
+      <a href="" class="btn btn-info btn-rounded btn-sm" data-toggle="modal" data-target="#modalAdd">Добавить<i
+          class="fas fa-plus-square ml-1"></i></a>
+    </div>
+
+    <div class="modal fade modalEditClass" id="modalEdit" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold text-secondary ml-5">Измение пользователя</h4>
+            <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close" onclick="clearFieldModalAdd()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+           <div class="modal-body mx-3">
+
+            <div class="md-form mb-5">
+              <input type="text" class="form-control" hidden>
+              <label></label>
+            </div>
+
+
+              <div class="md-form mb-5">
+                <input type="text" id="userNicknameUpd" class="form-control">
+                <label data-error="измените" data-success="принято" for="userNicknameUpd">Пользователь</label>
+            </div>
+
+               <div class="md-form mb-5">
+                <input type="password" id="userPassword1Upd" class="form-control">
+                <label data-error="измените" data-success="принято" for="userPassword1Upd">Пароль</label>
+            </div>
+
+              <div class="md-form mb-5">
+                <input type="text" id="userNameUpd" class="form-control">
+                <label data-error="измените" data-success="принято" for="userNameUpd">Имя</label>
+            </div>
+
+              <div class="md-form mb-5">
+                <input type="text" id="userOtchestvoUpd" class="form-control">
+                <label data-error="измените" data-success="принято" for="userOtchestvoUpd">Отчество</label>
+            </div>
+
+              <div class="md-form mb-5">
+                <input type="text" id="userFamiliaUpd" class="form-control">
+                <label data-error="измените" data-success="принято" for="userFamiliaUpd">Фамилия</label>
+            </div>
+
+              <div class="md-form mb-5">
+                <input type="text" id="userProfessiaUpd" class="form-control">
+                <label data-error="измените" data-success="принято" for="userProfessiaUpd">Должность</label>
+            </div>
+
+              <div class="md-form mb-5">
+                <input type="text" id="userAccessUpd" list="userAccessList" class="form-control">
+                  <datalist id="userAccessList">
+                       <option id="guest" value="Гость">
+                      <option id="operator" value="Оператор">
+                      <option id="admin" value="Админ">
+                      <option id="kladovschik" value="Кладовщик">
+                  </datalist>
+                <label data-error="измените" data-success="принято" for="userAccessUpd">Роль</label>
+            </div>
+
+
+              <div class="md-form mb-5">
+                <input type="text" id="userPhoneUpd" class="form-control">
+                <label data-error="измените" data-success="принято" for="userPhoneUpd">Телефон</label>
+            </div>
+
+               <div class="md-form mb-5">
+                <input type="text" id="userDescriptionUpd" class="form-control">
+                <label data-error="измените" data-success="принято" for="userDescriptionUpd">Доп. информация</label>
+            </div>
+
+
+          </div>
+          <div class="modal-footer d-flex justify-content-center editInsideWrapper">
+            <button onclick="updUser()" class="btn btn-outline-secondary btn-block editInside" data-dismiss="modal">Изменить
+              <i class="fas fa-pencil-alt ml-1"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center buttonEditWrapper">
+      <button class="btn btn-info btn-rounded btn-sm buttonEdit" data-toggle="modal" data-target="#modalEdit"
+        disabled>Изменить<i class="fas fa-pencil-alt ml-1"></i></button>
+    </div>
+
+    <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="modalDelete"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold ml-5 text-danger">Удалить</h4>
+            <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body mx-3">
+            <p class="text-center h4">Вы уверены что хотите удалить выбранного пользователя?</p>
+
+          </div>
+          <div class="modal-footer d-flex justify-content-center deleteButtonsWrapper">
+            <button type="button" class="btn btn-danger btnYesClass" id="btnYes" data-dismiss="modal" onclick="">Да</button>
+            <button type="button" class="btn btn-primary btnNoClass" id="btnNo" data-dismiss="modal">Нет</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <button class="btn btn-danger btn-sm btn-rounded buttonDelete" data-toggle="modal" disabled data-target="#modalDelete"
+        disabled>Удалить<i class="fas fa-times ml-1"></i></button>
+    </div>
+  </div>
+
+<table id="editibleTable" class="table table-bordered table-hover table-sm text-center" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+         <th class="th-sm">id</th>
+      <th class="th-sm">Пользователь
+          <th class="th-sm">Пароль</th>
+        <th class="th-sm">Имя</th>
+        <th class="th-sm">Отчество</th>
+        <th class="th-sm">Фамилия</th>
+        <th class="th-sm">Должность</th>
+        <th class="th-sm">Роль</th>
+
+        <th class="th-sm">Телефон</th>
+	  <th class="th-sm">Доп. информация</th>
+
+    </tr>
+  </thead>
+  <tbody>
+  {% for a in page_obj %}
+    <tr>
+     <td>{{ a.id }}</td>
+      <td>{{ a.username }}</td>
+        <td>*</td>
+        <td>{{ a.name }}</td>
+        <td>{{ a.otchestvo }}</td>
+        <td>{{ a.familia }}</td>
+      <td>{{ a.professia }}</td>
+         <td>{{ a.role }}</td>
+        <td>{{ a.phone }}</td>
+       <td>{{ a.description }}</td>
+    </tr>
+  {% endfor %}
+
+
+  </tbody>
+	<tfoot>
+		<tr>
+        <th>id</th>
+      <th>Пользователь</th>
+            <th>Пароль</th>
+        <th>Имя</th>
+        <th>Отчество</th>
+        <th>Фамилия</th>
+        <th>Должность</th>
+        <th>Роль</th>
+        <th>Телефон</th>
+	   <th>Доп. информация</th>
+			</tr>
+      </tfoot>
+</table>
+
+
+	</div>
+        </div>
+    </div>
+    </div>
+
 
     <script src="{% static 'popper.js' %}"></script>
     <script src="{% static 'b.min.js' %}"></script>
+
+    <script>
+    const clearFieldModalAdd = () => {
+        $('#userNickname').val('');
+        $('#userPassword1').val('');
+        $("#userName").val('');
+        $("#userOtchestvo").val('');
+        $('#userFamilia').val('');
+        $("#userProfessia").val('');
+        $("#userAccess").val('');
+        $("#userPhone").val('');
+        $("#userDescription").val('');
+    };
+    </script>
+
 
 
     <script>
@@ -185,7 +477,77 @@
                 }
             });
         }
-$('input').addClass("form-control");
+{#$('input').addClass("form-control");#}
+    </script>
+
+
+{#   запрет на выделение обычного текста #}
+    <script>
+    function preventSelection(element){
+            var preventSelection = false;
+
+        function addHandler(element, event, handler){
+         if (element.attachEvent)
+      element.attachEvent('on' + event, handler);
+    else
+      if (element.addEventListener)
+        element.addEventListener(event, handler, false);
+  }
+  function removeSelection(){
+    if (window.getSelection) { window.getSelection().removeAllRanges(); }
+    else if (document.selection && document.selection.clear)
+      document.selection.clear();
+  }
+  function killCtrlA(event){
+    var event = event || window.event;
+    var sender = event.target || event.srcElement;
+
+    if (sender.tagName.match(/INPUT|TEXTAREA/i))
+      return;
+
+    var key = event.keyCode || event.which;
+    if (event.ctrlKey && key == 'A'.charCodeAt(0))  // 'A'.charCodeAt(0) можно заменить на 65
+    {
+      removeSelection();
+
+      if (event.preventDefault)
+        event.preventDefault();
+      else
+        event.returnValue = false;
+    }
+  }
+
+  // не даем выделять текст мышкой
+  addHandler(element, 'mousemove', function(){
+    if(preventSelection)
+      removeSelection();
+  });
+  addHandler(element, 'mousedown', function(event){
+    var event = event || window.event;
+    var sender = event.target || event.srcElement;
+    preventSelection = !sender.tagName.match(/INPUT|TEXTAREA/i);
+  });
+
+  // борем dblclick
+  // если вешать функцию не на событие dblclick, можно избежать
+  // временное выделение текста в некоторых браузерах
+  addHandler(element, 'mouseup', function(){
+    if (preventSelection)
+      removeSelection();
+    preventSelection = false;
+  });
+
+  // борем ctrl+A
+  // скорей всего это и не надо, к тому же есть подозрение
+  // что в случае все же такой необходимости функцию нужно
+  // вешать один раз и на document, а не на элемент
+  addHandler(element, 'keydown', killCtrlA);
+  addHandler(element, 'keyup', killCtrlA);
+}
+
+$(document).ready ( function(){
+ preventSelection(document);
+});
     </script>
 
 {% endblock %}

@@ -1,289 +1,521 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-  <div class="container">
-  <button class="btn btn-success" data-toggle="modal" data-target="#addcontragent">Добавить контрагента</button> <hr>
-         <div class="accordion" id="accordionExample">
-                 {% for a in page_obj %}
-                    <div class="card">
-                        <div class="card-header" id="headingOne_{{ a.id }}">
-                            <h2 class="mb-0">
-                                <button class="btn btn-link" type="button" data-toggle="collapse"
-                                        data-target="#collapseOne_{{ a.id }}"
-                                        aria-expanded="true" aria-controls="collapseOne_{{ a.id }}">
-                                    {{ a.name }}
-                                </button>
-                            </h2>
-                        </div>
 
-                        <div id="collapseOne_{{ a.id }}" class="collapse" aria-labelledby="headingOne_{{ a.id }}"
-                             data-parent="#accordionExample">
-                            <div class="card-body">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">УНП</th>
-                                        <th scope="col">адрес</th>
-                                        <th scope="col">описание</th>
-                                        <th scope="col">добавлен</th>
-                                        <th scope="col">обнавлен</th>
-                                        <th scope="col">действие</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>{{ a.unp }}</td>
-                                        <td>{{ a.address }}</td>
-                                        <td>{{ a.description }}</td>
-                                        <td>{{ a.date_add }}</td>
-                                        <td>{{ a.date_update }}</td>
-                                         <td>
-                                             <button onclick="updateAgent({{ a.pk }})" class="btn btn-warning">Изменить</button>
-                                             <button class="btn btn-danger">Удалить</button>
-                                         </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
+    {#  <link rel="stylesheet" href="{% static 'css/Article-List.css' %}">#}
+        <link rel="stylesheet" href="{% static 'css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/fontawesome-all.min.css' %}">
+{#        <link rel="stylesheet" href="{% static 'css/Features-Boxed.css' %}">#}
+        <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}">
+{#        <link rel="stylesheet" href="{% static 'css/styles.css' %}">#}
+        <link rel="stylesheet" href="{% static 'css/table-css.css' %}">
+{#       <script src="{% static 'js/all.js' %}"></script>#}
+    <script src="{% static 'js/datatables.min.js' %}"></script>
+    <script src="{% static 'js/table-equipment.js' %}"></script>
+    <script src="{% static 'js/mdb.min.js' %}"></script>
 
+<h4 style="position: absolute; top: 15px; left: 22%;color:#adb7b7;">Контрагенты</h4>
+{#  <div class="container">#}
+{#  <button class="btn btn-success" data-toggle="modal" data-target="#addcontragent">Добавить контрагента</button> <hr>#}
+{#         <div class="accordion" id="accordionExample">#}
+{#                 {% for a in page_obj %}#}
+{#                    <div class="card">#}
+{#                        <div class="card-header" id="headingOne_{{ a.id }}">#}
+{#                            <h2 class="mb-0">#}
+{#                                <button class="btn btn-link" type="button" data-toggle="collapse"#}
+{#                                        data-target="#collapseOne_{{ a.id }}"#}
+{#                                        aria-expanded="true" aria-controls="collapseOne_{{ a.id }}">#}
+{#                                    {{ a.name }}#}
+{#                                </button>#}
+{#                            </h2>#}
+{#                        </div>#}
+{##}
+{#                        <div id="collapseOne_{{ a.id }}" class="collapse" aria-labelledby="headingOne_{{ a.id }}"#}
+{#                             data-parent="#accordionExample">#}
+{#                            <div class="card-body">#}
+{#                                <table class="table">#}
+{#                                    <thead>#}
+{#                                    <tr>#}
+{#                                        <th scope="col">УНП</th>#}
+{#                                        <th scope="col">адрес</th>#}
+{#                                        <th scope="col">описание</th>#}
+{#                                        <th scope="col">добавлен</th>#}
+{#                                        <th scope="col">обнавлен</th>#}
+{#                                        <th scope="col">действие</th>#}
+{#                                    </tr>#}
+{#                                    </thead>#}
+{#                                    <tbody>#}
+{#                                    <tr>#}
+{#                                        <td>{{ a.unp }}</td>#}
+{#                                        <td>{{ a.address }}</td>#}
+{#                                        <td>{{ a.description }}</td>#}
+{#                                        <td>{{ a.date_add }}</td>#}
+{#                                        <td>{{ a.date_update }}</td>#}
+{#                                         <td>#}
+{#                                             <button onclick="updateAgent({{ a.pk }})" class="btn btn-warning">Изменить</button>#}
+{#                                             <button class="btn btn-danger">Удалить</button>#}
+{#                                         </td>#}
+{#                                    </tr>#}
+{#                                    </tbody>#}
+{#                                </table>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                {% endfor %}#}
+{##}
+{##}
+{#            </div>#}
+{##}
+{#<div class="pagination">#}
+{#    <span class="step-links">#}
+{#        {% if page_obj.has_previous %}#}
+{#            <a href="?page=1">&laquo; first</a>#}
+{#            <a href="?page={{ page_obj.previous_page_number }}">previous</a>#}
+{#        {% endif %}#}
+{##}
+{#        <span class="current">#}
+{#            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.#}
+{#        </span>#}
+{##}
+{#        {% if page_obj.has_next %}#}
+{#            <a href="?page={{ page_obj.next_page_number }}">next</a>#}
+{#            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>#}
+{#        {% endif %}#}
+{#    </span>#}
+{#</div>#}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{#    <!-- Modal addcontragent -->#}
+{#    <div class="modal fade" id="addcontragent" tabindex="-1" role="dialog" aria-labelledby="addcontragent"#}
+{#         aria-hidden="true">#}
+{#        <div class="modal-dialog" role="document">#}
+{#            <div class="modal-content">#}
+{#                <div class="modal-header">#}
+{#                    <h5 class="modal-title" id="gosnomeravto">Добавить контрагента</h5>#}
+{#                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+{#                        <span aria-hidden="true">&times;</span>#}
+{#                    </button>#}
+{#                </div>#}
+{#                <div class="modal-body">#}
+{#                    <div class="form-group col-md-7">#}
+{#                        <label for="contragentName">название контрагента</label>#}
+{#                        <input type="text" class="form-control" id="contragentName"#}
+{#                                name="contragentName"#}
+{#                        >#}
+{#                    </div>#}
+{#                    <div class="form-group col-md-5">#}
+{#                        <label for="unp">УНП </label>#}
+{#                        <input type="text" class="form-control" id="unp" pattern="[0-9]{9}"  name="unp">#}
+{#                    </div>#}
+{##}
+{#                     <div>#}
+{#                    <div class="d-inline-block  form-group col-6 ">#}
+{##}
+{#                        <hr style="width: 80%;">#}
+{#                        <label for="street">Населенный пункт</label>#}
+{#                         <input type="text" class="form-control"#}
+{#                               id="city" name="city">#}
+{#                    </div>#}
+{##}
+{#                    <div class="d-inline-block  form-group col-3 ">#}
+{#                        <label for="np"><b>насселенный пункт</b></label>#}
+{##}
+{#                        <select id="np">#}
+{#                            <option value="gorod">город</option>#}
+{#                            <option value="gp">поселок гор-го типа</option>#}
+{#                            <option value="derev">сельский нас-ый пункт</option>#}
+{#                        </select>#}
+{#                    </div>#}
+{#                </div>#}
+{##}
+{##}
+{##}
+{#                    <div>#}
+{#                    <div class="d-inline-block  form-group col-7 ">#}
+{##}
+{#                        <hr style="width: 80%;">#}
+{#                        <label for="street">Улица\переулок</label>#}
+{#                        <input type="text" class="form-control"#}
+{#                               id="street" name="street">#}
+{#                    </div>#}
+{##}
+{#                    <div class="d-inline-block  form-group col-3 ">#}
+{#                        <label for="typestreet"><b>улица\переулок</b></label>#}
+{##}
+{#                        <select id="typestreet">#}
+{#                            <option value="prospect">проспект</option>#}
+{#                            <option value="bulvar">бульвар</option>#}
+{#                            <option value="street">улица</option>#}
+{#                            <option value="per">переулок</option>#}
+{#                            <option value="proezd">проезд</option>#}
+{#                        </select>#}
+{#                    </div>#}
+{#                </div>#}
+{##}
+{##}
+{#                     <div class="form-group col-md-5 ">#}
+{#                        <label for="numH">номер дома</label>#}
+{#                        <input type="text" class="form-control" pattern="[0-9]"#}
+{#                               id="numH" name="numH">#}
+{#                    </div>#}
+{#                    <div class="form-group col-md-8 ">#}
+{#                        <label for="numH">Описание</label>#}
+{#                        <textarea  class="form-control"#}
+{#                                   id="description" name="description" ></textarea>#}
+{#                    </div>#}
+{##}
+{#                </div>#}
+{#                <div class="modal-footer">#}
+{#                    <button type="button" class="btn btn-secondary" data-dismiss="modal">отмена</button>#}
+{#                    <button type="button" onclick="addContragent()" class="btn btn-primary">Добавить</button>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{##}
+{##}
+{##}
+{##}
+{##}
+{#   <!-- Modal addcontragent -->#}
+{#    <div class="modal fade" id="updcontragent" tabindex="-1" role="dialog" aria-labelledby="updcontragent"#}
+{#         aria-hidden="true">#}
+{#        <div class="modal-dialog" role="document">#}
+{#            <div class="modal-content">#}
+{#                <div class="modal-header">#}
+{#                    <h5 class="modal-title" id="gosnomeravtoUpd">Обновить контрагента</h5>#}
+{#                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+{#                        <span aria-hidden="true">&times;</span>#}
+{#                    </button>#}
+{#                </div>#}
+{#                <div class="modal-body">#}
+{#                    <div class="form-group col-md-7">#}
+{#                        <label for="contragentNameUpd">название контрагента</label>#}
+{#                        <input type="text" class="form-control" id="contragentNameUpd"#}
+{#                                name="contragentNameUpd"#}
+{#                        >#}
+{#                    </div>#}
+{#                    <div class="form-group col-md-5">#}
+{#                        <label for="unpUpd">УНП </label>#}
+{#                        <input type="text" class="form-control" id="unpUpd" pattern="[0-9]{9}"  name="unpUpd">#}
+{#                    </div>#}
+{##}
+{#                     <div>#}
+{#                    <div class="d-inline-block  form-group col-6 ">#}
+{##}
+{#                        <hr style="width: 80%;">#}
+{#                        <label for="cityUpd">Населенный пункт</label>#}
+{#                         <input type="text" class="form-control"#}
+{#                               id="cityUpd" name="cityUpd">#}
+{#                    </div>#}
+{##}
+{#                    <div class="d-inline-block  form-group col-3 ">#}
+{#                        <label for="npUpd"><b>насселенный пункт</b></label>#}
+{##}
+{#                        <select id="npUpd">#}
+{#                            <option value="gorod">город</option>#}
+{#                            <option value="gp">поселок гор-го типа</option>#}
+{#                            <option value="derev">сельский нас-ый пункт</option>#}
+{#                        </select>#}
+{#                    </div>#}
+{#                </div>#}
+{##}
+{##}
+{##}
+{#                    <div>#}
+{#                    <div class="d-inline-block  form-group col-7 ">#}
+{##}
+{#                        <hr style="width: 80%;">#}
+{#                        <label for="streetUpd">Улица\переулок</label>#}
+{#                        <input type="text" class="form-control"#}
+{#                               id="streetUpd" name="streetUpd">#}
+{#                    </div>#}
+{##}
+{#                    <div class="d-inline-block  form-group col-3 ">#}
+{#                        <label for="typestreetUpd"><b>улица\переулок</b></label>#}
+{##}
+{#                        <select id="typestreetUpd">#}
+{#                            <option value="prospect">проспект</option>#}
+{#                            <option value="bulvar">бульвар</option>#}
+{#                            <option value="street">улица</option>#}
+{#                            <option value="per">переулок</option>#}
+{#                            <option value="proezd">проезд</option>#}
+{#                        </select>#}
+{#                    </div>#}
+{#                </div>#}
+{##}
+{##}
+{#                     <div class="form-group col-md-5 ">#}
+{#                        <label for="numHUpd">номер дома</label>#}
+{#                        <input type="text" class="form-control" pattern="[0-9]"#}
+{#                               id="numHUpd" name="numHUpd">#}
+{#                    </div>#}
+{#                    <div class="form-group col-md-8 ">#}
+{#                        <label for="descriptionUpd">Описание</label>#}
+{#                        <textarea  class="form-control"#}
+{#                                   id="descriptionUpd" name="descriptionUpd" ></textarea>#}
+{#                    </div>#}
+{##}
+{#                </div>#}
+{#                <div class="modal-footer">#}
+{#                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>#}
+{#                    <button type="button" onclick="addUpdContragent()" class="btn btn-primary">Обновить</button>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{##}
+{##}
+{##}
+{##}
+{#    {% csrf_token %}#}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{#  </div>#}
+
+        <div class="container-fluid" style="padding-top: 20px;">
+        <div class="row">
+            <div class="col-12" id="otchetTableContragent"><div class="wrapper-modal-editor">
+
+   <div class="row d-flex justify-content-center modalWrapper">
+    <div class="modal fade addNewInputs" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="modalAdd"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold text-primary ml-5">Добавить контрагента</h4>
+            <button type="button" class="close text-primary" data-dismiss="modal" aria-label="Close" onclick="clearFieldModalAdd()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body mx-3">
+
+              <div class="md-form mb-5">
+              <input type="text" class="form-control" hidden>
+              <label></label>
+            </div>
+
+
+              <div class="md-form mb-5">
+                <input type="text" id="contragentName"  class="form-control">
+                <label data-error="измените" data-success="принято" for="contragentName">Название контрагента</label>
 
             </div>
 
-<div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-        {% endif %}
-
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
-
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- Modal addcontragent -->
-    <div class="modal fade" id="addcontragent" tabindex="-1" role="dialog" aria-labelledby="addcontragent"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="gosnomeravto">Добавить контрагента</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group col-md-7">
-                        <label for="contragentName">название контрагента</label>
-                        <input type="text" class="form-control" id="contragentName"
-                                name="contragentName"
-                        >
-                    </div>
-                    <div class="form-group col-md-5">
-                        <label for="unp">УНП </label>
-                        <input type="text" class="form-control" id="unp" pattern="[0-9]{9}"  name="unp">
-                    </div>
-
-                     <div>
-                    <div class="d-inline-block  form-group col-6 ">
-
-                        <hr style="width: 80%;">
-                        <label for="street">Населенный пункт</label>
-                         <input type="text" class="form-control"
-                               id="city" name="city">
-                    </div>
-
-                    <div class="d-inline-block  form-group col-3 ">
-                        <label for="np"><b>насселенный пункт</b></label>
-
-                        <select id="np">
-                            <option value="gorod">город</option>
-                            <option value="gp">поселок гор-го типа</option>
-                            <option value="derev">сельский нас-ый пункт</option>
-                        </select>
-                    </div>
-                </div>
-
-
-
-                    <div>
-                    <div class="d-inline-block  form-group col-7 ">
-
-                        <hr style="width: 80%;">
-                        <label for="street">Улица\переулок</label>
-                        <input type="text" class="form-control"
-                               id="street" name="street">
-                    </div>
-
-                    <div class="d-inline-block  form-group col-3 ">
-                        <label for="typestreet"><b>улица\переулок</b></label>
-
-                        <select id="typestreet">
-                            <option value="prospect">проспект</option>
-                            <option value="bulvar">бульвар</option>
-                            <option value="street">улица</option>
-                            <option value="per">переулок</option>
-                            <option value="proezd">проезд</option>
-                        </select>
-                    </div>
-                </div>
-
-
-                     <div class="form-group col-md-5 ">
-                        <label for="numH">номер дома</label>
-                        <input type="text" class="form-control" pattern="[0-9]"
-                               id="numH" name="numH">
-                    </div>
-                    <div class="form-group col-md-8 ">
-                        <label for="numH">Описание</label>
-                        <textarea  class="form-control"
-                                   id="description" name="description" ></textarea>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">отмена</button>
-                    <button type="button" onclick="addContragent()" class="btn btn-primary">Добавить</button>
-                </div>
+              <div class="md-form mb-5">
+              <input type="text" id="unp" class="form-control">
+              <label data-error="измените" data-success="принято" for="unp">УНП</label>
             </div>
+
+		    <div class="md-form mb-5">
+              <input type="text" id="addressContragentAdd" class="form-control">
+              <label data-error="измените" data-success="принято" for="addressContragentAdd">Адрес</label>
+            </div>
+
+              <div class="md-form mb-5">
+              <input type="text" id="description" class="form-control">
+              <label data-error="измените" data-success="принято" for="description">Описание</label>
+            </div>
+
+		     <div class="md-form mb-5">
+              <input type="text" class="form-control" hidden>
+              <label></label>
+            </div>
+
+            <div class="md-form mb-5">
+              <input type="text" class="form-control" hidden>
+              <label></label>
+            </div>
+
+          </div>
+          <div class="modal-footer d-flex justify-content-center buttonAddFormWrapper">
+            <button class="btn btn-outline-primary btn-block buttonAdd"  onclick="addContragent()" data-dismiss="modal">Добавить
+              <i class="fas fa-plus-square ml-1"></i>
+            </button>
+          </div>
         </div>
+      </div>
     </div>
 
-
-
-
-
-   <!-- Modal addcontragent -->
-    <div class="modal fade" id="updcontragent" tabindex="-1" role="dialog" aria-labelledby="updcontragent"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="gosnomeravtoUpd">Обновить контрагента</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group col-md-7">
-                        <label for="contragentNameUpd">название контрагента</label>
-                        <input type="text" class="form-control" id="contragentNameUpd"
-                                name="contragentNameUpd"
-                        >
-                    </div>
-                    <div class="form-group col-md-5">
-                        <label for="unpUpd">УНП </label>
-                        <input type="text" class="form-control" id="unpUpd" pattern="[0-9]{9}"  name="unpUpd">
-                    </div>
-
-                     <div>
-                    <div class="d-inline-block  form-group col-6 ">
-
-                        <hr style="width: 80%;">
-                        <label for="cityUpd">Населенный пункт</label>
-                         <input type="text" class="form-control"
-                               id="cityUpd" name="cityUpd">
-                    </div>
-
-                    <div class="d-inline-block  form-group col-3 ">
-                        <label for="npUpd"><b>насселенный пункт</b></label>
-
-                        <select id="npUpd">
-                            <option value="gorod">город</option>
-                            <option value="gp">поселок гор-го типа</option>
-                            <option value="derev">сельский нас-ый пункт</option>
-                        </select>
-                    </div>
-                </div>
-
-
-
-                    <div>
-                    <div class="d-inline-block  form-group col-7 ">
-
-                        <hr style="width: 80%;">
-                        <label for="streetUpd">Улица\переулок</label>
-                        <input type="text" class="form-control"
-                               id="streetUpd" name="streetUpd">
-                    </div>
-
-                    <div class="d-inline-block  form-group col-3 ">
-                        <label for="typestreetUpd"><b>улица\переулок</b></label>
-
-                        <select id="typestreetUpd">
-                            <option value="prospect">проспект</option>
-                            <option value="bulvar">бульвар</option>
-                            <option value="street">улица</option>
-                            <option value="per">переулок</option>
-                            <option value="proezd">проезд</option>
-                        </select>
-                    </div>
-                </div>
-
-
-                     <div class="form-group col-md-5 ">
-                        <label for="numHUpd">номер дома</label>
-                        <input type="text" class="form-control" pattern="[0-9]"
-                               id="numHUpd" name="numHUpd">
-                    </div>
-                    <div class="form-group col-md-8 ">
-                        <label for="descriptionUpd">Описание</label>
-                        <textarea  class="form-control"
-                                   id="descriptionUpd" name="descriptionUpd" ></textarea>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">отмена</button>
-                    <button type="button" onclick="addUpdContragent()" class="btn btn-primary">Обновить</button>
-                </div>
-            </div>
-        </div>
+    <div class="text-center">
+      <a href="" class="btn btn-info btn-rounded btn-sm" data-toggle="modal" data-target="#modalAdd">Добавить<i
+          class="fas fa-plus-square ml-1"></i></a>
     </div>
 
+    <div class="modal fade modalEditClass" id="modalEdit" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold text-secondary ml-5">Измение контрагента</h4>
+            <button type="button" class="close text-secondary" data-dismiss="modal" aria-label="Close" onclick="clearFieldModalAdd()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+           <div class="modal-body mx-3">
+
+            <div class="md-form mb-5">
+            <input type="text" hidden>
+            <label></label>
+            </div>
+
+            <div class="md-form mb-5">
+            <input type="text" id="contragentNameUpd" class="form-control">
+            <label data-error="измените" data-success="принято" for="contragentNameUpd">Контрагент</label>
+            </div>
+
+              <div class="md-form mb-5">
+              <input type="text" id="unpUpd" class="form-control">
+              <label data-error="измените" data-success="принято" for="unpUpd">УНП</label>
+            </div>
+
+		    <div class="md-form mb-5">
+              <input type="text" id="addressContragentUpd" class="form-control">
+              <label data-error="измените" data-success="принято" for="addressContragentUpd">Адрес</label>
+            </div>
 
 
+		     <div class="md-form mb-5">
+              <input type="text" id="descriptionUpd" class="form-control">
+              <label data-success="принято" for="descriptionUpd">Описание</label>
+            </div>
 
-    {% csrf_token %}
+           <div class="md-form mb-5">
+              <input type="text" class="form-control" hidden>
+              <label></label>
+            </div>
+
+               <div class="md-form mb-5">
+              <input type="text" class="form-control" hidden>
+              <label></label>
+            </div>
 
 
+          </div>
+          <div class="modal-footer d-flex justify-content-center editInsideWrapper">
+            <button onclick="addUpdContragent()" class="btn btn-outline-secondary btn-block editInside" data-dismiss="modal">Изменить
+              <i class="fas fa-pencil-alt ml-1"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <div class="text-center buttonEditWrapper">
+      <button class="btn btn-info btn-rounded btn-sm buttonEdit" data-toggle="modal" data-target="#modalEdit"
+        disabled>Изменить<i class="fas fa-pencil-alt ml-1"></i></button>
+    </div>
 
+    <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="modalDelete"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold ml-5 text-danger">Удалить</h4>
+            <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body mx-3">
+            <p class="text-center h4">Вы уверены что хотите удалить выбранного контрагента?</p>
 
+          </div>
+          <div class="modal-footer d-flex justify-content-center deleteButtonsWrapper">
+            <button type="button" class="btn btn-danger btnYesClass" id="btnYes" data-dismiss="modal" onclick="">Да</button>
+            <button type="button" class="btn btn-primary btnNoClass" id="btnNo" data-dismiss="modal">Нет</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-
-
-
-
-
-
-
+    <div class="text-center">
+      <button class="btn btn-danger btn-sm btn-rounded buttonDelete" data-toggle="modal" disabled data-target="#modalDelete"
+        disabled>Удалить<i class="fas fa-times ml-1"></i></button>
+    </div>
   </div>
+
+<table id="editibleTable" class="table table-bordered table-hover table-sm text-center" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+         <th class="th-sm">id</th>
+      <th class="th-sm">Контрагент</th>
+      <th class="th-sm">УНП</th>
+        <th class="th-sm">Адрес</th>
+	  <th class="th-sm">Описание</th>
+      <th class="th-sm">Дата добавления</th>
+        <th class="th-sm">Дата обновления</th>
+
+    </tr>
+  </thead>
+  <tbody>
+  {% for a in page_obj %}
+    <tr>
+     <td>{{ a.id }}</td>
+      <td>{{ a.name }}</td>
+      <td>{{ a.unp }}</td>
+         <td>{{ a.address }}</td>
+      <td>{{ a.description }}</td>
+      <td>{{ a.date_add }}</td>
+        <td>{{ a.date_update }}</td>
+    </tr>
+  {% endfor %}
+
+
+  </tbody>
+	<tfoot>
+		<tr>
+        <th >id</th>
+      <th >Контрагент</th>
+      <th >УНП</th>
+        <th >Адрес</th>
+	  <th >Описание</th>
+      <th >Дата добавления</th>
+      <th >Дата обновления</th>
+			</tr>
+      </tfoot>
+</table>
+
+
+	</div>
+        </div>
+    </div>
+    </div>
+
+
+
 
     <script src="{% static 'popper.js' %}" ></script>
 <script src="{% static 'b.min.js' %}" ></script>
 
+    <script>
+    const clearFieldModalAdd = () => {
+    $('#contragentName').val('');
+        $('#unp').val('');
+        $("#addressContragentAdd").val('');
+        $("#description").val('');
+};
+</script>
 
     <script>
     var allAgents = '{{ agents }}';
@@ -320,33 +552,38 @@
         function addContragent() {
             let name = $("#contragentName").val();
             let unp = $("#unp").val();
-            let city = $("#city").val();
-            let typeOfCity = $("#np").val();
-            let street = $("#street").val();
-            let typeOfStreet = $("#typestreet").val();
-            let numHouse = $("#numH").val();
+            {#let city = $("#city").val();#}
+            {#let typeOfCity = $("#np").val();#}
+            {#let street = $("#street").val();#}
+            {#let typeOfStreet = $("#typestreet").val();#}
+            {#let numHouse = $("#numH").val();#}
+            let address = $("#addressContragentAdd").val();
             let description = $("#description").val();
             // validation
             if(!name){
                  addAction('оператор добавляя запись в список не указал название контрагента');
-                alert('Вы не ввели навзание кнтрагента'); $("#contragentName").focus(); return;
+                alert('Вы не ввели название контрагента'); $("#contragentName").focus(); return;
             }
             if(!unp){
                  addAction('оператор добавляя запись в список не указал УНП контрагента');
-                alert('Вы не указали УНП  кнтрагента'); $("#unp").focus(); return;
+                alert('Вы не указали УНП контрагента'); $("#unp").focus(); return;
             }
-             if(!city){
-                 addAction('оператор добавляя запись в список не указал город контрагента');
-                alert('Вы не указали насселеный пункт  кнтрагента'); $("#city").focus(); return;
+            if(!address){
+                 addAction('оператор добавляя запись в список не указал адрес контрагента');
+                alert('Вы не указали адрес контрагента'); $("#unp").focus(); return;
             }
-             if(!street){
-                 addAction('оператор добавляя запись в список не указал улицу  контрагента');
-                alert('Вы не указали улицу где зарегестрирован кнтрагент'); $("#street").focus(); return;
-            }
-             if(!numHouse){
-                 addAction('оператор добавляя запись в список не указал номер дома  контрагента');
-                alert('Вы не указали номер дома где зарегестрирован кнтрагент'); $("#numH").focus(); return;
-            }
+            {# if(!city){#}
+            {#     addAction('оператор добавляя запись в список не указал город контрагента');#}
+            {#    alert('Вы не указали насселеный пункт  кнтрагента'); $("#city").focus(); return;}#}
+
+            {# if(!street){#}
+            {#     addAction('оператор добавляя запись в список не указал улицу  контрагента');#}
+            {#    alert('Вы не указали улицу где зарегестрирован кнтрагент'); $("#street").focus(); return;}#}
+
+            {# if(!numHouse){#}
+            {#     addAction('оператор добавляя запись в список не указал номер дома  контрагента');#}
+            {#    alert('Вы не указали номер дома где зарегестрирован кнтрагент'); $("#numH").focus(); return;}#}
+
              if (!description) {
                 addAction('оператор добавляя запись в список не написал описание контрагента ');
                 if (!confirm('Вы не описание контрагента. Продолжить?')) {
@@ -358,20 +595,21 @@
                 $("#unp").focus();
                 return;
             }
-             if (!numHouse.match(/^[ 0-9]+$/)) {
-                alert("В поле номер дома должны быть введены только цифры");
-                $("#numH").focus();
-                return;
-            }
+            {# if (!numHouse.match(/^[ 0-9]+$/)) {#}
+            {#    alert("В поле номер дома должны быть введены только цифры");#}
+            {#    $("#numH").focus();#}
+            {#    return;#}
+
              // post data to server
              data = {
                  "name":name,
                  "unp":unp,
-                 "city":city,
-                 'typeCity':typeOfCity,
-                 "street":street,
-                 "typeStreet":typeOfStreet,
-                 "numHouse":numHouse,
+                 {#"city":city,#}
+                 {#'typeCity':typeOfCity,#}
+                 {#"street":street,#}
+                 {#"typeStreet":typeOfStreet,#}
+                 {#"numHouse":numHouse,#}
+                 "address": address,
                  "description":description
              };
              $.ajax({
@@ -383,6 +621,9 @@
                     console.log('Load was performed.');
                     document.location.reload(true);
                 },
+                 error: function(){
+                    document.location.reload(true);
+                 },
                 beforeSend: function (xhr, settings) {
                     if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                         xhr.setRequestHeader("X-CSRFToken", csrftoken);
@@ -390,86 +631,82 @@
                 }
             });
         }
-var id_select;
+    {#let id_select;#}
 
-        function updateAgent(id){
-         let res;
-         id_select=id;
-         $("#updcontragent").modal('show');
-         allAgents.forEach(function (a,b) {
-            if(a.pk==id){
-                res=a.fields;
-            }
-         });
-         var arr = res.address.split(",");
-         var arrG = arr[0].split(" ");
-         var arrC = arr[1].split(" ");
-          var cities = {
-         'г.':'gorod',
-         "гп.":'gp',
-         "поселок":'derev'
-    };
-         var streets = {
-              "проспект":'prospect',
-              "бульвар":'bulvar',
-              "улица":'street',
-              "переулок":'per',
-              'проезд':'proezd'
-         };
-          $("#contragentNameUpd").val(res.name);
-             $("#unpUpd").val(res.unp);
-            $("#cityUpd").val(arrG[0]);
-             $("#npUpd").val(cities[arrG[1]]);
-            $("#streetUpd").val(arrC[2]);
-             $("#typestreetUpd").val(streets[arrC[1]]);
-             $("#numHUpd").val(arr[2]);
-             $("#descriptionUpd").val(res.description);
-
-         console.log(res);
-        }
-
-
-
-
-
-
-
-
-
+    {#    function updateAgent(id){#}
+    {#     let res;#}
+    {#     id_select=id;#}
+    {#     $("#updcontragent").modal('show');#}
+    {#     allAgents.forEach(function (a,b) {#}
+    {#        if(a.pk==id){#}
+    {#            res=a.fields;#}
+    {#        }#}
+    {#     });#}
+    {#     var arr = res.address.split(",");#}
+    {#     var arrG = arr[0].split(" ");#}
+    {#     var arrC = arr[1].split(" ");#}
+    {#      var cities = {#}
+    {#     'г.':'gorod',#}
+    {#     "гп.":'gp',#}
+    {#     "поселок":'derev'};#}
+    {##}
+    {#     var streets = {#}
+    {#          "проспект":'prospect',#}
+    {#          "бульвар":'bulvar',#}
+    {#          "улица":'street',#}
+    {#          "переулок":'per',#}
+    {#          'проезд':'proezd'#}
+    {#     };#}
+    {#      $("#contragentNameUpd").val(res.name);#}
+    {#         $("#unpUpd").val(res.unp);#}
+    {#        $("#cityUpd").val(arrG[0]);#}
+    {#         $("#npUpd").val(cities[arrG[1]]);#}
+    {#        $("#streetUpd").val(arrC[2]);#}
+    {#         $("#typestreetUpd").val(streets[arrC[1]]);#}
+    {#         $("#numHUpd").val(arr[2]);#}
+    {#         $("#descriptionUpd").val(res.description);#}
+    {##}
+    {#     console.log(res);#}
+    {#    }#}
 
 
      function addUpdContragent() {
             let name = $("#contragentNameUpd").val();
             let unp = $("#unpUpd").val();
-            let city = $("#cityUpd").val();
-            let typeOfCity = $("#npUpd").val();
-            let street = $("#streetUpd").val();
-            let typeOfStreet = $("#typestreetUpd").val();
-            let numHouse = $("#numHUpd").val();
+            {#let city = $("#cityUpd").val();#}
+            {#let typeOfCity = $("#npUpd").val();#}
+            {#let street = $("#streetUpd").val();#}
+            {#let typeOfStreet = $("#typestreetUpd").val();#}
+            {#let numHouse = $("#numHUpd").val();#}
+            let address = $("#addressContragentUpd").val();
             let description = $("#descriptionUpd").val();
             // validation
             if(!name){
-                 addAction('оператор добавляя запись в список не указал название контрагента');
-                alert('Вы не ввели навзание кнтрагента'); $("#contragentName").focus(); return;
+                 addAction('оператор обновляя запись в список не указал название контрагента');
+                alert('Вы не ввели название контрагента'); $("#contragentName").focus(); return;
             }
             if(!unp){
-                 addAction('оператор добавляя запись в список не указал УНП контрагента');
-                alert('Вы не указали УНП  кнтрагента'); $("#unp").focus(); return;
+                 addAction('оператор обновляя запись в список не указал УНП контрагента');
+                alert('Вы не указали УНП контрагента'); $("#unp").focus(); return;
             }
-             if(!city){
-                 addAction('оператор добавляя запись в список не указал город контрагента');
-                alert('Вы не указали насселеный пункт  кнтрагента'); $("#city").focus(); return;
+            if(!address){
+                 addAction('оператор обновляя запись в список не указал адрес контрагента');
+                alert('Вы не указали адрес контрагента'); $("#unp").focus(); return;
             }
-             if(!street){
-                 addAction('оператор добавляя запись в список не указал улицу  контрагента');
-                alert('Вы не указали улицу где зарегестрирован кнтрагент'); $("#street").focus(); return;
-            }
-             if(!numHouse){
-                 addAction('оператор добавляя запись в список не указал номер дома  контрагента');
-                alert('Вы не указали номер дома где зарегестрирован кнтрагент'); $("#numH").focus(); return;
-            }
+            {# if(!city){#}
+            {#     addAction('оператор добавляя запись в список не указал город контрагента');#}
+            {#    alert('Вы не указали насселеный пункт  кнтрагента'); $("#city").focus(); return;}#}
+
+            {# if(!street){#}
+            {#     addAction('оператор добавляя запись в список не указал улицу  контрагента');#}
+            {#    alert('Вы не указали улицу где зарегестрирован кнтрагент'); $("#street").focus(); return;}#}
+
+            {# if(!numHouse){#}
+            {#     addAction('оператор добавляя запись в список не указал номер дома  контрагента');#}
+            {#    alert('Вы не указали номер дома где зарегестрирован кнтрагент'); $("#numH").focus(); return;}#}
+
              if (!description) {
-                addAction('оператор добавляя запись в список не написал описание контрагента ');
+                addAction('оператор обновляя запись в список не написал описание контрагента ');
                 if (!confirm('Вы не описание контрагента. Продолжить?')) {
                     return;
                 }
@@ -479,20 +716,21 @@ var id_select;
                 $("#unp").focus();
                 return;
             }
-             if (!numHouse.match(/^[ 0-9]+$/)) {
-                alert("В поле номер дома должны быть введены только цифры");
-                $("#numH").focus();
-                return;
-            }
+            {# if (!numHouse.match(/^[ 0-9]+$/)) {#}
+            {#    alert("В поле номер дома должны быть введены только цифры");#}
+            {#    $("#numH").focus();#}
+            {#    return;}#}
+
              // post data to server
              data = {
                  "name":name,
                  "unp":unp,
-                 "city":city,
-                 'typeCity':typeOfCity,
-                 "street":street,
-                 "typeStreet":typeOfStreet,
-                 "numHouse":numHouse,
+                 {#"city":city,#}
+                 {#'typeCity':typeOfCity,#}
+                 {#"street":street,#}
+                 {#"typeStreet":typeOfStreet,#}
+                 {#"numHouse":numHouse,#}
+                 "address":address,
                  "description":description,
                  "id":id_select
              };
@@ -501,10 +739,13 @@ var id_select;
                 url: '{% url 'updcontragentPOST' %}',
                 data: data,
                 success: function () {
-                    addAction("Добавил контрагента");
+                    addAction("Обновить контрагента");
                     console.log('Load was performed.');
                     document.location.reload(true);
                 },
+                 error: function(){
+                    document.location.reload(true);
+                 },
                 beforeSend: function (xhr, settings) {
                     if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                         xhr.setRequestHeader("X-CSRFToken", csrftoken);
@@ -513,11 +754,77 @@ var id_select;
             });
         }
 
-
-
-
-
-
     </script>
+
+
+{#   запрет на выделение обычного текста #}
+    <script>
+    function preventSelection(element){
+            var preventSelection = false;
+
+        function addHandler(element, event, handler){
+         if (element.attachEvent)
+      element.attachEvent('on' + event, handler);
+    else
+      if (element.addEventListener)
+        element.addEventListener(event, handler, false);
+  }
+  function removeSelection(){
+    if (window.getSelection) { window.getSelection().removeAllRanges(); }
+    else if (document.selection && document.selection.clear)
+      document.selection.clear();
+  }
+  function killCtrlA(event){
+    var event = event || window.event;
+    var sender = event.target || event.srcElement;
+
+    if (sender.tagName.match(/INPUT|TEXTAREA/i))
+      return;
+
+    var key = event.keyCode || event.which;
+    if (event.ctrlKey && key == 'A'.charCodeAt(0))  // 'A'.charCodeAt(0) можно заменить на 65
+    {
+      removeSelection();
+
+      if (event.preventDefault)
+        event.preventDefault();
+      else
+        event.returnValue = false;
+    }
+  }
+
+  // не даем выделять текст мышкой
+  addHandler(element, 'mousemove', function(){
+    if(preventSelection)
+      removeSelection();
+  });
+  addHandler(element, 'mousedown', function(event){
+    var event = event || window.event;
+    var sender = event.target || event.srcElement;
+    preventSelection = !sender.tagName.match(/INPUT|TEXTAREA/i);
+  });
+
+  // борем dblclick
+  // если вешать функцию не на событие dblclick, можно избежать
+  // временное выделение текста в некоторых браузерах
+  addHandler(element, 'mouseup', function(){
+    if (preventSelection)
+      removeSelection();
+    preventSelection = false;
+  });
+
+  // борем ctrl+A
+  // скорей всего это и не надо, к тому же есть подозрение
+  // что в случае все же такой необходимости функцию нужно
+  // вешать один раз и на document, а не на элемент
+  addHandler(element, 'keydown', killCtrlA);
+  addHandler(element, 'keyup', killCtrlA);
+}
+
+$(document).ready ( function(){
+ preventSelection(document);
+});
+    </script>
+
 
 {% endblock %}

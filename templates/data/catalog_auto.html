@@ -14,7 +14,7 @@
     <script src="{% static 'js/table-equipment.js' %}"></script>
     <script src="{% static 'js/mdb.min.js' %}"></script>
 
-
+<h4 style="position: absolute; top: 15px; left: 22%;color:#adb7b7;">Автотранспорт</h4>
   <!-- End: Navigation with Button -->
     <div class="container-fluid" style="padding-top: 20px;">
         <div class="row">
@@ -34,7 +34,7 @@
           <div class="modal-body mx-3">
 
               <div class="md-form mb-5">
-              <input type="text" id="idInvis" class="form-control" style="cursor: not-allowed" readonly="">
+              <input type="text" id="idInvis" class="form-control" style="cursor: not-allowed" readonly="" hidden>
               <label data-error="измените" data-success="принято" for="idInvis"></label>
             </div>
 
@@ -67,7 +67,7 @@
             </div>
 
             <div class="md-form mb-5">
-              <input type="date" id="dateAdd" class="form-control" readonly="" required style="cursor: not-allowed;">
+              <input type="date" id="dateAdd" class="form-control" readonly="" required style="cursor: not-allowed;" hidden>
               <label data-error="измените" data-success="принято" for="dateAdd"></label>
             </div>
 
@@ -97,11 +97,14 @@
           </div>
            <div class="modal-body mx-3">
 
-
+            <div class="md-form mb-5">
+            <input type="text" id="auto_id" hidden>
+            <label></label>
+            </div>
 
             <div class="md-form mb-5">
             <input type="text" id="auto_id" hidden>
-            <input type="text" id="contragent_upd"  list="browsersUpd"   class="form-control validate">
+            <input type="text" id="contragent_upd" list="browsersUpd" class="form-control validate">
                 <datalist id="browsersUpd">
                     {% for i in agent %}
                         <option id="{{ i.id }}" value="{{ i.name }}">{{ i.name }}</option>
@@ -127,7 +130,7 @@
             </div>
 
            <div class="md-form mb-5">
-              <input type="date" id="dateUpd" class="form-control" readonly="" required style="cursor: not-allowed;">
+              <input type="date" id="dateUpd" class="form-control" readonly="" required style="cursor: not-allowed;" hidden>
               <label data-error="измените" data-success="принято" for="dateUpd"></label>
             </div>
 
@@ -253,7 +256,11 @@ const clearFieldModalAdd = () => {
                 success: function (dat) {
                     console.log("auto added");
                     clearFieldModalAdd();
+                    document.location.reload(true);
                 },
+                error: function(){
+                    document.location.reload(true);
+                 },
                 beforeSend: function (xhr, settings) {
                     if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                         xhr.setRequestHeader("X-CSRFToken", csrftoken);
@@ -288,7 +295,12 @@ const clearFieldModalAdd = () => {
                 data: data,
                 success: function (dat) {
                     console.log("auto update");
+                    clearFieldModalAdd();
+                    document.location.reload(true);
                 },
+                error: function(){
+                    document.location.reload(true);
+                 },
                 beforeSend: function (xhr, settings) {
                     if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                         xhr.setRequestHeader("X-CSRFToken", csrftoken);
@@ -340,26 +352,96 @@ function deleteAuto() {
 
 </script>
 
-<script>
-let nowAdd = new Date();
-let dayAdd = ("0" + nowAdd.getDate()).slice(-2);
-let monthAdd = ("0" + (nowAdd.getMonth() + 1)).slice(-2);
-let todayAdd = nowAdd.getFullYear()+"-"+(monthAdd)+"-"+(dayAdd) ;
+{#<script>#}
+{#let nowAdd = new Date();#}
+{#let dayAdd = ("0" + nowAdd.getDate()).slice(-2);#}
+{#let monthAdd = ("0" + (nowAdd.getMonth() + 1)).slice(-2);#}
+{#let todayAdd = nowAdd.getFullYear()+"-"+(monthAdd)+"-"+(dayAdd) ;#}
+{##}
+{#$('#dateAdd').val(todayAdd);#}
+{#$('#dateUpd').val(todayAdd);#}
+{#$('#idInvis').val('Id XXXXX');#}
+{#</script>#}
 
-$('#dateAdd').val(todayAdd);
-$('#dateUpd').val(todayAdd);
-$('#idInvis').val('Id XXXXX');
-</script>
+{#    <style>#}
+{#    input[type="time"]{#}
+{#    width:120px;#}
+{#      border: none;#}
+{#      clip-path: inset(0 17px 0 0);#}
+{#      outline:none;#}
+{#      outline:0;#}
+{#}#}
+{##}
+{##}
+{#    </style>#}
 
-    <style>
-    input[type="time"]{
-    width:120px;
-      border: none;
-      clip-path: inset(0 17px 0 0);
-      outline:none;
-      outline:0;
+    {#   запрет на выделение обычного текста #}
+    <script>
+    function preventSelection(element){
+            var preventSelection = false;
+
+        function addHandler(element, event, handler){
+         if (element.attachEvent)
+      element.attachEvent('on' + event, handler);
+    else
+      if (element.addEventListener)
+        element.addEventListener(event, handler, false);
+  }
+  function removeSelection(){
+    if (window.getSelection) { window.getSelection().removeAllRanges(); }
+    else if (document.selection && document.selection.clear)
+      document.selection.clear();
+  }
+  function killCtrlA(event){
+    var event = event || window.event;
+    var sender = event.target || event.srcElement;
+
+    if (sender.tagName.match(/INPUT|TEXTAREA/i))
+      return;
+
+    var key = event.keyCode || event.which;
+    if (event.ctrlKey && key == 'A'.charCodeAt(0))  // 'A'.charCodeAt(0) можно заменить на 65
+    {
+      removeSelection();
+
+      if (event.preventDefault)
+        event.preventDefault();
+      else
+        event.returnValue = false;
+    }
+  }
+
+  // не даем выделять текст мышкой
+  addHandler(element, 'mousemove', function(){
+    if(preventSelection)
+      removeSelection();
+  });
+  addHandler(element, 'mousedown', function(event){
+    var event = event || window.event;
+    var sender = event.target || event.srcElement;
+    preventSelection = !sender.tagName.match(/INPUT|TEXTAREA/i);
+  });
+
+  // борем dblclick
+  // если вешать функцию не на событие dblclick, можно избежать
+  // временное выделение текста в некоторых браузерах
+  addHandler(element, 'mouseup', function(){
+    if (preventSelection)
+      removeSelection();
+    preventSelection = false;
+  });
+
+  // борем ctrl+A
+  // скорей всего это и не надо, к тому же есть подозрение
+  // что в случае все же такой необходимости функцию нужно
+  // вешать один раз и на document, а не на элемент
+  addHandler(element, 'keydown', killCtrlA);
+  addHandler(element, 'keyup', killCtrlA);
 }
 
+$(document).ready ( function(){
+ preventSelection(document);
+});
+    </script>
 
-    </style>
      {% endblock %}
