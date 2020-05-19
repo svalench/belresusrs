@@ -155,6 +155,10 @@
         let nunu = numAuto;         // все
         let numPricep = arrPricep.join("");
         let prov = parseInt(nunu);
+	if( !$("#name_tovar").attr('data-id')){
+	alert("no gruz");
+	$("#name_tovar").focus();
+	}
         if (!prov || prov == 0) {
             alert('ошибка с номером автотранспорта');
             return;
