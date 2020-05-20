@@ -169,9 +169,19 @@ def GetDataZd(request):
     if(form['zanyato']):
         one_entry.Zd = True
     one_entry.save()
-    print(one_entry.Auto)
+
+    try:
+        ves = PlcRemoteUse('192.168.0.2')
+        ves.getWeight()
+        bitmask = ves.getSatusBit(0)
+        weight = ves.ves
+    except:
+        weight="error"
+        bitmask = "error"
     dataRecive = {
         'plc':"1200",
+        'ves':weight,
+        'bits':bitmask,
         "type":"vrs",
         'global':one_entry.Auto,
     }
@@ -385,6 +395,22 @@ def onOffS1(request):
     byte=request.POST['byte']
     try:
         ves = PlcRemoteUse('192.168.0.1')
+        answ = ves.changeBit(byte,bit)
+    except:
+        answ="error"
+    dataRecive = {
+        'answer':answ,
+        'sum': 'good'
+    }
+    return HttpResponse(json.dumps(dataRecive), content_type='application/json')
+
+
+
+def onOffZd(request):
+    bit=request.POST['bit']
+    byte=request.POST['byte']
+    try:
+        ves = PlcRemoteUse('192.168.0.2')
         answ = ves.changeBit(byte,bit)
     except:
         answ="error"

@@ -58,199 +58,7 @@
 
         </div>
     </div>
-{##}
-{#        <hr>#}
-{#        <h3 style="margin-left: 2%;">Вес</h3>#}
-{#        <hr>#}
-{#        <div class="row">#}
-{#            <div class="col-1"></div>#}
-{#            <span class="badge badge-warning">нестабильный<br>_______________</span>#}
-{#            <div class="col-2" style="background-color: #1b1e21; color:white; text-align: right; font-size: 3rem;">#}
-{#                <span id="vesOnline" style="cursor: not-allowed;">140 </span><br><span> кг</span>#}
-{#            </div>#}
-{##}
-{#            <div class="col-2" style="background-color: #1c7430; color:white; text-align: right; font-size: 3rem;">#}
-{#                <span id="vesFix" style="cursor: pointer;" onclick="correct();">0 </span><br><span#}
-{#                    id="label_ves">брутто</span><span> кг</span>#}
-{#            </div>#}
-{##}
-{#            <div class="col-2">#}
-{#                <button class="btn btn-success" onclick="fixVes()" style="width: 100%; height: 40%;">Зафиксировать#}
-{#                </button>#}
-{#                <hr>#}
-{#                <button class="btn btn-warning" onclick="destroyFixVes()" style="width: 100%; height: 40%; ">Сброс#}
-{#                </button>#}
-{#            </div>#}
-{##}
-{#            <div class="col-2" style="background-color: #1b1e21; color:white; text-align: right; border-radius: 2%;">#}
-{#                <div style="margin-top: 1%;  font-size: 1rem;  ">#}
-{##}
-{#                    <div class="col-3">Вагон</div>#}
-{#                    <span id="gos_num_avto" class="col-8" style="cursor: pointer;  font-size: 2rem;  "#}
-{#                          onclick="correct_num();">********</span>#}
-{#                </div>#}
-{##}
-{##}
-{#            </div>#}
-{#            <div class="col-2">#}
-{#                <h4>Состояние транспорта</h4>#}
-{#                <div class="form-check ">#}
-{#                    <input class="form-check-input" type="radio" name="cheks" id="brutto" value="1" checked>#}
-{#                    <label class="form-check-label" for="brutto">#}
-{#                        Груженый#}
-{#                    </label>#}
-{#                </div>#}
-{#                <div class="form-check">#}
-{#                    <input class="form-check-input" type="radio" name="cheks" id="netto" value="2">#}
-{#                    <label class="form-check-label" for="netto">#}
-{#                        Порожний#}
-{#                    </label>#}
-{#                </div>#}
-{#            </div>#}
-{##}
-{#        </div>#}
-{#        <hr>#}
-{#        <h3 style="margin-left: 2%;">Данные по транспорту</h3>#}
-{#        <hr>#}
-{#        <div class="row">#}
-{#            <div class="col-1"></div>#}
-{##}
-{#            <div class="col-2">#}
-{##}
-{##}
-{#                <div class="form-group">#}
-{#                    <label for="nakladnaya"><b>№ накладной</b></label>#}
-{#                    <hr style="width: 80%;">#}
-{#                    <input id="nakladnaya" pattern="[0-9]{7}" type="text" maxlength="7" class="form-control">#}
-{#                </div>#}
-{##}
-{#                <div id="dov_otpr" class="form-group">#}
-{#                    <label for="otpravitel"><b>Отправитель</b></label>#}
-{#                    <hr style="width: 80%;">#}
-{#                    <input id="searchingOtpr">#}
-{#                    <select multiple id="otpravitel" class="form-control" style="display: none;">#}
-{#                        {% for a in agetns %}#}
-{#                            <span><option value="{{ a.id }}"> {{ a.name }}</option></span>#}
-{#                        {% endfor %}#}
-{#                    </select>#}
-{#                </div>#}
-{##}
-{##}
-{#                <div id="div_pol" class="form-group" style="display: none;">#}
-{#                    <label for="poluchatel"><b>Получатель</b></label>#}
-{#                    <hr style="width: 80%;">#}
-{#                    <input id="searchingPol">#}
-{#                    <select multiple id="poluchatel" class="form-control" style="display: none;">#}
-{#                        {% for a in agetns %}#}
-{#                            <option value="{{ a.id }}"> {{ a.name }}</option>#}
-{#                        {% endfor %}#}
-{#                    </select>#}
-{#                </div>#}
-{#                <div class="form-group">#}
-{#                    <label for="description"><b>Примечания</b></label>#}
-{#                    <hr style="width: 80%; height: 20%;">#}
-{#                    <textarea id="description" rows="1" class="form-control"></textarea>#}
-{#                </div>#}
-{#                <button onclick="addAuto()" style="width: 100%;" class="btn btn-success">Добавить транспорт</button>#}
-{#            </div>#}
-{##}
-{#            <div class="col-2">#}
-{#                <div class="form-group">#}
-{#                    <label for="nameGruz"><b>Наименование</b></label>#}
-{#                    <hr style="width: 80%; height: 20%;">#}
-{#                    <textarea id="nameGruz" rows="1" class="form-control"></textarea>#}
-{#                </div>#}
-{#                <div>#}
-{#                    <div class="d-inline-block  form-group col-7">#}
-{#                        <label for="price"><b>Цена</b></label>#}
-{#                        <hr style="width: 80%;">#}
-{#                        <input id="price" type="text" class="form-control">#}
-{#                    </div>#}
-{##}
-{#                    <div class="d-inline-block  form-group col-3 ">#}
-{#                        <label for="valuta"><b>ед</b></label>#}
-{##}
-{#                        <select id="valuta">#}
-{#                            <option value="br">Br</option>#}
-{#                            <option value="eu">Eu</option>#}
-{#                            <option value="dol">$</option>#}
-{#                        </select>#}
-{#                    </div>#}
-{#                </div>#}
-{##}
-{##}
-{#                <div>#}
-{#                    <div class="d-inline-block  form-group col-7 ">#}
-{#                        <label for="price"><b>Вес</b></label>#}
-{#                        <hr style="width: 80%;">#}
-{#                        <input id="ves_nakladnaia" type="text" class="form-control">#}
-{#                    </div>#}
-{##}
-{#                    <div class="d-inline-block  form-group col-3 ">#}
-{#                        <label for="ed"><b>ед</b></label>#}
-{##}
-{#                        <select id="ed">#}
-{#                            <option value="kg">кг</option>#}
-{#                            <option value="t">т</option>#}
-{#                        </select>#}
-{#                    </div>#}
-{#                </div>#}
-{#                <label><b>Добавить в табилцу</b></label>#}
-{#                <hr>#}
-{#                <div>#}
-{#                    <button onclick="addNakladnayaRow()" class="btn btn-success">Добавить</button>#}
-{#                </div>#}
-{##}
-{#            </div>#}
-{#            <div class="col-1">#}
-{#                <button class="btn btn-success" style="width: 100%; margin-top: 1%;">Въезд</button>#}
-{#                <button class="btn btn-danger" style="width: 100%; margin-top: 1%;">Въезд</button>#}
-{#                <hr>#}
-{#                <button class="btn btn-success" style="width: 100%; margin-top: 1%;">Выезд</button>#}
-{#                <button class="btn btn-danger" style="width: 100%; margin-top: 1%;">Выезд</button>#}
-{##}
-{##}
-{#            </div>#}
-{##}
-{##}
-{#            <div class="d-inline-flex col-6 border ">#}
-{#                <div class="col-6">#}
-{#                    <div class="border">#}
-{#                        <video width="400" height="300" controls="controls" poster="video/duel.jpg"></video>#}
-{#                    </div>#}
-{#                    <div style="width:400px; height:300px; overflow: auto;" class="border">#}
-{#                        <table class="table">#}
-{#                            <thead>#}
-{#                            <tr>#}
-{#                                <th scope="col">№</th>#}
-{#                                <th scope="col">наименование</th>#}
-{#                                <th scope="col">вес</th>#}
-{#                                <th scope="col">цена</th>#}
-{#                                <th scope="col">delete</th>#}
-{#                            </tr>#}
-{#                            </thead>#}
-{#                            <tbody id="table-nakladnaya">#}
-{##}
-{#                            </tbody>#}
-{#                        </table>#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div class="col-6 ">#}
-{#                    <div class="border">#}
-{#                        <video width="400" height="300" controls="controls" poster="video/duel.jpg"></video>#}
-{#                    </div>#}
-{##}
-{#                    <div class="border">#}
-{#                        <video width="400" height="300" controls="controls" poster="video/duel.jpg"></video>#}
-{#                    </div>#}
-{#                </div>#}
-{#                <br>#}
-{##}
-{#            </div>#}
-{##}
-{#        </div>#}
-{##}
-{#    </div>#}
+
 
 {% include  'ves/ves_rowZD.html' %}
 {% include 'ves/nakladnaya_rowZD.html' %}
@@ -812,6 +620,7 @@ const clearFields = () => {
                 data: data,
                 success: function (dat) {
                     console.log(dat);
+			answer(dat);
                 },
                 beforeSend: function (xhr, settings) {
                     if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
@@ -823,6 +632,38 @@ const clearFields = () => {
 getData();
 
 setInterval(getData, 1000);
+
+let ves_last;
+function answer(dat){
+if(dat.bits[3]=="0"){$("#svbit_3").removeClass("btn-success"); $("#svbit_3").addClass(" btn-danger");}else{$("#svbit_3").removeClass("btn-danger"); $("#svbit_3").addClass(" btn-success");}
+
+if(dat.bits=="error"){
+$("#svbit_3").prop("disabled",true);
+
+}else{
+$("#svbit_3").prop("disabled",false);
+
+}
+		if(ves_last==dat.ves && dat.ves!="error"){
+		$("#parentVesOnline").css('background-color', '#2f6017');
+		$("#parentVesOnline").css('color', 'white');
+		$("#fixVes").prop("disabled",false);
+		$("#lineVes").removeClass("border border-danger");
+		 }else if(dat.ves=="error"){
+		$("#parentVesOnline").css('background-color', 'red');
+		$("#parentVesOnline").css('color', 'white');
+		$("#fixVes").prop("disabled",true);
+		$("#lineVes").addClass("border border-danger");
+		}else{
+		$("#parentVesOnline").css('background-color', '#e6c100');
+		$("#parentVesOnline").css('color', 'black');
+		$("#fixVes").prop("disabled",true);
+		$("#lineVes").removeClass("border border-danger");
+		}
+		$("#vesOnline").html(dat.ves);
+		ves_last=dat.ves;
+
+}
 
 
     </script>

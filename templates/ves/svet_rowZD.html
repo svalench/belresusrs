@@ -7,8 +7,37 @@
                 <h3 class="d-xl-flex justify-content-xl-center" id="clickDataSvet" style="color: rgb(234,97,67); cursor: pointer;">Управление светофорами</h3>
                 <hr style="margin-top: 0px;">
                 <div class="row" id="svetControl">
-                    <div class="col-12 d-flex d-xl-flex justify-content-center align-items-center"><button class="btn btn-success btn-lg" type="button" style="width: 80%;font-size: 24px;height: 100%;">Переключить светофор</button></div>
+                    <div class="col-12 d-flex d-xl-flex justify-content-center align-items-center"><button id="svbit_3" onclick="onoff(0,3)" class="btn btn-success btn-lg" type="button" style="width: 80%;font-size: 24px;height: 100%;">Переключить светофор</button></div>
                 </div>
             </div>
         </div>
     </div>
+
+
+
+<script>
+
+
+
+function onoff(byte,bit){
+let data={"bit":bit,"byte":byte};
+$.ajax({
+            type: "POST",
+            url: "{%url 'onoffzd'%}",
+            traditional: true,
+            dataType: 'json',
+            data: data,
+            success: function (d) {
+                console.log(d);
+            },
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+}
+
+
+
+</script>

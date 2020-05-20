@@ -46,6 +46,7 @@ urlpatterns = [
     path('getDataAuto/getautodate', GetAutoDate, name='getAutoDate'),
 
     path('onoff/svet1/',onOffS1,name='on1'),
+    path('onoff/zd/svet1/',onOffZd,name='onoffzd'),
 
     #отчеты
     path('reportAutoAgent/get', reportAutoAgent, name='reportAutoAgent'),
