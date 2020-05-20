@@ -333,7 +333,7 @@ def serchAuto(request):
     search = form['search']
     if(form['request']=="auto"):
         if(form['case']=="auto"):
-            result =Auto.objects.filter(Q(number__contains=search) | Q(number_pricep__contains=search) | Q(last_in__contains=search) | Q(last_out__contains=search) | Q(nakladnaya__contains=search))
+            result =Auto.objects.filter(Q(number__contains=search) | Q(number_pricep__contains=search) | Q(last_in__contains=search) | Q(last_out__contains=search) | Q(nakladnaya__contains=search)))
     elif(form['request']=="zd"):
         result = Vagon.objects.filter(
             Q(number__contains=search)  | Q(last_in__contains=search) | Q(
