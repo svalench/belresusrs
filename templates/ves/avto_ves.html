@@ -513,19 +513,21 @@ function getData(){
                 dataType: 'json',
                 data: data,
                 success: function (dat) {
-                    console.log(dat);
 		if(ves_last==dat.ves && dat.ves!="error"){
 		$("#parentVesOnline").css('background-color', '#2f6017');
 		$("#parentVesOnline").css('color', 'white');
 		$("#fixVes").prop("disabled",false);
+		$("#lineVes").removeClass("border border-danger");
 		 }else if(dat.ves=="error"){
 		$("#parentVesOnline").css('background-color', 'red');
 		$("#parentVesOnline").css('color', 'white');
 		$("#fixVes").prop("disabled",true);
+		$("#lineVes").addClass("border border-danger");
 		}else{
 		$("#parentVesOnline").css('background-color', '#e6c100');
 		$("#parentVesOnline").css('color', 'black');
 		$("#fixVes").prop("disabled",true);
+		$("#lineVes").removeClass("border border-danger");
 		}
 		ves_last=dat.ves;
 		$("#vesOnline").html(dat.ves)
