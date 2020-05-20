@@ -481,6 +481,9 @@ if($('#searchingPol').val().length==0){
 let auto_in = "{{ JAuto }}";
 auto_in = auto_in.replace(/&quot;/g,'"');
 auto_in = JSON.parse(auto_in);
+
+
+let ves_last=0;
 function getData(){
     var num = $('#gos_num_avto').html();
     if(status!="true"){
@@ -511,6 +514,20 @@ function getData(){
                 data: data,
                 success: function (dat) {
                     console.log(dat);
+		if(ves_last==dat.ves && dat.ves!="error"){
+		$("#parentVesOnline").css('background-color', '#2f6017');
+		$("#parentVesOnline").css('color', 'white');
+		$("#fixVes").prop("disabled",false);
+		 }else if(dat.ves=="error"){
+		$("#parentVesOnline").css('background-color', 'red');
+		$("#parentVesOnline").css('color', 'white');
+		$("#fixVes").prop("disabled",true);
+		}else{
+		$("#parentVesOnline").css('background-color', '#e6c100');
+		$("#parentVesOnline").css('color', 'black');
+		$("#fixVes").prop("disabled",true);
+		}
+		ves_last=dat.ves;
 		$("#vesOnline").html(dat.ves)
                 },
                 beforeSend: function (xhr, settings) {
