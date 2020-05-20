@@ -1,5 +1,5 @@
 import abc
-
+from openpyxl_templates import TemplatedWorkbook, TemplatedWorksheet
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core import serializers
@@ -164,9 +164,19 @@ def GetDataAuto(request):
             one_entry.Auto = True
     one_entry.save()
     print(one_entry.Auto)
+    try:
+        ves = PlcRemoteUse('192.168.0.1')
+        ves.getWeight()
+        weight = ves.ves
+    except:
+        weight="error"
+    
+   
+
     dataRecive = {
         'plc':"1200",
         "type":"vrs",
+	"ves":weight,
         'global':one_entry.Auto,
     }
     return HttpResponse(json.dumps(dataRecive), content_type='application/json')
@@ -197,13 +207,9 @@ def GetDataStatus(request):
         one_entry = GlobalData.objects.get(id=1)
     except ObjectDoesNotExist:
         one_entry = GlobalData(Auto=False)
-    ves =2
-    #ves = PlcRemoteUse('192.168.0.1')
-
     dataRecive = {
         'plc':"1200",
         "type":"vrs",
-        'ves':ves,
         'auto':one_entry.Auto,
         'zd': one_entry.Zd,
     }
@@ -363,27 +369,53 @@ def serchAuto(request):
     return HttpResponse(res, content_type='application/json')
 
 
+class DemoTemplatedWorkbook(TemplatedWorkbook):
+    sheet1 = TemplatedWorksheet()
+    sheet2 = TemplatedWorksheet()
+
+
 
 #
 def reportAutoAgent(request):
     form = request.GET
 
-    tpl = DocxTemplate('templates/doc/shablon_agent_stat.docx')
+    #tpl = DocxTemplate('templates/doc/template_execel.xls')
+    tpl = DemoTemplatedWorkbook('templates/doc/template_execel.xlsx')
     context = {
-        'agent': form['agent_name'],
-        'agent_adress': form['agent_adress'],
-        'agent_unp': form['agent_unp'],
+        'agent':'str',
+        'agent_adress': 'str',
+        'agent_unp': 'str',
         'col_labels': ['вес на въезде', 'вес на выезде', 'дата въезда', 'дата выезда',"нетто"],
         'tbl_contents': [
             {'label': 'yellow', 'cols': ['banana', 'capsicum', 'pyrite', 'taxi']},
             {'label': 'red', 'cols': ['apple', 'tomato', 'cinnabar', 'doubledecker']},
             {'label': 'green', 'cols': ['guava', 'cucumber', 'aventurine', 'card']},
         ],
-    }
-    tpl.render(context)
-    response = HttpResponse( content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    } 
+    print(dir(tpl))
+    tpl.sheet1.write(context)
+
+    #application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+    #response = HttpResponse( content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    #response = HttpResponse( content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     now = datetime.now()
     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-    response['Content-Disposition'] = 'attachment; filename='+dt_string+'.docx'
+    response['Content-Disposition'] = 'attachment; filename='+dt_string+'.xlsx'
     tpl.save(response)
     return response
+
+
+def onOffS1(request):
+    bit=request.POST['bit']
+    byte=request.POST['byte']
+    try:
+        ves = PlcRemoteUse('192.168.0.1')
+        answ = ves.changeBit(byte,bit)
+    except:
+        answ="error"
+    dataRecive = {
+        'answer':answ,
+        'sum': 'good'
+    }
+    return HttpResponse(json.dumps(dataRecive), content_type='application/json')
+
