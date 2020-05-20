@@ -142,16 +142,16 @@ def GetDataAuto(request):
     try:
         ves = PlcRemoteUse('192.168.0.1')
         ves.getWeight()
+        bitmask = ves.getSatusBit(0)
         weight = ves.ves
     except:
         weight="error"
-    
-   
-
+        bitmask = "error"
     dataRecive = {
         'plc':"1200",
         "type":"vrs",
 	"ves":weight,
+        "bits":bitmask,
         'global':one_entry.Auto,
     }
     return HttpResponse(json.dumps(dataRecive), content_type='application/json')
