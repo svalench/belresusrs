@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
+import asyncio
 from apps.ves.catalog import CatalogAutoView, CatalogTrailerView, CatalogProductView
 from apps.ves.views import StartView, DataView
 
@@ -50,3 +50,7 @@ urlpatterns = [
 
 
 ]
+
+
+
+

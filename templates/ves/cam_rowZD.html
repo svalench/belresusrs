@@ -17,10 +17,22 @@
             <h3 class="d-xl-flex justify-content-xl-center" id="clickDataCamera" style="color: rgb(34,121,208); cursor: pointer;">Камеры</h3>
             <hr style="margin-top: 0px;">
             <div class="row" id="cameraControl">
-                <div class="col-4 d-xl-flex justify-content-xl-center align-items-xl-center" style="height: 70vh;"><img class="rounded img-fluid border border-primary shadow" width="90%" alt="camera1" src={% static "img/nonecam.png"  %}></div>
-                <div class="col-4 d-xl-flex justify-content-xl-center align-items-xl-center" style="height: 70vh;"><img class="rounded border border-primary shadow d-xl-flex justify-content-xl-center align-items-xl-center" alt="camera2" src={% static "img/nonecam.png"  %} width="90%"></div>
+                <div class="col-4 d-xl-flex justify-content-xl-center align-items-xl-center" style="height: 70vh;"><img id="cam1" class="rounded img-fluid border border-primary shadow" width="90%" alt="camera1" src={% static "camera/cam4.png"  %}></div>
+                <div class="col-4 d-xl-flex justify-content-xl-center align-items-xl-center" style="height: 70vh;"><img class="rounded border border-primary shadow d-xl-flex justify-content-xl-center align-items-xl-center" alt="camera2" id="cam2" src={% static "camera/cam5.jpg"  %} width="90%"></div>
                 <div class="col-4 d-xl-flex justify-content-xl-center align-items-xl-center"
-                    style="height: 70vh;"><img class="rounded border border-primary shadow" id="cam3" alt="camera3" width="90%" src={% static "img/nonecam.png"  %}></div>
+                    style="height: 70vh;"><img class="rounded border border-primary shadow" id="cam3" alt="camera3" width="90%" src={% static "camera/cam6.jpg"  %}></div>
             </div>
         </div>
     </div>
+
+<script>
+function upd_cam(){
+let cam1=document.getElementById('cam1');
+let cam2= document.getElementById('cam2');
+let cam3= document.getElementById('cam3');
+cam1.src = '/static/camera/cam4.jpg?'+Math.random();
+cam2.src = '/static/camera/cam5.jpg?'+Math.random();
+cam3.src = '/static/camera/cam6.jpg?'+Math.random();
+}
+setInterval(upd_cam,1000);
+</script>
