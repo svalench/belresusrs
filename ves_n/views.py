@@ -37,43 +37,6 @@ def addactionView(request, *args, **kwargs):
 
 
 
-def addAutoView(request):
-    form = request.POST
-    last_in = datetime.now()
-    in_ter = Auto.objects.filter(number=form['numAuto'], status_in=True)
-    if in_ter.exists():
-        in_ter[0].last_out=last_in
-        in_ter[0].ves_out=form['ves']
-        in_ter[0].status_in=False
-        in_ter[0].netto = abs(in_ter[0].ves_in-int(form['ves']))
-        in_ter.update(last_out=last_in,ves_out=form['ves'],status_in=False,netto=abs(in_ter[0].ves_in-int(form['ves'])))
-    else:
-        dataNakl = form.getlist('nakladnaya')
-        agent = Agent.objects.get(pk=form['contragent'])
-        print(form)
-        auto = Auto(number=form['numAuto'], agents=agent, tara=int(form['typeCar']), catalog_id=int(form['catalogId']),
-                    number_pricep=form['numPricep'], last_in=last_in, ves_in=float(form['ves']),
-                status_in=True)
-        auto.save()
-
-        arr=[]
-        for a in dataNakl:
-            r = a.split(",")
-            product = Production.objects.get(id=r[18])
-            arr.append(DataNakladnayaAuto(type=r[8],number=r[10],seria=r[9],
-                                          name=r[0],ves_ed=r[2],ves_nakladnaya=r[1],
-                                          name_drive=r[15], osnovanie=r[17], pogruzka=r[12],
-                                          prinyal=r[14], putlist=r[13], razreshil=r[11],
-                                          price_ed=r[5],price_one=r[3],price_no_nds=r[4],nds=r[7], date=r[19],
-                                          price=r[6], parentId = auto,productionId_id=r[18]))
-        DataNakladnayaAuto.objects.bulk_create(arr)
-    payload = {'success': True}
-    return HttpResponse(json.dumps(payload), content_type='application/json')
-
-
-
-
-
 def addVagonPost(request):
     form = request.POST
     last_in = datetime.now()

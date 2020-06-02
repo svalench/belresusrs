@@ -12,9 +12,44 @@
         <input type="checkbox" id="hmt" class="hidden-menu-ticker">
 
         <label class="btn-menu" for="hmt">
-            авто на территории
+            Авто на территории
         </label>
         <div class="hidden-menu" style="overflow: auto;">
+
+ <div class="table-bordered">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>№ Авто</th>
+                <th>Операция</th>
+                <th>Контрагент</th>
+                <th>Материал</th>
+                <th>Время въезда<br /></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Cell 1</td>
+                <td>Cell 1</td>
+                <td>Cell 2</td>
+                <td>Cell 3</td>
+                <td>Cell 3</td>
+                <td><button class="btn btn-primary btM" type="button">------></button></td>
+            </tr>
+            <tr>
+                <td>Cell 1</td>
+                <td>Cell 1</td>
+                <td>Cell 2</td>
+                <td>Cell 3</td>
+                <td>Cell 3</td>
+                <td><button class="btn btn-primary" type="button">Button</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
 
             <div class="accordion" id="accordionExample">
                 {% for a in auto_in %}
@@ -93,37 +128,58 @@
     <div class="modal fade" id="gosnomeravto" tabindex="-1" role="dialog" aria-labelledby="gosnomeravto"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="width: 70%;">
+            <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="gosnomeravto">Измение номера авто</h5>
+                    <h5 class="modal-title">Измение номера авто</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group col-12">
-                        <label for="gosNavto">Номер авто</label>
-                        <input type="text" class="form-control text-left" style="width:30%" id="gosNavto" pattern="([0-9]{4})" maxlength='4'
-                        >
-                    </div>
-                    <div class="form-group col-12">
-                        <label for="seriaAvto">Серия </label>
-                        <input type="text" class="form-control" id="seriaAvto" maxlength="2"
-                               pattern="([a-zA-Z]{4})" name="seriaAvto" style="width:30%">
-                    </div>
-                    <div class="form-group col-12">
-                        <label for="regionAvto">Регион</label>
-                        <input type="text" class="form-control" pattern="([0-7]$)"
-                               id="regionAvto" maxlength="1" name="regionAvto" style="width:30%">
-                    </div>
+                    <div class="row">
+                    <div class="col"><label for="gosNavto">Номер авто</label><input type="text" class="form-control" id="gosNavto" pattern="([0-9]{4})" maxlength="4" /></div>
+                    <div class="col"><label for="seriaAvto">Серия</label><input type="text" class="form-control" id="seriaAvto" pattern="([a-zA-Z]{2})" maxlength="2" /></div>
+                    <div class="col"><label for="regionAvto">Регион</label><input type="text" class="form-control" id="regionAvto" pattern="([0-7]$)" maxlength="1" /></div>
+                </div>
+
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Отмена</button>
+{#                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Отмена</button>#}
                     <button type="button" onclick="changeNumAvto()" class="btn btn-primary">Изменить номер</button>
                 </div>
             </div>
         </div>
     </div>
+
+  <!-- Modal change GosNomAvtoPricep -->
+    <div class="modal fade" id="gosnomerpricep" tabindex="-1" role="dialog" aria-labelledby="gosnomerpricep"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Измение номера прицепа</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                    <div class="col"><label for="gosNpricep">Номер прицепа</label><input type="text" class="form-control" id="gosNpricep" pattern="([0-9]{4})" maxlength="4" /></div>
+                    <div class="col"><label for="seriaPricep">Серия</label><input type="text" class="form-control" id="seriaPricep" pattern="([a-zA-Z]{2})" maxlength="2" /></div>
+                    <div class="col"><label for="regionPricep">Регион</label><input type="text" class="form-control" id="regionPricep" pattern="([0-7]$)" maxlength="1" /></div>
+                </div>
+
+                </div>
+                <div class="modal-footer">
+{#                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Отмена</button>#}
+                    <button type="button" onclick="changeNumPricep()" class="btn btn-primary">Изменить номер</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 
 
 
@@ -164,8 +220,8 @@ const displayBlock = (blockId) => {
 {#check Field#}
     <script>
         const arrayInputId=["name_driver","data_auto","data_pricep","Nputev","pogruzka","razgruzka","agent","agentPoluchit","razreshil","osnovanie","prinal","sdal","gruzopoluchatel","doverennost","ttn","seria","nakladnaya","dateNakladnaya","name_tovar","ves_nakladnaya","ed_ves","cena","valuta","price_no_nds","nds","summ_nds","cena_nds","kol_mest","mass_gruza","description"];
-const arrayLabelTrue=["Водитель","Автомобиль","Прицеп","№ путевого листа","Пункт погрузки","Пункт разгрузки","Грузоотправитель","Грузополучатель","Отпуск разрешил","Основание отпуска","Товар к доставке принял","Сдал грузоотправитель","Принял грузопучатель","Доверенность","Тип накладной","Серия накладной","Номер накладной","Дата накладной","Наименование товара","Количество","Ед","Цена","Валюта","Стоимость","Ставка НДС","Сумма НДС","Стоимость с НДС","Количествово мест","Масса груза","Описание"]
-const arrayLabelFalse=["Водитель: Фамилия И.О.","Автомобиль","Прицеп","№ путевого листа","Пункт погрузки","Пункт разгрузки","Грузоотправитель","Грузополучатель","Отпуск разрешил","Основание отпуска","Товар к доставке принял","Сдал грузоотправитель","Принял грузопучатель","Доверенность","Тип накладной","Серия накладной","Номер накладной","Дата накладной","Наименование товара","Количество","Ед","Цена","Валюта","Стоимость","Ставка НДС","Сумма НДС","Стоимость с НДС","Количествово мест","Масса груза","Описание"]
+        const arrayLabelTrue=["Водитель","Автомобиль","Прицеп","№ путевого листа","Пункт погрузки","Пункт разгрузки","Грузоотправитель","Грузополучатель","Отпуск разрешил","Основание отпуска","Товар к доставке принял","Сдал грузоотправитель","Принял грузопучатель","Доверенность","Тип накладной","Серия накладной","Номер накладной","Дата накладной","Наименование товара","Количество","Ед","Цена","Валюта","Стоимость","Ставка НДС","Сумма НДС","Стоимость с НДС","Количествово мест","Масса груза","Описание"]
+        const arrayLabelFalse=["Водитель: Фамилия И.О.","Автомобиль","Прицеп","№ путевого листа","Пункт погрузки","Пункт разгрузки","Грузоотправитель","Грузополучатель","Отпуск разрешил","Основание отпуска","Товар к доставке принял","Сдал грузоотправитель","Принял грузопучатель","Доверенность","Тип накладной","Серия накладной","Номер накладной","Дата накладной","Наименование товара","Количество","Ед","Цена","Валюта","Стоимость","Ставка НДС","Сумма НДС","Стоимость с НДС","Количествово мест","Масса груза","Описание"]
 
 $("#name_driver").change(function(e) {
    let regexp = /^[А-Яа-я\s.]+$/i;
@@ -222,7 +278,7 @@ $("#cena").change(function(e) {
     changeLabel(this,$("label[for="+this.id+"]"),lT,lF)
 });
 
-const checkFieldEmpty = (id,e) => {
+    const checkFieldEmpty = (id,e) => {
     red = $(this).hasClass("border-danger");
     green = $(this).hasClass("border-success")
     if($(id).val() ==='' || $(id).val() ===0 || $(id).val() ===false) {
@@ -309,20 +365,20 @@ const clearFields = () => {
         var count = 1;
         var rowsTable = [];
         var Table = [];
-        var urlAjaxAdd= '{% url 'addautoPOST' %}';
+        var urlAjaxAdd= '';
 
         let agents = "{{ agentsJ }}";
-agents = agents.replace(/&quot;/g,'"');
-agents = JSON.parse(agents);
-let tovar = "{{ production }}";
-tovar = tovar.replace(/&quot;/g,'"');
-tovar = JSON.parse(tovar);
-let catalogAuto = "{{ catalog }}";
-catalogAuto = catalogAuto.replace(/&quot;/g,'"');
-catalogAuto = JSON.parse(catalogAuto);
-let newAgents =[];
-    agents.forEach(function(a){
-        newAgents.push(a.fields);
+            agents = agents.replace(/&quot;/g,'"');
+            agents = JSON.parse(agents);
+        let tovar = "{{ production }}";
+            tovar = tovar.replace(/&quot;/g,'"');
+            tovar = JSON.parse(tovar);
+        let catalogAuto = "{{ catalog }}";
+            catalogAuto = catalogAuto.replace(/&quot;/g,'"');
+            catalogAuto = JSON.parse(catalogAuto);
+        let newAgents =[];
+            agents.forEach(function(a){
+            newAgents.push(a.fields);
     });
         var filterInt = function (value) {
             if (/^(\-|\+)?([0-9]+|Infinity)$/.test(value))
@@ -356,80 +412,6 @@ let newAgents =[];
 
 
 let status1=false;
-        function addAuto() {
-            let numberPricep = $("#gos_num_pricep").val();
-            var num = $('#gos_num_avto').val();
-            var arrAuto = num.split('-');
-            var arrPricep = num.split('-');
-            let numAuto = arrAuto.join("");
-
-            let nunu= numAuto;
-            let numPricep = arrPricep.join("");
-            let prov =parseInt(nunu);
-
-            if(!prov  || prov==0){
-                alert('ошибка с номером автотранспорта');
-                 return;
-            }
-            let agent;
-            let ves = $("#vesFix").html();
-            let ves_nakladnay = $("#ves_nakladnaia").val();
-            let nakladnay = $("#nakladnaya").val();
-            if (!nakladnay && !status1) {
-                alert('Вы не указали номер накладной');
-                $("#nakladnaya").focus();
-                return;
-            }
-            if (!nakladnay.match(/[0-9]{7}/) && !status1) {
-                alert("В поле накладная должны быть введены только цифры");
-                $("#nakladnaya").focus();
-                return;
-            }
-            if(count<2 && !status1){
-                alert('данные по накладной пусты'); $("#nameGruz").focus(); return;
-            }
-            let typeCar = $("[name='cheks']:checked").val();
-            console.log(typeCar);
-            if (typeCar == "1") {
-                agent = $("#otpravitel").children("option:selected").val();
-            } else {
-                agent = $("#poluchatel").children("option:selected").val();
-            }
-            let obj = [];
-            let c=0;
-            Table.forEach(function (a, v) {
-                obj[c]=[a.count,a.name,a.price,a.valuta,a.ves,a.ed];
-                c++;
-            });
-
-
-            let data = {
-                'ves': ves,
-                'nakladnaya': nakladnay,
-                'typeCar': typeCar,
-                'numAuto': numAuto,
-                'numPricep': numberPricep,
-                'contragent': agent,
-                "dataNakladnay":obj,
-            };
-console.log(data);
-            $.ajax({
-                type: "POST",
-                url: '{% url 'addautoPOST' %}',
-                traditional: true,
-                dataType: 'json',
-                data: data,
-                success: function () {
-                    console.log('Load was performed.');
-                },
-                beforeSend: function (xhr, settings) {
-                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    }
-                }
-            });
-
-        }
 
 
 
@@ -577,6 +559,15 @@ $(document).ready(function(){$("[data-bs-hover-animate]").mouseenter(function(){
 
     </script>
 
+{#Работа с таблицей слева#}
+<script>
+$(document).ready(function(){
+  $('table tr button').on('click', function(e) {
+    $('table tr').removeClass('marked');
+    $(this).parent("td").parent("tr").addClass('marked');
+  });
+});
+</script>
 
     <style>
         .hidden-menu {
@@ -587,11 +578,11 @@ $(document).ready(function(){$("[data-bs-hover-animate]").mouseenter(function(){
             margin: 0;
 
             box-sizing: border-box;
-            width: 60%;
+            width: 80%;
             background-color: #eee;
             height: 100%;
             top: 10%;
-            left: -60%;
+            left: -80%;
             transition: left .2s;
             z-index: 2;
             -webkit-transform: translateZ(0);
@@ -631,7 +622,7 @@ $(document).ready(function(){$("[data-bs-hover-animate]").mouseenter(function(){
         }
 
         .hidden-menu-ticker:checked ~ .btn-menu {
-            left: 55%;
+            left: 70%;
         }
 
         .hidden-menu-ticker:checked ~ .hidden-menu {
@@ -662,7 +653,11 @@ $(document).ready(function(){$("[data-bs-hover-animate]").mouseenter(function(){
     </style>
 
 
-
+    <style>
+        table tr.marked {
+        background-color: #007bff2e;
+        }
+    </style>
 
 
 

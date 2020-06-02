@@ -54,11 +54,12 @@ class StartView(LoginRequiredMixin, CreateView):
         catalogJ = serializers.serialize('json', catalog)
         agentsJ = serializers.serialize('json', agents)
         productionJ = serializers.serialize('json', production)
+        autoJ = serializers.serialize('json', auto)
         #print(auto[0].datanakladnayaauto_set.get().productionId.name)
         if (one_entry.Auto == True):
             print('woops')
             #raise exceptions.PermissionDenied
-        data = {'auto_in': auto,'catalog':catalogJ , 'agentsJ':agentsJ,'production':productionJ,'agents':agents,'JAuto':json}
+        data = {'auto_in': auto,'auto_in_J': autoJ,'catalog':catalogJ , 'agentsJ':agentsJ,'production':productionJ,'agents':agents,'JAuto':json}
         return render(request, 'ves/avto_ves.html', data)
 
 

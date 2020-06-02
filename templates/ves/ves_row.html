@@ -6,49 +6,43 @@
         </div>
         <hr style="margin-top: 0px;">
         <div class="row no-gutters" id="lineVes" style="background-color: rgba(3,1,1,0.72);">
-            <div class="col-2 align-self-center" id="ves">
-                <div class="row no-gutters">
-                    <div id="parentVesOnline" class="col-10 text-right" style="letter-spacing: 0px;background-color: #e6c100;margin-left: 10px;"><span id="vesOnline" style="font-family: Montserrat, sans-serif;font-size: 51px;cursor: not-allowed;padding-right: 10px;">1000</span></div>
-                    <div class="col-1 d-xl-flex justify-content-xl-end align-items-xl-end" style="margin-left: 2px;"><span style="font-family: Montserrat, sans-serif;font-size: 24px;color: rgb(225,227,230);">кг</span></div>
-                </div>
-            </div>
-            <div class="col-2 col-xl-2 align-self-center" id="brutto-netto" style="margin: 0px 30px;">
-                <div class="row" style="color: rgb(255,255,255);">
-                    <div class="col-8 text-right" style="background-color: #2f6017;"><span data-bs-hover-animate="flash" id="vesFix" style="font-family: Montserrat, sans-serif;font-size: 51px;cursor:pointer;" onclick="correct()">0</span></div>
-                    <div class="col-4 d-xl-flex align-items-xl-center">
-                        <div class="row">
-                            <div class="col-12 text-center" style="background-color: #210445;"><span id="status" style="font-family: Montserrat, sans-serif;font-size: 24px;">брутто</span></div>
-                            <div class="col-12 text-center"><span style="font-family: Montserrat, sans-serif;font-size: 24px;">кг</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-2 col-xl-2 align-self-center" id="buttons" style="margin: 0px 20px;margin-left: 30px;margin-right: 30px;"><button id="fixVes" class="btn btn-success btn-block btn-lg" type="button" onclick="fixVes()">Зафиксировать</button><button class="btn btn-outline-warning btn-block btn-lg" type="button" onclick="destroyFixVes()">Сброс</button></div>
-            <div class="col-auto">
-                <div style="border-left: 2px solid #007bff;height: 100%;"></div>
-            </div>
-            <div class="col-3" id="numbers" style="color: rgb(236,238,241);padding: 0px 50px;">
+    <div class="col-2 align-self-center" id="ves">
+        <div class="row no-gutters">
+            <div class="col-10 text-right" style="letter-spacing: 0px;background-color: #e6c100;margin-left: 10px;"><span id="vesOnline" style="font-family: Montserrat, sans-serif;font-size: 51px;cursor: not-allowed;padding-right: 10px;">140</span></div>
+            <div class="col-1 d-xl-flex justify-content-xl-end align-items-xl-end"><span style="font-family: Montserrat, sans-serif;font-size: 24px;color: rgb(225,227,230);">кг</span></div>
+        </div>
+    </div>
+    <div class="col-2 col-xl-2 align-self-center" id="brutto-netto" style="margin: 0px 30px;">
+        <div class="row" style="color: rgb(255,255,255);">
+            <div class="col-8 text-right" style="background-color: #2f6017;"><span id="vesFix" style="font-family: Montserrat, sans-serif;font-size: 51px;cursor:pointer;" onclick="correct()">140</span></div>
+            <div class="col-4 d-xl-flex align-items-xl-center">
                 <div class="row">
-                    <div class="col-12 text-center" style="font-size: 25px;padding: 0px;"><label class="col-form-label text-left" for="gos_num_avto" style="font-size: 16px;">Авто<input onclick="correct_num()" class="border rounded border-primary text-right form-control" type="text" id="gos_num_avto" style="font-size: 30px;cursor: pointer;background-color: transparent;color: rgb(255,255,255);" placeholder="1234 AB-7" maxlength="8" minlength="8" pattern="[A-Z]{,8}" required=""></label></div>
-                    <div
-                        class="col-12 text-center" style="font-size: 25px;padding: 0px;"><label class="col-form-label text-left" for="gos_num_pricep" style="font-size: 16px;">Прицеп<input onclick="correct_num_pricep()" class="border rounded border-primary text-right form-control" type="text" id="gos_num_pricep" style="font-size: 30px;cursor: pointer;background-color: transparent;color: rgb(255,255,255);" placeholder="1234 AB-7" maxlength="8" minlength="8" pattern="[A-Z]{,8}" required=""></label></div>
-            </div>
-        </div>
-        <div class="col-auto">
-            <div style="border-left: 2px solid #007bff;height: 100%;"></div>
-        </div>
-        <div class="col-2 align-items-center align-self-center" style="color: rgb(240,244,248);padding-left: 20px;">
-            <div class="text-left border rounded border-info" style="padding: 5px 0px;width: 294px;">
-                <div class="form-check d-flex align-items-center" style="font-size: 20px;padding: 2px 30px;"><input class="form-check-input" type="radio" id="brutto" checked="" value="1" name="cheks"><label class="form-check-label" for="brutto" style="font-size: 20px;">Груженый</label></div>
-                <div class="form-check text-truncate d-flex align-items-center"
-                    style="padding: 2px 30px;"><input class="form-check-input" type="radio"value="0" id="tara" name="cheks"><label class="form-check-label" for="tara" style="font-size: 20px;">Порожний</label></div>
-            </div>
-            <div class="text-left border rounded border-info" style="padding: 5px 0px;width: 294px;">
-                <div class="form-check d-flex align-items-center" style="padding: 2px 30px;"><input class="form-check-input" type="radio" id="formCheck-4" name="derection"><label class="form-check-label" for="formCheck-4" style="font-size: 20px;">C территории</label></div>
-                <div class="form-check d-flex align-items-center" style="padding: 2px 30px;"><input class="form-check-input" type="radio" id="formCheck-3" name="derection" checked=""><label class="form-check-label" for="formCheck-3" style="font-size: 20px;">На территорию</label></div>
+                    <div class="col-12 text-center" style="background-color: #210445;"><span id="status" style="font-family: Montserrat, sans-serif;font-size: 24px;">брутто</span></div>
+                    <div class="col-12 text-center"><span style="font-family: Montserrat, sans-serif;font-size: 24px;">кг</span></div>
+                </div>
             </div>
         </div>
     </div>
+    <div class="col-2 col-xl-2 align-self-center" id="buttons" style="margin-left: 30px;margin-right: 30px;margin-top: 5px;margin-bottom: 5px;"><button class="btn btn-success btn-block btn-lg" type="button" onclick="fixVes()">Зафиксировать</button><button class="btn btn-outline-warning btn-block btn-lg" type="button" onclick="destroyFixVes()">Сброс</button></div>
+    <div class="col-auto">
+        <div style="border-left: 2px solid #007bff;height: 100%;"></div>
+    </div>
+    <div class="col-3" id="numbers" style="color: rgb(236,238,241);padding: 0px 50px;">
+        <div class="row">
+            <div class="col-6 text-center" style="font-size: 25px;padding: 0px;"><label class="col-form-label text-left" for="gos_num_avto" style="font-size: 16px;">Авто<input type="text" onclick="correct_num()" class="border rounded border-primary text-right form-control" id="gos_num_avto" style="font-size: 30px;cursor: pointer;background-color: transparent;color: rgb(255,255,255);width:95%" placeholder="1234 AB-7" maxlength="9" minlength="8" required /></label></div>
+            <div class="col-6 text-center" style="font-size: 25px;padding: 0px;"><label class="col-form-label text-left" for="gos_num_pricep" style="font-size: 16px;">Прицеп<input type="text" onclick="correct_num_pricep()" class="border rounded border-primary text-right form-control" id="gos_num_pricep" style="font-size: 30px;cursor: pointer;background-color: transparent;color: rgb(255,255,255);width:95%" placeholder="1234 AB-7" maxlength="8" minlength="8" pattern="[A-Z]{,8}" required /></label></div>
+    </div>
+</div>
+<div class="col-auto">
+    <div style="border-left: 2px solid #007bff;height: 100%;"></div>
+</div>
+<div class="col-2 align-items-center align-self-center" style="color: rgb(240,244,248);padding-left: 20px;">
+    <div class="text-left border rounded border-warning" style="padding: 5px 0px;padding-top: 10px;padding-bottom: 10px;">
+        <div class="form-check d-flex align-items-center" style="font-size: 20px;padding: 2px 30px;"><input type="radio" class="form-check-input" id="brutto" checked name="cheks" /><label class="form-check-label" for="brutto" style="font-size: 20px;">Груженый</label></div>
+        <div class="form-check text-truncate d-flex align-items-center" style="padding: 2px 30px;"><input type="radio" class="form-check-input" id="tara" name="cheks" /><label class="form-check-label" for="tara" style="font-size: 20px;">Порожний</label></div>
+    </div>
+</div>
+</div>
     </div>
 
 
@@ -73,7 +67,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Отмена</button>
+{#                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Отмена</button>#}
                     <button type="button" onclick="changeVes()" class="btn btn-primary">Изменить вес</button>
                 </div>
             </div>
@@ -150,12 +144,12 @@
 
         function correct_num_pricep() {
             addAction('Попытка корректировки номера прицепа');
-            $('#gosnomeravto').modal('toggle');
+            $('#gosnomerpricep').modal('toggle');
             var num = $('#gos_num_pricep').val();
             var arr = num.split('-');
-            $("#seriaAvto").val(arr[1]);
-            $('#gosNavto').val(arr[0]);
-            $('#regionAvto').val(arr[2]);
+            $("#seriaPricep").val(arr[1]);
+            $('#gosNpricep').val(arr[0]);
+            $('#regionPricep').val(arr[2]);
             pricep = true;
         }
 

@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from apps.ves.add_in_db import addAutoNew
 from ves_n.views import *
 
 from channels.routing import ProtocolTypeRouter
@@ -30,7 +31,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('logout', logout_view, name = 'logout'),
     path('addaction/',addactionView, name='addaction'),
-    path('addautoPOST/',addAutoView, name='addautoPOST'),
+
     path('addvagonPOST/',addVagonPost, name='addVagonPOST'),
     path('addcontragentPOST/',addContragentView, name='addcontragentPOST'),
     path('updcontragentPOST/',updContragentView, name='updcontragentPOST'),
@@ -47,6 +48,7 @@ urlpatterns = [
 
     path('onoff/svet1/',onOffS1,name='on1'),
     path('onoff/zd/svet1/',onOffZd,name='onoffzd'),
+    path('add/auto/new',addAutoNew,name='newAddAuto'),
 
     #отчеты
     path('reportAutoAgent/get', reportAutoAgent, name='reportAutoAgent'),
