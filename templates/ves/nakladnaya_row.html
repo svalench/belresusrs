@@ -313,11 +313,11 @@
 
 <script>
     const nameId1=['p1NameDriver','p1DataAuto','p1DataTrailer','p1Contragent','p1Contract','p1Description','p1SeriesInvoice',
-    'p1NumberInvoice','p1DateInvoice','p1WeightInvoice','p1ContractPrice','p1DirtPercent'],
+    'p1NumberInvoice','p1DateInvoice','p1WeightInvoice','p1NdsPercent','p1ContractPrice','p1DirtPercent'],
         nameId2=['p2NameDriver','p2DataAuto','p2DataTrailer','p2Contragent','p2Contract','p2Description','p2SeriesInvoice',
-            'p2NumberInvoice','p2DateInvoice','p2TypeMaterialOut','p2ContractPrice','p2NdsPercent'],
+            'p2NumberInvoice','p2DateInvoice','p2TypeMaterialOut','p2NdsPercent','p2ContractPrice','p2NdsPercent'],
         nameId3=['p3NameDriver','p3DataAuto','p3DataTrailer','p3Contragent','p3Contract','p3Description','p3SeriesInvoice',
-            'p3NumberInvoice','p3DateInvoice','p3TypeMaterialOut','p3ContractPrice','p3NdsPercent','p3NumberAccompanyingPassport',
+            'p3NumberInvoice','p3DateInvoice','p3TypeMaterialOut','p3NdsPercent','p3ContractPrice','p3NdsPercent','p3NumberAccompanyingPassport',
             'p3NumberWayList'],
         nameId4=['p4NameDriver','p4DataAuto','p4DataTrailer','p4Contragent','p4Contract','p4Description',
             'p4NumberAccompanyingPassport'];
@@ -344,6 +344,8 @@
         $("#brutto").removeAttr("disabled");
         $("#tara").removeAttr("disabled");
         $('table tr').removeClass('marked');
+         $('#gos_num_avto').val('');
+          $('#gos_num_pricep').val('');
 }
 
     $("#p1ButtonClearForm").click(()=>{

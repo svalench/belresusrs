@@ -50,11 +50,27 @@ def addAutoNew(request):
             form['DateInvoice'] = None
         if (not 'ContractPrice' in form):
             form['ContractPrice'] = None
+        if (not 'UnitWeight' in form):
+            form['UnitWeight'] = None
+        if (not 'TypeArrival' in form):
+            form['TypeArrival'] = None
+        if (not 'NdsPercent' in form):
+            form['NdsPercent'] = None
+        if (not 'TypeInvoice' in form):
+            form['TypeInvoice'] = None
+        if (not 'TypeMaterialOut' in form):
+            form['TypeMaterialOut'] = None
+        if (not 'NumberWayList' in form):
+            form['NumberWayList'] = None
+        if (not 'NumberAccompanyingPassport' in form):
+            form['NumberAccompanyingPassport'] = None
         auto = Auto(number=form['gos_num_avto'], agents_id=form['Contragent'], driver=form['NameDriver'], parentcontractid_id=form['Contract'],
                     number_pricep=form['gos_num_pricep'],  last_in=last_in, catalog_id=form['DataAuto'], catalogpricep=form['DataTrailer'],
                     description= form['Description'], seria=form['SeriesInvoice'],numberNakladnaia=form['NumberInvoice'], nakladnayaDate = form['DateInvoice'],
                     ves_nakladnaya=form['WeightInvoice'], price_ed_iz=form['ContractPrice'], discont= form['DirtPercent'],
                      weghtIn=float(form['ves']), parentuserid_id=request.user.id,operatrion = form['operation'],
+                    type=form['TypeInvoice'], nds=form['NdsPercent'], ves_ed= form['UnitWeight'], typeOperation= form['TypeArrival'],
+                    typeMaterial= form['TypeMaterialOut'], numberPasport= form['NumberAccompanyingPassport'], numberPassportList = form['NumberWayList'],
                 status_in=True)
         auto.save()
     allIn = Auto.objects.filter( status_in=True)
@@ -72,7 +88,7 @@ from django.db import connection
 
 def my_custom_sql():
     with connection.cursor() as cursor:
-        sql = "SELECT a.*,ag.name as nameAgent, c.name as contractName, c.id as contractId, c.*,ag.* FROM ves_auto a " \
+        sql = "SELECT ag.name as nameAgent, c.name as contractName, c.id as contractId, c.*,ag.*,a.* FROM ves_auto a " \
               "LEFT JOIN ves_agent ag ON ag.id=a.agents_id" \
               " LEFT JOIN ves_catalogcontract c ON c.id=a.parentContractId_id  WHERE a.status_in=true"
         cursor.execute(sql)
