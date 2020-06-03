@@ -78,6 +78,8 @@ class CatalogContract(models.Model):
     typeOfOperation = models.CharField('тип опреации',max_length=255, db_index=True)
     typeOfArrival = models.CharField('вид прихода',max_length=255, db_index=True)
     salesAccount = models.CharField('счет реализации', max_length=255, db_index=True)
+    date_add = models.DateTimeField(auto_now_add=True, db_index=True)
+    date_update = models.DateTimeField(auto_now=True)
 
 
 
@@ -152,6 +154,7 @@ class Auto(models.Model):
     courseDate = models.DateField("дата курса ", null=True, blank=True)
     nakladnayaDate = models.DateField("дата накладной ", null=True, blank=True)
 
+    operatrion = models.IntegerField('operartion',null=True)
     #typeOperation = models.CharField('тип операции', max_length=255, null=True, db_index=True)
     executer = models.CharField('исполнитель', max_length=255, null=True, db_index=True)
     numberAttorney = models.CharField('номер доверенности', max_length=255, null=True, db_index=True)

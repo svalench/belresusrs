@@ -1,0 +1,454 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <link rel="stylesheet" href="{% static 'css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'js/datatables.min.js' %}"></script>
+    <script src="{% static 'js/table-equipment.js' %}"></script>
+    <script src="{% static 'js/mdb.min.js' %}"></script>
+
+<h4 style="position: absolute; top: 15px; left: 26%;color:#adb7b7;">Контрагенты</h4>
+
+
+ <div class="container-fluid" style="padding-top: 20px;">
+    <div class="row">
+        <div class="col-12" id="otchetTableContragent">
+            <div class="wrapper-modal-editor">
+
+                <div class="row d-flex justify-content-center modalWrapper">
+                    <div class="modal fade addNewInputs" id="modalAdd" tabindex="-1" role="dialog"
+                        aria-labelledby="modalAdd" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header text-center">
+                                    <h4 class="modal-title w-100 font-weight-bold text-primary ml-5">Добавить
+                                        контрагента</h4>
+                                    <button type="button" class="close text-primary" data-dismiss="modal"
+                                        aria-label="Close" onclick="clearFieldModalAdd()">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body mx-3">
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" class="form-control" hidden>
+                                        <label></label>
+                                    </div>
+
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="contragentName" class="form-control">
+                                        <label data-error="измените" data-success="принято"
+                                            for="contragentName">Название контрагента</label>
+
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="unp" class="form-control">
+                                        <label data-error="измените" data-success="принято" for="unp">УНП</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="addressContragent" class="form-control">
+                                        <label data-error="измените" data-success="принято"
+                                            for="addressContragentAdd">Адрес</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="unloadingPoint" class="form-control">
+                                        <label data-error="измените" data-success="принято"
+                                            for="unloadingPoint">Пункт разгрузки</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="payer" class="form-control">
+                                        <label data-error="измените" data-success="принято"
+                                            for="payer">Плательщик</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="description" class="form-control">
+                                        <label data-error="измените" data-success="принято"
+                                            for="description">Описание</label>
+                                    </div>
+
+
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" class="form-control" hidden>
+                                        <label></label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" class="form-control" hidden>
+                                        <label></label>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center buttonAddFormWrapper">
+                                    <button class="btn btn-outline-primary btn-block buttonAdd"
+                                        onclick="addContragent()" data-dismiss="modal">Добавить
+                                        <i class="fas fa-plus-square ml-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <a href="" class="btn btn-info btn-rounded btn-sm" data-toggle="modal"
+                            data-target="#modalAdd">Добавить<i class="fas fa-plus-square ml-1"></i></a>
+                    </div>
+
+                    <div class="modal fade modalEditClass" id="modalEdit" tabindex="-1" role="dialog"
+                        aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header text-center">
+                                    <h4 class="modal-title w-100 font-weight-bold text-secondary ml-5">Измение
+                                        контрагента</h4>
+                                    <button type="button" class="close text-secondary" data-dismiss="modal"
+                                        aria-label="Close" onclick="clearFieldModalAdd()">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body mx-3">
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" hidden>
+                                        <label></label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="contragentNameUpd" class="form-control">
+                                        <label data-error="измените" data-success="принято"
+                                            for="contragentNameUpd">Контрагент</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="unpUpd" class="form-control">
+                                        <label data-error="измените" data-success="принято" for="unpUpd">УНП</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="addressContragentUpd" class="form-control">
+                                        <label data-error="измените" data-success="принято"
+                                            for="addressContragentUpd">Адрес</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="unloadingPointUpd" class="form-control">
+                                        <label data-error="измените" data-success="принято"
+                                            for="unloadingPointUpd">Пункт разгрузки</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="payerUpd" class="form-control">
+                                        <label data-error="измените" data-success="принято"
+                                            for="payerUpd">Плательщик</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="descriptionUpd" class="form-control">
+                                        <label data-success="принято" for="descriptionUpd">Описание</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" class="form-control" hidden>
+                                        <label></label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" class="form-control" hidden>
+                                        <label></label>
+                                    </div>
+
+
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center editInsideWrapper">
+                                    <button onclick="addUpdContragent()"
+                                        class="btn btn-outline-secondary btn-block editInside"
+                                        data-dismiss="modal">Изменить
+                                        <i class="fas fa-pencil-alt ml-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center buttonEditWrapper">
+                        <button class="btn btn-info btn-rounded btn-sm buttonEdit" data-toggle="modal"
+                            data-target="#modalEdit" disabled>Изменить<i class="fas fa-pencil-alt ml-1"></i></button>
+                    </div>
+
+                    <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="modalDelete"
+                        aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header text-center">
+                                    <h4 class="modal-title w-100 font-weight-bold ml-5 text-danger">Удалить</h4>
+                                    <button type="button" class="close text-danger" data-dismiss="modal"
+                                        aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body mx-3">
+                                    <p class="text-center h4">Вы уверены что хотите удалить выбранного контрагента?</p>
+
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center deleteButtonsWrapper">
+                                    <button type="button" class="btn btn-danger btnYesClass" id="btnYes"
+                                        data-dismiss="modal" onclick="">Да</button>
+                                    <button type="button" class="btn btn-primary btnNoClass" id="btnNo"
+                                        data-dismiss="modal">Нет</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button class="btn btn-danger btn-sm btn-rounded buttonDelete" data-toggle="modal" disabled
+                            data-target="#modalDelete" disabled>Удалить<i class="fas fa-times ml-1"></i></button>
+                    </div>
+                </div>
+
+                <table id="editibleTable" class="table table-bordered table-hover table-sm text-center" cellspacing="0"
+                    width="100%">
+                    <thead>
+                        <tr>
+                            <th class="th-sm">id</th>
+                            <th class="th-sm">Контрагент</th>
+                            <th class="th-sm">УНП</th>
+                            <th class="th-sm">Адрес</th>
+                            <th class="th-sm">Пункт разгрузки</th>
+                            <th class="th-sm">Плательщик</th>
+                            <th class="th-sm">Описание</th>
+                            <th class="th-sm">Дата добавления</th>
+                            <th class="th-sm">Дата обновления</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a in page_obj %}
+                        <tr>
+                            <td>{{ a.id }}</td>
+                            <td>{{ a.name }}</td>
+                            <td>{{ a.unp }}</td>
+                            <td>{{ a.address }}</td>
+                            <td>{{ a.unloadingpoint }}</td>
+                            <td>{{ a.payer }}</td>
+                            <td>{{ a.description }}</td>
+                            <td>{{ a.date_add }}</td>
+                            <td>{{ a.date_update }}</td>
+                        </tr>
+                        {% endfor %}
+
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>id</th>
+                            <th>Контрагент</th>
+                            <th>УНП</th>
+                            <th>Адрес</th>
+                            <th>Пункт разгрузки</th>
+                            <th>Плательщик</th>
+                            <th>Описание</th>
+                            <th>Дата добавления</th>
+                            <th>Дата обновления</th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="{% static 'popper.js' %}" ></script>
+    <script src="{% static 'b.min.js' %}" ></script>
+
+    <script>
+    const clearFieldModalAdd = () => {
+    $('#contragentName').val('');
+        $('#unp').val('');
+        $("#addressContragentAdd").val('');
+        $("#description").val('');
+};
+</script>
+
+    <script>
+    var allAgents = '{{ agents }}';
+    allAgents = allAgents.replace(/&quot;/g,'"');
+
+    // allAgents = allAgents.slice(0,-1);
+   // allAgents = allAgents.slice(1);
+   // allAgents = "{"+allAgents+"}";
+    allAgents = JSON.parse(allAgents);
+    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+
+    function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+     function addAction(action) {
+            let data = "where=contragents&action=" + action + "&user={{ request.user.id }}";
+
+            $.ajax({
+                type: "POST",
+                url: '{% url 'addaction' %}',
+                data: data,
+                success: function () {
+                    console.log('Load was performed.');
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+        }
+
+     function addContragent() {
+            let name = $("#contragentName").val();
+            let unp = $("#unp").val();
+            let address = $("#addressContragent").val();
+            let unloadingpoint = $("#unloadingPoint").val();
+            let payer = $("#payer").val();
+            let description = $("#description").val();
+            // validation
+            if(!name){
+                 addAction('оператор добавляя запись в список не указал название контрагента');
+                alert('Вы не ввели название контрагента'); $("#contragentName").focus(); return;
+            }
+            if(!unp){
+                 addAction('оператор добавляя запись в список не указал УНП контрагента');
+                alert('Вы не указали УНП контрагента'); $("#unp").focus(); return;
+            }
+            if(!address){
+                 addAction('оператор добавляя запись в список не указал адрес контрагента');
+                alert('Вы не указали адрес контрагента'); $("#unp").focus(); return;
+            }
+
+             if (!description) {
+                addAction('оператор добавляя запись в список не написал описание контрагента ');
+                if (!confirm('Вы не описание контрагента. Продолжить?')) {
+                    return;
+                }
+            }
+             if (!unp.match(/[0-9]{9}/)) {
+                alert("В поле УНП должны быть введены только 9 цифр");
+                $("#unp").focus();
+                return;
+            }
+
+
+             // post data to server
+             data = {
+                 "name":name,
+                 "unp":unp,
+                 "address": address,
+                 "description":description
+             };
+             $.ajax({
+                type: "POST",
+                url: '{% url 'addcontragentPOST' %}',
+                data: data,
+                success: function () {
+                    addAction("Добавил контрагента");
+                    console.log('Load was performed.');
+                    document.location.reload(true);
+                },
+                 error: function(){
+                    document.location.reload(true);
+                 },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+        }
+
+    let id_select;
+
+    function updateAgent(e){
+         id_select=e;
+         }
+
+    function addUpdContragent() {
+            let name = $("#contragentNameUpd").val();
+            let unp = $("#unpUpd").val();
+            let address = $("#addressContragentUpd").val();
+            let unloadingpoint = $("#unloadingPointUpd").val();
+            let payer = $("#payerUpd").val();
+            let description = $("#descriptionUpd").val();
+            // validation
+            if(!name){
+                 addAction('оператор обновляя запись в список не указал название контрагента');
+                alert('Вы не ввели название контрагента'); $("#contragentName").focus(); return;
+            }
+            if(!unp){
+                 addAction('оператор обновляя запись в список не указал УНП контрагента');
+                alert('Вы не указали УНП контрагента'); $("#unp").focus(); return;
+            }
+            if(!address){
+                 addAction('оператор обновляя запись в список не указал адрес контрагента');
+                alert('Вы не указали адрес контрагента'); $("#unp").focus(); return;
+            }
+
+             if (!description) {
+                addAction('оператор обновляя запись в список не написал описание контрагента ');
+                if (!confirm('Вы не описание контрагента. Продолжить?')) {
+                    return;
+                }
+            }
+             if (!unp.match(/[0-9]{9}/)) {
+                alert("В поле УНП должны быть введены только 9 цифр");
+                $("#unp").focus();
+                return;
+            }
+
+             // post data to server
+             data = {
+                 "name":name,
+                 "unp":unp,
+                 "address":address,
+                 "description":description,
+                 "id":id_select
+             };
+             $.ajax({
+                type: "POST",
+                url: '{% url 'updcontragentPOST' %}',
+                data: data,
+                success: function () {
+                    addAction("Обновить контрагента");
+                    console.log('Load was performed.');
+                    document.location.reload(true);
+                },
+                 error: function(){
+                    document.location.reload(true);
+                 },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+        }
+
+    </script>
+
+
+
+
+
+{% endblock %}

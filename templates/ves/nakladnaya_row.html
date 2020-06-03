@@ -240,8 +240,11 @@
             class="col-3 col-xl-3 offset-xl-2 d-xl-flex justify-content-xl-center"><input type="text" id="p3NdsPercent" class="form-control text-center" style="width: 98%" value="20" /></div>
 </div>
 <div class="row no-gutters border border-primary border-left-0 border-right-0 border-top-0" style="padding: 5px;padding-top: 4px;">
-    <div class="col-4 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p3NumberAccompanyingPassport"> Номер сопроводительного паспорта</label></div>
-    <div class="col-3 text-center d-flex justify-content-center align-items-center"><input type="text" id="p3NumberAccompanyingPassport" class="form-control text-center" style="width: 98%;" /></div>
+    <div class="col-4 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p3NumberAccompanyingPassport"> № сопроводительного паспорта</label></div>
+    <div class="col-2 text-center d-flex justify-content-center align-items-center"><input type="text" id="p3NumberAccompanyingPassport" class="form-control text-center" style="width: 98%;" /></div>
+    <div class="col-3 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p3NumberWayList"> № путевого листа</label></div>
+    <div class="col-2 text-center d-flex justify-content-center align-items-center"><input type="text" id="p3NumberWayList" class="form-control text-center" style="width: 98%;" /></div>
+
 </div>
 <div class="row no-gutters justify-content-end border border-primary border-left-0 border-right-0 border-top-0" style="padding-top: 23px;padding-bottom: 5px;">
     <div class="col text-center d-flex justify-content-center"><span style="font-size: 26px;color: rgb(85,141,249);">Выберите действие с формой ---&gt; </span></div>
@@ -314,7 +317,8 @@
         nameId2=['p2NameDriver','p2DataAuto','p2DataTrailer','p2Contragent','p2Contract','p2Description','p2SeriesInvoice',
             'p2NumberInvoice','p2DateInvoice','p2TypeMaterialOut','p2ContractPrice','p2NdsPercent'],
         nameId3=['p3NameDriver','p3DataAuto','p3DataTrailer','p3Contragent','p3Contract','p3Description','p3SeriesInvoice',
-            'p3NumberInvoice','p3DateInvoice','p3TypeMaterialOut','p3ContractPrice','p3NdsPercent','p3NumberAccompanyingPassport'],
+            'p3NumberInvoice','p3DateInvoice','p3TypeMaterialOut','p3ContractPrice','p3NdsPercent','p3NumberAccompanyingPassport',
+            'p3NumberWayList'],
         nameId4=['p4NameDriver','p4DataAuto','p4DataTrailer','p4Contragent','p4Contract','p4Description',
             'p4NumberAccompanyingPassport'];
     const nameSel1=['p1TypeInvoice','p1UnitWeight','p1UnitContractPrice','p1TypeArrival'],
@@ -429,6 +433,7 @@
         });
         res.gos_num_avto= $("#gos_num_avto").val();
         res.gos_num_pricep=$("#gos_num_pricep").val();
+        res.operation = 1;
         res.ves=$("#vesFix").html();
         console.log(res);
         save(res);
@@ -449,12 +454,13 @@
             dataType: 'json',
             data: data,
             success: function (ret) {
-                auto_in = JSON.parse(ret.autoIn);
-                console.log('Auto Add in DB');
+                auto_in = ret.all;
+                console.log(ret);
                 $("#p1ButtonClearForm").trigger('click');
                 $("#p2ButtonClearForm").trigger('click');
                 $("#p3ButtonClearForm").trigger('click');
                 $("#p4ButtonClearForm").trigger('click');
+                tableAutoIn();
             },
             beforeSend: function (xhr, settings) {
                 if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
@@ -465,7 +471,7 @@
 
 
     }
-let auto_in;
+
     let typeoperation_in_window = 1;
     function show_serchAgent(a,agent) {
         typeoperation_in_window=a;
@@ -535,6 +541,14 @@ let auto_in;
         $("#name_tovar").attr("data-id", tovar[pk].pk);
         $("#serchTovar").modal("hide");
     }
+
+
+    function addRowInSlide(){
+        console.log(auto_in);
+    }
+
+
+
 </script>
 
 

@@ -1,0 +1,428 @@
+{% extends 'base.html' %}
+{% block title %}Каталог авто{% endblock %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/datatables.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/mdb.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/table-css.css' %}">
+<link rel="stylesheet" href="{% static 'fonts/fontawesome-all.min.css' %}">
+<script src="{% static 'js/datatables.min.js' %}"></script>
+<script src="{% static 'js/table-equipment.js' %}"></script>
+<script src="{% static 'js/mdb.min.js' %}"></script>
+
+<h4 style="position: absolute; top: 15px; left: 26%;color:#adb7b7;">Договора</h4>
+
+
+<!-- End: Navigation with Button -->
+<div class="container-fluid" style="padding-top: 20px;">
+    <div class="row">
+        <div class="col-12" id="otchetTableContract">
+            <div class="wrapper-modal-editor">
+
+                <div class="row d-flex justify-content-center modalWrapper">
+                    <div class="modal fade addNewInputs" id="modalAdd" tabindex="-1" role="dialog"
+                        aria-labelledby="modalAdd" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header text-center">
+                                    <h4 class="modal-title w-100 font-weight-bold text-primary ml-5">Добавить договор
+                                    </h4>
+                                    <button type="button" class="close text-primary" data-dismiss="modal"
+                                        aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body mx-3">
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" class="form-control" hidden>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="tmc" list="browsersAddTMC" class="form-control">
+                                        <datalist id="browsersAddTMC">
+                                            {% for i in tmc %}
+                                            <option data-id="{{ i.id }}" value="{{ i.name }}">
+                                                {% endfor %}
+                                        </datalist>
+                                        <label data-error="измените" data-success="принято"
+                                            for="tmc">ТМЦ</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                         <input type="text" id="contragent" list="browsersAdd" class="form-control">
+                                        <datalist id="browsersAdd">
+                                            {% for i in agent %}
+                                            <option data-id="{{ i.id }}" value="{{ i.name }}">
+                                                {% endfor %}
+                                        </datalist>
+                                        <label data-error="измените" data-success="принято"
+                                            for="contragent">Контрагент</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="nameContract" class="form-control">
+                                        <label data-error="измените" data-success="принято"
+                                            for="nameContract">Наименование договора</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="date" id="date" class="form-control">
+                                        <label data-error="измените" data-success="принято" for="date">Дата договора</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="typeOperation" class="form-control">
+                                        <label data-error="измените" data-success="принято" for="typeOperation">Тип операции</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="viewComing" class="form-control">
+                                        <label data-error="измените" data-success="принято"
+                                            for="viewComing">Вид прихода</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="salesAccount" class="form-control">
+                                        <label data-error="измените" data-success="принято"
+                                            for="salesAccount">Счет реализации</label>
+                                    </div>
+
+                                    <input type="text" class="form-control" hidden>
+                                    <input type="text" class="form-control" hidden>
+
+
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center buttonAddFormWrapper">
+                                    <button class="btn btn-outline-primary btn-block buttonAdd" onclick="addContract()"
+                                        data-dismiss="modal">Добавить
+                                        <i class="fas fa-paper-plane-o ml-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <a href="" class="btn btn-info btn-rounded btn-sm" id="addContract" data-toggle="modal"
+                            data-target="#modalAdd">Добавить<i class="fas fa-plus-square ml-1"></i></a>
+                    </div>
+
+                    <div class="modal fade modalEditClass" id="modalEdit" tabindex="-1" role="dialog"
+                        aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header text-center">
+                                    <h4 class="modal-title w-100 font-weight-bold text-secondary ml-5">Измение контракта</h4>
+                                    <button type="button" class="close text-secondary" data-dismiss="modal"
+                                        aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body mx-3">
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" class="form-control" hidden>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="tmcUpd" list="browsersAddTMCUpd" class="form-control">
+                                        <datalist id="browsersAddTMCUpd">
+                                            {% for i in tmc %}
+                                            <option data-id="{{ i.id }}" value="{{ i.name }}">
+                                                {% endfor %}
+                                        </datalist>
+                                        <label data-error="измените" data-success="принято"
+                                            for="tmcUpd">ТМЦ</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                         <input type="text" id="contragentUpd" list="browsersAddUpd" class="form-control">
+                                        <datalist id="browsersAddUpd">
+                                            {% for i in agent %}
+                                            <option data-id="{{ i.id }}" value="{{ i.name }}">
+                                                {% endfor %}
+                                        </datalist>
+                                        <label data-error="измените" data-success="принято"
+                                            for="contragentUpd">Контрагент</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="nameContractUpd" class="form-control">
+                                        <label data-error="измените" data-success="принято"
+                                            for="nameContractUpd">Наименование договора</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="date" id="dateUpd" class="form-control">
+                                        <label data-error="измените" data-success="принято" for="dateUpd">Дата договора</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="typeOperationUpd" class="form-control">
+                                        <label data-error="измените" data-success="принято" for="typeOperationUpd">Тип операции</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="viewComingUpd" class="form-control">
+                                        <label data-error="измените" data-success="принято"
+                                            for="viewComingUpd">Вид прихода</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="salesAccountUpd" class="form-control">
+                                        <label data-error="измените" data-success="принято"
+                                            for="salesAccountUpd">Счет реализации</label>
+                                    </div>
+
+                                    <input type="text" class="form-control" hidden>
+                                    <input type="text" class="form-control" hidden>
+
+
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center editInsideWrapper">
+                                    <button onclick="updateContract()" class="btn btn-outline-secondary btn-block editInside"
+                                        data-dismiss="modal">Изменить
+                                        <i class="fas fa-paper-plane-o ml-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center buttonEditWrapper">
+                        <button class="btn btn-info btn-rounded btn-sm buttonEdit" data-toggle="modal"
+                            data-target="#modalEdit" disabled>Изменить<i
+                                class="fas fa-pencil-square-o ml-1"></i></button>
+                    </div>
+
+                    <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="modalDelete"
+                        aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header text-center">
+                                    <h4 class="modal-title w-100 font-weight-bold ml-5 text-danger">Удалить</h4>
+                                    <button type="button" class="close text-danger" data-dismiss="modal"
+                                        aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body mx-3">
+                                    <p class="text-center h4">Вы уверены что хотите удалить выбранный договор?</p>
+
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center deleteButtonsWrapper">
+                                    <button type="button" onclick="deleteContract()" class="btn btn-danger btnYesClass" id="btnYes"
+                                        data-dismiss="modal">Да</button>
+                                    <button type="button" class="btn btn-primary btnNoClass" id="btnNo"
+                                        data-dismiss="modal">Нет</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button class="btn btn-danger btn-sm btn-rounded buttonDelete" data-toggle="modal" disabled
+                            data-target="#modalDelete" disabled>Удалить<i class="fas fa-times ml-1"></i></button>
+                    </div>
+                </div>
+
+                <table id="editibleTable" class="table table-bordered table-hover table-sm text-center" cellspacing="0"
+                    width="100%">
+                    <thead>
+                        <tr>
+                            <th class="th-sm">id</th>
+                            <th class="th-sm">ТМЦ</th>
+                            <th class="th-sm">Контрагент</th>
+                            <th class="th-sm">Название договора</th>
+                            <th class="th-sm">Дата договора</th>
+                            <th class="th-sm">Тип операции</th>
+                            <th class="th-sm">Вид прихода</th>
+                            <th class="th-sm">Счет реализации</th>
+                            <th class="th-sm">Дата добавления</th>
+                            <th class="th-sm">Дата обновления</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a in contract %}
+                        <tr onclick="get_date('{{ a.date|date:"Y-m-d" }}',{{ a.id }})">
+                            <td>{{ a.id }}</td>
+                            <td>{{ a.parentMaterialId.name }}</td>
+                            <td>{{ a.parentContragentId.name }}</td>
+                            <td>{{ a.name }}</td>
+                            <td>{{ a.date }}</td>
+                            <td>{{ a.typeOfOperation }}</td>
+                            <td>{{ a.typeOfArrival }}</td>
+                            <td>{{ a.salesAccount }}</td>
+                            <td>{{ a.date_add }}</td>
+                            <td>{{ a.date_upd }}</td>
+                        </tr>
+                        {% endfor %}
+
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>id</th>
+                            <th>ТМЦ</th>
+                            <th>Контрагент</th>
+                            <th>Название договора</th>
+                            <th>Дата договора</th>
+                            <th>Тип операции</th>
+                            <th>Вид прихода</th>
+                            <th>Счет реализации</th>
+                            <th>Дата добавления</th>
+                            <th>Дата обновления</th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let data_upd;
+let data_id_upd;
+function get_date(e,d) {
+    data_upd=e;
+    data_id_upd=d;
+
+}
+
+
+        function addAction(action) {
+            let data = "where=Contract&action=" + action + "&user={{ request.user.id }}";
+            $.ajax({
+                type: "POST",
+                url: '{% url 'addaction' %}',
+                data: data,
+                success: function () {
+                    console.log('Load was performed.');
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+        }
+
+$('#modalEdit').on('shown.bs.modal', function (e) {
+ $("#dateUpd").val(data_upd);
+})
+    function addContract() {
+        let name = $('#nameContract').val(),
+            agent = $("#browsersAdd  option[value='" + $('#contragent').val() + "']").attr('data-id'),
+            tmc = $("#browsersAddTMC  option[value='" + $('#tmc').val() + "']").attr('data-id'),
+            dateDogovor = $("#date").val(),
+            typeOperation = $("#typeOperation").val(),
+            viewComing = $("#viewComing").val(),
+            salesAccount = $("#salesAccount").val();
+
+        let data={
+            'name':name,
+            'agent':agent,
+            'tmc':tmc,
+            'dateDogovor':dateDogovor,
+            'typeOperation':typeOperation,
+            'viewComing':viewComing,
+            'salesAccount':salesAccount
+        };
+addAction('пользователь добавил контракт');
+        $.ajax({
+                type: "POST",
+                url: '{% url 'catalogcontractAdd' %}',
+                traditional: true,
+                dataType: 'json',
+                data: data,
+                success: function (dat) {
+                    console.log("contract added");
+                    document.location.reload(true);
+                },
+            error: function(){
+                    console.log("error add product");
+            },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+    }
+
+    function updateContract() {
+        let name = $('#nameContractUpd').val(),
+            agent = $("#browsersAddUpd  option[value='" + $('#contragentUpd').val() + "']").attr('data-id'),
+            tmc = $("#browsersAddTMCUpd  option[value='" + $('#tmcUpd').val() + "']").attr('data-id'),
+            dateDogovor = $("#dateUpd").val(),
+            typeOperation = $("#typeOperationUpd").val(),
+            viewComing = $("#viewComingUpd").val(),
+            salesAccount = $("#salesAccountUpd").val();
+
+        let data={
+            'id':data_id_upd,
+            'name':name,
+            'agent':agent,
+            'tmc':tmc,
+            'dateDogovor':dateDogovor,
+            'typeOperation':typeOperation,
+            'viewComing':viewComing,
+            'salesAccount':salesAccount
+        };
+      addAction('пользователь изменил контракт  '+data_id_upd);
+        $.ajax({
+                type: "POST",
+                url: '{% url 'catalogcontractUpd' %}',
+                traditional: true,
+                dataType: 'json',
+                data: data,
+                success: function (dat) {
+                    console.log("production added");
+                     document.location.reload(true);
+                },
+                error: function(){
+                    console.log('error update product')
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+    }
+
+
+      function deleteContract() {
+        let data={
+            'id':data_id_upd,
+
+        };
+        addAction('пользователь удалил контракт  '+data_id_upd);
+        $.ajax({
+                type: "POST",
+                url: '{% url 'catalogcontractDel' %}',
+                traditional: true,
+                dataType: 'json',
+                data: data,
+                success: function (dat) {
+                    console.log("production added");
+                     document.location.reload(true);
+                },
+                error: function(){
+                    console.log('error update product')
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+    }
+</script>
+
+
+
+     {% endblock %}

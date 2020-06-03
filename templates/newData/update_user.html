@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container">
+        <form method="post">
+  {% csrf_token %}
+   <div class="form-group">
+                            <label>Никнейм</label><br>
+                            {{ user_form.username }}
+                        </div>
+                        <div class="form-group">
+                             <label>Имя</label><br>
+                            {{ user_form.name }}
+                        </div>
+                        <div class="form-group">
+
+                            <label>Отчесвто</label><br>
+                            {{ user_form.secondName }}
+                        </div>
+                        <div class="form-group">
+                             <label>Фамилия</label><br>
+                            {{ user_form.lastName }}
+                        </div>
+                        <div class="form-group">
+                            <label>Должность</label><br>
+                            {{ user_form.role }}
+                        </div>
+                        <div class="form-group">
+                            <label>Роль</label><br>
+                            {{ user_form.user_role }}
+                        </div>
+
+                        <div class="form-group">
+                            <label>Телефон</label><br>
+                            {{ user_form.phone }}
+                        </div>
+                        <div class="form-group">
+                            <label>Дата рождения</label><br>
+                            {{ user_form.birth_date }}
+                        </div>
+                        <div class="form-group">
+                            <label>Дополнительная информация</label><br>
+                            {{ user_form.descriptions }}
+                        </div>
+
+  <button type="submit">Добавить</button>
+
+        </form>
+    <a class="btn btn-warning" href="{% url 'ves:users' %}">Отмена</a>
+         </div>
+{% endblock %}

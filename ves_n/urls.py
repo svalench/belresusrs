@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from apps.ves.add_in_db import addAutoNew
+from apps.ves.contract import showContract, AddContract, UpdContract, deleteContract
 from ves_n.views import *
 
 from channels.routing import ProtocolTypeRouter
@@ -49,6 +50,13 @@ urlpatterns = [
     path('onoff/svet1/',onOffS1,name='on1'),
     path('onoff/zd/svet1/',onOffZd,name='onoffzd'),
     path('add/auto/new',addAutoNew,name='newAddAuto'),
+
+    #данные бд
+    path('data/catalogContract',showContract,name='catalogcontract'),
+    path('data/catalogContractAdd',AddContract,name='catalogcontractAdd'),
+    path('data/catalogContractUpd',UpdContract,name='catalogcontractUpd'),
+    path('data/catalogContractDel', deleteContract, name='catalogcontractDel'),
+
 
     #отчеты
     path('reportAutoAgent/get', reportAutoAgent, name='reportAutoAgent'),

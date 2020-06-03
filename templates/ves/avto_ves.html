@@ -27,7 +27,7 @@
                 <th>Время въезда<br /></th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="auti_in">
             <tr>
                 <td>Cell 1</td>
                 <td>Cell 1</td>
@@ -36,14 +36,7 @@
                 <td>Cell 3</td>
                 <td><button class="btn btn-primary btM" type="button">------></button></td>
             </tr>
-            <tr>
-                <td>Cell 1</td>
-                <td>Cell 1</td>
-                <td>Cell 2</td>
-                <td>Cell 3</td>
-                <td>Cell 3</td>
-                <td><button class="btn btn-primary" type="button">Button</button></td>
-            </tr>
+
         </tbody>
     </table>
 </div>
@@ -51,66 +44,6 @@
 
 
 
-            <div class="accordion" id="accordionExample">
-                {% for a in auto_in %}
-                    <div class="card">
-                        <div class="card-header" id="headingOne_{{ a.id }}">
-                            <h2 class="mb-0">
-                                <button class="btn btn-link" type="button" data-toggle="collapse"
-                                        data-target="#collapseOne_{{ a.id }}"
-                                        aria-expanded="true" aria-controls="collapseOne_{{ a.id }}">
-                                    {{ a.number }}  --
-                                    {{ a.datanakladnayaauto_set.get.productionId.name}}
-                                </button>
-                            </h2>
-                        </div>
-
-                        <div id="collapseOne_{{ a.id }}" class="collapse" aria-labelledby="headingOne_{{ a.id }}"
-                             data-parent="#accordionExample">
-                            <div class="card-body">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th rowspan="2"  scope="col">агент</th>
-                                        <th colspan="4" scope="col">накладная</th>
-
-                                        <th rowspan="2" scope="col">время</th>
-                                        <th rowspan="2" scope="col">загружен</th>
-                                        <th rowspan="2" scope="col">масса, кг</th>
-                                    </tr>
-                                    <tr>
-                                        <th scope="col">тип </th>
-                                        <th scope="col">номер</th>
-                                        <th scope="col">вес</th>
-                                        <th scope="col">дата</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>{{ a.agents.name }}</td>
-                                    <td>{% if a.datanakladnayaauto_set.get.type == 1 %}ТН{% else %}ТТН{% endif %}</td>
-                                        <td>
-                                            {{ a.datanakladnayaauto_set.get.seria }}-{{ a.datanakladnayaauto_set.get.number }}</td>
-
-                                     <td>{{ a.datanakladnayaauto_set.get.ves_nakladnaya }}</td>
-                                     <td>{{ a.datanakladnayaauto_set.get.date }}</td>
-
-                                        <td>{{ a.last_in }}</td>
-                                     <td>{% if a.tara == 1 %}
-                                         <span class="bg-warning"> груженый</span>
-                                     {% else %} <span class="bg-success">пустой </span>
-                                     {% endif %}</td>
-                                        <td>{{ a.ves_in }}</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-
-
-            </div>
 
 
         </div>
@@ -460,9 +393,10 @@ if($('#searchingPol').val().length==0){
                 option.hide() }
         } }
 });
-let auto_in = "{{ JAuto }}";
-auto_in = auto_in.replace(/&quot;/g,'"');
+let auto_in = "{{ auto_in_J|escapejs }}";
+{#auto_in = auto_in.replace(/&quot;/g,'"');#}
 auto_in = JSON.parse(auto_in);
+
 
 
 let ves_last=0;
@@ -551,9 +485,24 @@ setInterval(getData, 1000);
 $(document).ready(function(){$("[data-bs-hover-animate]").mouseenter(function(){var a=$(this);a.addClass("animated "+a.attr("data-bs-hover-animate"))}).mouseleave(function(){var a=$(this);a.removeClass("animated "+a.attr("data-bs-hover-animate"))})});
 
 
+function tableAutoIn(){
+    let ready='';
+    auto_in.forEach(function(a,b){
+        ready+=`<tr>
+                <td>${a.number}</td>
+                <td>${a.operatrion}</td>
+                <td>${a.name}</td>
+                <td>Cell 3</td>
+                <td>${a.last_in}</td>
+                <td><button id="to_right${a.id}" class="btn btn-primary btM" type="button">------></button></td>
+            </tr>`;
+    });
+    $("#auti_in").html(ready);
+}
 
-
-
+$(document).ready(function(){
+    tableAutoIn();
+});
 
 
 

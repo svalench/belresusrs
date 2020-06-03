@@ -54,11 +54,28 @@ def addAutoNew(request):
                     number_pricep=form['gos_num_pricep'],  last_in=last_in, catalog_id=form['DataAuto'], catalogPricep=form['DataTrailer'],
                     description= form['Description'], seria=form['SeriesInvoice'],numberNakladnaia=form['NumberInvoice'], nakladnayaDate = form['DateInvoice'],
                     ves_nakladnaya=form['WeightInvoice'], price_ed_iz=form['ContractPrice'], discont= form['DirtPercent'],
-                     weghtIn=float(form['ves']),
+                     weghtIn=float(form['ves']), parentUserId_id=request.user.id,operatrion = form['operation'],
                 status_in=True)
         auto.save()
     allIn = Auto.objects.filter( status_in=True)
+    all= my_custom_sql()
     allIn = serializers.serialize('json', allIn)
-    payload = {'success': True,'autoIn':allIn}
+    print("==================================================")
+    print(all[0])
+    payload = {'success': True,'autoIn':allIn,"all":all}
 
-    return HttpResponse(json.dumps(payload), content_type='application/json')
+    return HttpResponse(json.dumps(payload, indent=4, sort_keys=True, default=str), content_type='application/json')
+
+
+
+from django.db import connection
+
+def my_custom_sql():
+    with connection.cursor() as cursor:
+        sql = "SELECT a.*,ag.* FROM ves_auto a JOIN ves_agent ag ON ag.id=a.agents_id  WHERE a.status_in=true"
+        cursor.execute(sql)
+        columns = [col[0] for col in cursor.description]
+        return [
+            dict(zip(columns, row))
+            for row in cursor.fetchall()
+        ]

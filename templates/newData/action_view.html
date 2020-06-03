@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<link rel="stylesheet" href="{% static 'css/datatables.min.css' %}">
+<link rel="stylesheet" href="{% static 'fonts/fontawesome-all.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/mdb.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/table-css.css' %}">
+<script src="{% static 'js/datatables.min.js' %}"></script>
+<script src="{% static 'js/table-equipment.js' %}"></script>
+<script src="{% static 'js/mdb.min.js' %}"></script>
+
+<h4 style="position: absolute; top: 15px; left: 26%;color:#adb7b7;">События</h4>
+
+
+<div class="container-fluid" style="padding-top: 20px;">
+    <div class="row">
+        <div class="col-12" id="otchetTableContragent">
+            <div class="wrapper-modal-editor">
+
+                <table id="editibleTable" class="table table-bordered table-hover table-sm text-center" cellspacing="0"
+                    width="100%">
+                    <thead>
+                        <tr>
+                            <th class="th-sm">Действие</th>
+                            <th class="th-sm">Где</th>
+                            <th class="th-sm">Пользователь</th>
+                            <th class="th-sm">Дата</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+
+                        {% for contact in page_obj %}
+                        <tr>
+                            <td>{{ contact.action|upper }}</td>
+                            <td>{{ contact.where|upper }}</td>
+                            <td>{{ contact.parentId.username }}</td>
+                            <td>{{ contact.date_add|upper }}</td>
+                        </tr>
+                        {% endfor %}
+
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Действие</th>
+                            <th>Где</th>
+                            <th>Пользователь</th>
+                            <th>Дата</th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script src="{% static 'popper.js' %}" ></script>
+    <script src="{% static 'b.min.js' %}" ></script>
+
+
+{% endblock %}

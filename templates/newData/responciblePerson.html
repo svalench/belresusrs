@@ -1,0 +1,295 @@
+{% extends 'base.html' %}
+{% block title %}Каталог ОтвЛиц{% endblock %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/datatables.min.css' %}">
+<link rel="stylesheet" href="{% static 'fonts/fontawesome-all.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/mdb.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/table-css.css' %}">
+<script src="{% static 'js/datatables.min.js' %}"></script>
+<script src="{% static 'js/table-equipment.js' %}"></script>
+<script src="{% static 'js/mdb.min.js' %}"></script>
+
+<h4 style="position: absolute; top: 15px; left: 26%;color:#adb7b7;">Ответственные лица</h4>
+
+<div class="container-fluid" style="padding-top: 20px;">
+    <div class="row">
+        <div class="col-12" id="otchetTableContragent">
+            <div class="wrapper-modal-editor">
+
+                <div class="row d-flex justify-content-center modalWrapper">
+                    <div class="modal fade addNewInputs" id="modalAdd" tabindex="-1" role="dialog"
+                        aria-labelledby="modalAdd" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header text-center">
+                                    <h4 class="modal-title w-100 font-weight-bold text-primary ml-5">Добавить
+                                        ответственное лицо</h4>
+                                    <button type="button" class="close text-primary" data-dismiss="modal"
+                                        aria-label="Close" onclick="clearFieldModalAdd()">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body mx-3">
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" class="form-control" hidden>
+                                        <label></label>
+                                    </div>
+
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="userName" class="form-control">
+                                        <label data-error="измените" data-success="принято" for="userName">Имя</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="userOtchestvo" class="form-control">
+                                        <label data-error="измените" data-success="принято"
+                                            for="userOtchestvo">Отчество</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="userFamilia" class="form-control">
+                                        <label data-error="измените" data-success="принято"
+                                            for="userFamilia">Фамилия</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="userProfessia" class="form-control">
+                                        <label data-error="измените" data-success="принято"
+                                            for="userProfessia">Должность</label>
+                                    </div>
+
+                                    <input type="text" hidden class="form-control">
+                                    <input type="text" hidden class="form-control">
+
+
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center buttonAddFormWrapper">
+                                    <button class="btn btn-outline-primary btn-block buttonAdd" onclick="addUser()"
+                                        data-dismiss="modal">Добавить
+                                        <i class="fas fa-plus-square ml-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <a href="" class="btn btn-info btn-rounded btn-sm" data-toggle="modal"
+                            data-target="#modalAdd">Добавить<i class="fas fa-plus-square ml-1"></i></a>
+                    </div>
+
+<div class="modal fade modalEditClass" id="modalEdit" tabindex="-1" role="dialog"
+                        aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header text-center">
+                                    <h4 class="modal-title w-100 font-weight-bold text-secondary ml-5">Измение
+                                        ответственного лица</h4>
+                                    <button type="button" class="close text-secondary" data-dismiss="modal"
+                                        aria-label="Close" onclick="clearFieldModalAdd()">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body mx-3">
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" hidden>
+                                        <label></label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="contragentNameUpd" class="form-control">
+                                        <label data-error="измените" data-success="принято"
+                                            for="userNameUpd">Имя</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="unpUpd" class="form-control">
+                                        <label data-error="измените" data-success="принято" for="userOtchestvoUpd">Отчество</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="addressContragentUpd" class="form-control">
+                                        <label data-error="измените" data-success="принято"
+                                            for="userFamiliaUpd">Фамилия</label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="unloadingPointUpd" class="form-control">
+                                        <label data-error="измените" data-success="принято"
+                                            for="userProfessiaUpd">Должность</label>
+                                    </div>
+
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" class="form-control" hidden>
+                                        <label></label>
+                                    </div>
+
+                                    <div class="md-form mb-5">
+                                        <input type="text" class="form-control" hidden>
+                                        <label></label>
+                                    </div>
+
+
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center editInsideWrapper">
+                                    <button onclick="addUpdContragent()"
+                                        class="btn btn-outline-secondary btn-block editInside"
+                                        data-dismiss="modal">Изменить
+                                        <i class="fas fa-pencil-alt ml-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center buttonEditWrapper">
+                        <button class="btn btn-info btn-rounded btn-sm buttonEdit" data-toggle="modal"
+                            data-target="#modalEdit" disabled>Изменить<i class="fas fa-pencil-alt ml-1"></i></button>
+                    </div>
+
+
+
+
+
+
+
+                     <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="modalDelete"
+                        aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header text-center">
+                                    <h4 class="modal-title w-100 font-weight-bold ml-5 text-danger">Удалить</h4>
+                                    <button type="button" class="close text-danger" data-dismiss="modal"
+                                        aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body mx-3">
+                                    <p class="text-center h4">Вы уверены что хотите удалить ответственное лицо?</p>
+
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center deleteButtonsWrapper">
+                                    <button type="button" class="btn btn-danger btnYesClass" id="btnYes"
+                                        data-dismiss="modal" onclick="">Да</button>
+                                    <button type="button" class="btn btn-primary btnNoClass" id="btnNo"
+                                        data-dismiss="modal">Нет</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button class="btn btn-danger btn-sm btn-rounded buttonDelete" data-toggle="modal" disabled
+                            data-target="#modalDelete" disabled>Удалить<i class="fas fa-times ml-1"></i></button>
+                    </div>
+                </div>
+
+                <table id="editibleTable" class="table table-bordered table-hover table-sm text-center" cellspacing="0"
+                    width="100%">
+                    <thead>
+                        <tr>
+                            <th class="th-sm">id</th>
+                            <th class="th-sm">Имя</th>
+                            <th class="th-sm">Отчество</th>
+                            <th class="th-sm">Фамилия</th>
+                            <th class="th-sm">Должность</th>
+                            <th class="th-sm">Дата добавления</th>
+                            <th class="th-sm">Дата обновления</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a in page_obj %}
+                        <tr>
+                            <td>{{ a.id }}</td>
+                            <td>{{ a.name }}</td>
+                            <td>{{ a.otchestvo }}</td>
+                            <td>{{ a.familia }}</td>
+                            <td>{{ a.professia }}</td>
+                            <td>{{ a.data_add }}</td>
+                            <td>{{ a.data_upd }}</td>
+                        </tr>
+                        {% endfor %}
+
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>id</th>
+                            <th>Имя</th>
+                            <th>Отчество</th>
+                            <th>Фамилия</th>
+                            <th>Должность</th>
+                            <th>Дата добавления</th>
+                            <th>Дата обновления</th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <script src="{% static 'popper.js' %}"></script>
+    <script src="{% static 'b.min.js' %}"></script>
+
+    <script>
+    const clearFieldModalAdd = () => {
+
+        $("#userName").val('');
+        $("#userOtchestvo").val('');
+        $('#userFamilia').val('');
+        $("#userProfessia").val('');
+
+    };
+    </script>
+
+
+
+    <script>
+        var allAgents = '{{ users }}';
+        allAgents = allAgents.replace(/&quot;/g, '"');
+
+        // allAgents = allAgents.slice(0,-1);
+        // allAgents = allAgents.slice(1);
+        // allAgents = "{"+allAgents+"}";
+        allAgents = JSON.parse(allAgents);
+        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        function addAction(action) {
+            let data = "where=contragents&action=" + action + "&user={{ request.user.id }}";
+
+            $.ajax({
+                type: "POST",
+                url: '{% url 'addaction' %}',
+                data: data,
+                success: function () {
+                    console.log('Load was performed.');
+                },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+        }
+{#$('input').addClass("form-control");#}
+    </script>
+
+
+
+{% endblock %}

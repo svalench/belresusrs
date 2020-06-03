@@ -5,7 +5,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.core import exceptions
 from GLOBAL import GlobalAutoUse
-from apps.ves.models import User, GlobalData, Production, DataNakladnayaAuto, CatalogAuto
+from apps.ves.add_in_db import my_custom_sql
+from apps.ves.models import User, GlobalData, Production, DataNakladnayaAuto, CatalogAuto, CatalogContract
 from django.core import serializers
 from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
 from django.http import HttpResponseRedirect, HttpResponse
@@ -19,7 +20,7 @@ from apps.ves.consumers import *
 from apps.ves.forms import UserForm, UpdUserForm
 from apps.ves.models import Auto, ActionUser, Agent, Vagon
 from ves_n.setting_data import USER_ROLES_FOR_REDIRECTS_CHOICES, USER_ROLES_SETTINGS
-
+import json
 
 class StartView(LoginRequiredMixin, CreateView):
     template_name = 'ves/start.html'
@@ -47,19 +48,21 @@ class StartView(LoginRequiredMixin, CreateView):
     def avto_ves(request):
         one_entry = GlobalData.objects.get(id=1)
         auto = Auto.objects.filter(status_in=True)
-        json = serializers.serialize('json', auto)
+        contract = CatalogContract.objects.all()
+        json1 = serializers.serialize('json', auto)
         agents = Agent.objects.all()
         production  = Production.objects.all()
         catalog = CatalogAuto.objects.all()
         catalogJ = serializers.serialize('json', catalog)
         agentsJ = serializers.serialize('json', agents)
         productionJ = serializers.serialize('json', production)
-        autoJ = serializers.serialize('json', auto)
+        autoJ = json.dumps(my_custom_sql(), indent=4, sort_keys=True, default=str)
+        #autoJ = my_custom_sql()
         #print(auto[0].datanakladnayaauto_set.get().productionId.name)
         if (one_entry.Auto == True):
             print('woops')
             #raise exceptions.PermissionDenied
-        data = {'auto_in': auto,'auto_in_J': autoJ,'catalog':catalogJ , 'agentsJ':agentsJ,'production':productionJ,'agents':agents,'JAuto':json}
+        data = {'auto_in': auto,'auto_in_J': autoJ,'catalog':catalogJ ,'contract':contract, 'agentsJ':agentsJ,'production':productionJ,'agents':agents,'JAuto':json1}
         return render(request, 'ves/avto_ves.html', data)
 
 
