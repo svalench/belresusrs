@@ -230,13 +230,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for a in catalog %}
-                        <tr>
+                        {% for a in production %}
+                        <tr onclick="getId({{ a.id }})">
                             <td>{{ a.id }}</td>
                             <td>{{ a.name }}</td>
                             <td>{{ a.number }}</td>
-
+                            <td>{{ a.characteristicTMC }}</td>
+                            <td>{{ a.typeTMC }}</td>
+                            <td>{{ a.scoreTMC }}</td>
+                            <td>{{ a.score }}</td>
+                            <td>{{ a.typeOfAccountTMC }}</td>
                             <td>{{ a.date_add }}</td>
+                        <td>{{ a.date_update }}</td>
                         </tr>
                         {% endfor %}
 
@@ -265,6 +270,10 @@
 </div>
 
 <script>
+let mega_id;
+function  getId(id) {
+mega_id = id;
+}
     function addProduct() {
         let name = $('#nameAdd').val(),
             nameInvoice = $("#nameInvoiceAdd").val(),
@@ -285,12 +294,13 @@
         };
         $.ajax({
                 type: "POST",
-                url: '{% url 'ves:catalogProductionAdd' %}',
+                url: '{% url 'productionAdd' %}',
                 traditional: true,
                 dataType: 'json',
                 data: data,
                 success: function () {
                     console.log("auto added");
+                      document.location.reload(true);
                 },
             error: function(){
                     console.log("error add product");
@@ -319,16 +329,18 @@
             'typeTmc':typeTmc,
             'accountTmc':accountTmc,
             'account':account,
-            'typeAccountingTmc':typeAccountingTmc
+            'typeAccountingTmc':typeAccountingTmc,
+            'id':mega_id
         };
         $.ajax({
                 type: "POST",
-                url: '{% url 'ves:catalogProductionUpd' %}',
+                url: '{% url 'productionUpd' %}',
                 traditional: true,
                 dataType: 'json',
                 data: data,
                 success: function () {
                     console.log("production added");
+                      document.location.reload(true);
                 },
                 error: function(){
                     console.log('error update product')

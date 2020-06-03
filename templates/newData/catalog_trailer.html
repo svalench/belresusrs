@@ -322,7 +322,7 @@ const clearFieldModalAdd = () => {
                     document.location.reload(true);
                 },
                 error: function(){
-                    document.location.reload(true);
+
                  },
                 beforeSend: function (xhr, settings) {
                     if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
