@@ -218,7 +218,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for a in auto %}
+                        {% for a in trailer %}
                         <tr>
                             <td>{{ a.id }}</td>
                             <td>{{ a.agent.name }}</td>
@@ -272,11 +272,11 @@ const clearFieldModalAdd = () => {
             'agent':agent,
             'number':number,
             'model':model,
-            'ves':ves
+            'tara':ves.replace(/,/,'.')
         };
         $.ajax({
                 type: "POST",
-                url: '{% url 'ves:catalogTrailerAdd' %}',
+                url: '{% url 'trailerAdd' %}',
                 traditional: true,
                 dataType: 'json',
                 data: data,
@@ -309,11 +309,11 @@ const clearFieldModalAdd = () => {
             'agent':agent,
             'number':number,
             'model':model,
-            'ves':ves
+            'tara':ves.replace(/,/,'.')
         };
         $.ajax({
                 type: "POST",
-                url: '{% url 'ves:catalogTrailerUpd' %}',
+                url: '{% url 'trailerUpd' %}',
                 traditional: true,
                 dataType: 'json',
                 data: data,
@@ -346,22 +346,25 @@ function deleteAuto() {
             'model':model,
             'ves':ves
         };
-        console.log(data);
-        {#$.ajax({#}
-        {#        type: "POST",#}
-        {#        url: '{% url 'ves:catalogAutoDelete' %}',#}
-        {#        traditional: true,#}
-        {#        dataType: 'json',#}
-        {#        data: data,#}
-        {#        success: function (dat) {#}
-        {#            console.log("auto update");#}
-        {#        },#}
-        {#        beforeSend: function (xhr, settings) {#}
-        {#            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {#}
-        {#                xhr.setRequestHeader("X-CSRFToken", csrftoken);#}
-        {#            }#}
-        {#        }#}
-        {#    });#}
+        $.ajax({
+                type: "POST",
+                url: '{% url 'trailerDel' %}',
+                traditional: true,
+                dataType: 'json',
+                data: data,
+                success: function (dat) {
+                    console.log("auto added");
+                    document.location.reload(true);
+                },
+                error: function(){
+                    document.location.reload(true);
+                 },
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
     }
 
 

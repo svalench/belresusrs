@@ -18,6 +18,7 @@ from django.urls import path, include
 
 from apps.ves.add_in_db import addAutoNew
 from apps.ves.contract import showContract, AddContract, UpdContract, deleteContract
+from apps.ves.trailer import showTrailer, UpdTrailer, AddTrailer, deleteTrailer
 from ves_n.views import *
 
 from channels.routing import ProtocolTypeRouter
@@ -51,12 +52,17 @@ urlpatterns = [
     path('onoff/zd/svet1/',onOffZd,name='onoffzd'),
     path('add/auto/new',addAutoNew,name='newAddAuto'),
 
-    #данные бд
+    #данные бд контрагент
     path('data/catalogContract',showContract,name='catalogcontract'),
     path('data/catalogContractAdd',AddContract,name='catalogcontractAdd'),
     path('data/catalogContractUpd',UpdContract,name='catalogcontractUpd'),
     path('data/catalogContractDel', deleteContract, name='catalogcontractDel'),
 
+    # прицепы
+    path('data/trailerShow',showTrailer,name='trailerShow'),
+    path('data/trailerAdd',AddTrailer,name='trailerAdd'),
+    path('data/trailerUpd',UpdTrailer,name='trailerUpd'),
+    path('data/trailerDel', deleteTrailer, name='trailerDel'),
 
     #отчеты
     path('reportAutoAgent/get', reportAutoAgent, name='reportAutoAgent'),

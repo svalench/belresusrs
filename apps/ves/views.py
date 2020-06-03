@@ -125,7 +125,7 @@ class DataView(LoginRequiredMixin, CreateView):
 
     @login_required
     def menu_data(request):
-        return render(request, 'data/menu_data.html')
+        return render(request, 'newData/menu_data.html')
 
     @login_required
     def ActionView(request):
