@@ -42,7 +42,7 @@
                                     <button class="btn btn-outline-primary" type="button" style="width: 70%;min-height: 38px;height: 38px;" onclick="show_serchAgent(a=1)">Выбрать</button></div>
                                 <div class="col-6 text-center d-flex justify-content-center align-items-center"
                                     style="padding-top: 5px;padding-bottom: 5px;">
-                                    <button class="btn btn-outline-primary" type="button" style="width: 70%;min-height: 38px;height: 38px;" onclick="show_serchAgent(a=1)">Выбрать</button></div>
+                                    <button class="btn btn-outline-primary" type="button" style="width: 70%;min-height: 38px;height: 38px;" onclick="show_serchContract(a=1)">Выбрать</button></div>
                             </div>
                             <div class="row no-gutters border border-primary border-left-0 border-right-0 border-top-0" style="padding-bottom: 5px;">
                                 <div class="col-12 text-center"><label class="col-form-label d-flex justify-content-center align-items-center" for="p1Description">Описание</label></div>
@@ -74,7 +74,7 @@
                                 <div class="col-1">
                                     <select class="custom-select form-control" id="p1UnitWeight" style="width: 98%;padding-left: 6px;"><option value="1" selected>кг</option><option value="3">тн</option></select></div>
                                 <div class="col-2 offset-1 text-center d-flex justify-content-center align-items-center"><input type="text" id="p1ContractPrice" class="form-control text-center" style="width: 98%;" readonly /></div>
-                                <div class="col-1"><select class="custom-select form-control text-center" id="p1UnitContractPrice" style="width: 98%;padding-left: 5px;" disabled><option value="1" selected>BYN</option><option value="2">USD</option><option value="3">EUR</option><option value="4">RYB</option></select></div>
+                                <div class="col-1"><select class="custom-select form-control text-center" id="p1UnitContractPrice" style="width: 98%;padding-left: 5px;" disabled><option value="BYN" selected>BYN</option><option value="USD">USD</option><option value="EUR">EUR</option><option value="RUR">RUR</option></select></div>
                                 <div
                                     class="col-3 offset-1 text-center d-flex justify-content-center align-items-center"><input type="text" id="p1NdsPercent" class="form-control text-center" style="width: 98%" value="20" /></div>
                         </div>
@@ -115,7 +115,7 @@
                             <div class="col-6 text-center d-flex justify-content-center align-items-center"><textarea id="p2Contragent" class="form-control" style="width: 98%;min-height: 38px;height: 38px;" readonly></textarea></div>
                             <div class="col-6 text-center d-flex justify-content-center align-items-center"><textarea id="p2Contract" class="form-control" style="width: 98%;min-height: 38px;height: 38px;" readonly></textarea></div>
                             <div class="col-6 text-center d-flex justify-content-center align-items-center" style="padding-top: 5px;padding-bottom: 5px;"><button class="btn btn-outline-primary" type="button" style="width: 70%;min-height: 38px;height: 38px;" onclick="show_serchAgent(a=2)">Выбрать</button></div>
-                            <div class="col-6 text-center d-flex justify-content-center align-items-center" style="padding-top: 5px;padding-bottom: 5px;"><button class="btn btn-outline-primary" type="button" style="width: 70%;min-height: 38px;height: 38px;" onclick="show_serchAgent(a=2)">Выбрать</button></div>
+                            <div class="col-6 text-center d-flex justify-content-center align-items-center" style="padding-top: 5px;padding-bottom: 5px;"><button class="btn btn-outline-primary" type="button" style="width: 70%;min-height: 38px;height: 38px;" onclick="show_serchContract(a=2)">Выбрать</button></div>
                         </div>
                         <div class="row no-gutters border border-primary border-left-0 border-right-0 border-top-0" style="padding-bottom: 5px;">
                             <div class="col-12 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p2Description">Описание</label></div>
@@ -162,7 +162,7 @@
                             class="col-2 offset-1 text-center d-flex justify-content-center align-items-center">
                             <input type="text" id="p2ContractPrice" class="form-control" style="width: 98%;" readonly /></div>
                     <div class="col-1 text-center d-flex justify-content-center align-items-center">
-                        <select class="custom-select form-control text-center" id="p2UnitContractPrice" style="width: 98%;padding-left: 5px;" disabled><option value="1" selected>BYN</option><option value="2">USD</option><option value="3">EUR</option><option value="4">RYB</option></select></div>
+                        <select class="custom-select form-control text-center" id="p2UnitContractPrice" style="width: 98%;padding-left: 5px;" disabled><option value="BYN" selected>BYN</option><option value="USD">USD</option><option value="EUR">EUR</option><option value="RUR">RUR</option></select></div>
                     <div class="col-3 offset-2 text-center d-flex justify-content-center align-items-center">
                         <input type="text" id="p2NdsPercent" class="form-control text-center" style="width: 98%" value="20" /></div>
             </div>
@@ -194,7 +194,7 @@
                 <div class="col-6 text-center d-flex justify-content-center align-items-center"><textarea id="p3Contragent" class="form-control" style="width: 98%;min-height: 38px;height: 38px;" readonly></textarea></div>
                 <div class="col-6 text-center d-flex justify-content-center align-items-center"><textarea id="p3Contract" class="form-control" style="width: 98%;min-height: 38px;height: 38px;" readonly></textarea></div>
                 <div class="col-6 text-center d-flex justify-content-center align-items-center" style="padding-top: 5px;padding-bottom: 5px;"><button class="btn btn-outline-primary" type="button" style="width: 70%;min-height: 38px;height: 38px;" onclick="show_serchAgent(a=3)">Выбрать</button></div>
-                <div class="col-6 text-center d-flex justify-content-center align-items-center" style="padding-top: 5px;padding-bottom: 5px;"><button class="btn btn-outline-primary" type="button" style="width: 70%;min-height: 38px;height: 38px;" onclick="show_serchAgent(a=3)">Выбрать</button></div>
+                <div class="col-6 text-center d-flex justify-content-center align-items-center" style="padding-top: 5px;padding-bottom: 5px;"><button class="btn btn-outline-primary" type="button" style="width: 70%;min-height: 38px;height: 38px;" onclick="show_serchContract(a=3)">Выбрать</button></div>
             </div>
             <div class="row no-gutters border border-primary border-left-0 border-right-0 border-top-0" style="padding-bottom: 5px;">
                 <div class="col-12 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p3Description">Описание</label></div>
@@ -235,7 +235,7 @@
             <div
                 class="col-2 offset-xl-1 text-center"><input type="text" id="p3ContractPrice" class="form-control" style="width: 98%;" readonly /></div>
         <div class="col-1"><select class="custom-select form-control text-center" id="p3UnitContractPrice" style="width: 98%;padding-left: 5px;" disabled>
-            <option value="1" selected>BYN</option><option value="2">USD</option><option value="3">EUR</option><option value="4">RYB</option></select></div>
+            <option value="BYN" selected>BYN</option><option value="USD">USD</option><option value="EUR">EUR</option><option value="RUR">RUR</option></select></div>
         <div
             class="col-3 col-xl-3 offset-xl-2 d-xl-flex justify-content-xl-center"><input type="text" id="p3NdsPercent" class="form-control text-center" style="width: 98%" value="20" /></div>
 </div>
@@ -420,8 +420,11 @@
         let res ={};
         idFieldText.forEach(function(a,b){
             let key = a.slice(2);
-            if(key==="Contragent"){
+            if(key==="Contragent") {
+                res[key] = $("#" + a).attr("data-id");
+            }else if(key==="Contract"){
                 res[key] = $("#"+a).attr("data-id");
+
             }else{
                 res[key] = $("#"+a).val();
             }
@@ -433,7 +436,7 @@
         });
         res.gos_num_avto= $("#gos_num_avto").val();
         res.gos_num_pricep=$("#gos_num_pricep").val();
-        res.operation = 1;
+        res.operation = +number;
         res.ves=$("#vesFix").html();
         console.log(res);
         save(res);
@@ -515,6 +518,57 @@
         $("#serchAgent").modal("hide");
     }
 
+    ///  ---------------------------    contract modal -----------------------------------------------------------------
+
+    let contract = '{{ contract|escapejs }}';
+        contract = contract.replace(/&quot;/g,'"');
+        contract = JSON.parse(contract);
+         let newContract =[];
+            contract.forEach(function(a){
+            newContract.push(a.fields);
+    });
+    function show_serchContract(a,agent) {
+        typeoperation_in_window=a;
+        if (agent == undefined) {
+            agent = contract;
+        }
+        $("#serchContract").modal("show");
+        let html = "";
+        agent.forEach(function (a, i) {
+            html += "<li><button class='btn btn-info' onclick='selectContract(" + i + ")'>" + a.pk + " = " + a.fields.name + "</button></li>";
+        });
+        $("#contract_list").html(html);
+    }
+
+function serchStrContract(e) {
+        let str = $(e).val();
+        let obj = newContract.find(obj => obj.name == str);
+        let retval = [];
+        contract.forEach(function (a) {
+            if (a.fields.name.indexOf(str) > -1) {
+                retval.push(a);
+            }
+        });
+        show_serchContract(typeoperation_in_window,retval);
+
+    };
+        function selectContract(pk) {
+        $("#succesContract").attr("data-value", pk);
+        $("#succesContract").html("agent  -" + contract[pk].fields.name);
+    }
+     function addContract() {
+        let pk = $("#succesContract").attr("data-value");
+        if (pk == undefined) {
+            alert("не выбран агент");
+            return;
+        }
+        $("#p"+typeoperation_in_window+"Contract").val(contract[pk].fields.name);
+        $("#p"+typeoperation_in_window+"Contract").attr("data-id", contract[pk].pk);
+        $("#p"+typeoperation_in_window+"ContractPrice").val(contract[pk].fields.firstPrice);
+        $("#p"+typeoperation_in_window+"UnitContractPrice").val(contract[pk].fields.unitPrice);
+        $("#serchContract").modal("hide");
+    }
+
     //===========================================tovar serch=================================================
      function show_serchTovar(tavar) {
         if (tavar == undefined) {
@@ -581,6 +635,39 @@
         </div>
     </div>
 </div>
+
+
+
+<!-- Modal поиск контракта -->
+<div class="modal fade" id="serchContract" tabindex="-1" role="dialog" aria-labelledby="serchContract" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="serchContractT">Выбор контрагента</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="bodySerchModal" class="modal-body">
+{#                <label>Поиск</label>#}
+                <input type="text" style="width:100%;" onkeyup="serchStrContract(this)" id="modalSerchContract" placeholder="Поиск">
+                <br>
+                <div id="succesContract">
+                </div>
+                <br>
+                <label>Список контрактов</label>
+                <ul id="contract_list">
+                </ul>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Отмена</button>
+                <button type="button" onclick="addContract();" class="btn btn-primary">Выбрать</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 

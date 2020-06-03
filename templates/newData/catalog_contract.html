@@ -88,6 +88,22 @@
                                             for="salesAccount">Счет реализации</label>
                                     </div>
 
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="firstPrice" class="form-control">
+                                        <label data-error="измените" data-success="принято"
+                                            for="firstPrice">Первичная цена</label>
+                                    </div>
+                                     <div class="md-form mb-5">
+                                         <input type="text" id="valuta" list="valutaBrowseAdd" class="form-control">
+                                        <datalist id="valutaBrowseAdd">
+                                            <option  value="USD">
+                                            <option  value="BYN">
+                                            <option  value="EUR">
+                                            <option  value="RUR">
+                                        </datalist>
+                                        <label data-error="измените" data-success="принято"
+                                            for="valuta">Влюта</label>
+                                    </div>
                                     <input type="text" class="form-control" hidden>
                                     <input type="text" class="form-control" hidden>
 
@@ -175,6 +191,24 @@
                                             for="salesAccountUpd">Счет реализации</label>
                                     </div>
 
+                                    <div class="md-form mb-5">
+                                        <input type="text" id="firstPriceUpd" class="form-control">
+                                        <label data-error="измените" data-success="принято"
+                                            for="firstPriceUpd">Первичная цена</label>
+                                    </div>
+
+                                 <div class="md-form mb-5">
+                                         <input type="text" id="valutaUpd" list="valutaBrowse" class="form-control">
+                                        <datalist id="valutaBrowse">
+                                            <option  value="USD">
+                                            <option  value="BYN">
+                                            <option  value="EUR">
+                                            <option  value="RUR">
+                                        </datalist>
+                                        <label data-error="измените" data-success="принято"
+                                            for="valutaUpd">Влюта</label>
+                                    </div>
+
                                     <input type="text" class="form-control" hidden>
                                     <input type="text" class="form-control" hidden>
 
@@ -239,6 +273,8 @@
                             <th class="th-sm">Тип операции</th>
                             <th class="th-sm">Вид прихода</th>
                             <th class="th-sm">Счет реализации</th>
+                            <th class="th-sm">Первичная цена</th>
+                            <th class="th-sm">Валюта</th>
                             <th class="th-sm">Дата добавления</th>
                             <th class="th-sm">Дата обновления</th>
                         </tr>
@@ -254,6 +290,8 @@
                             <td>{{ a.typeOfOperation }}</td>
                             <td>{{ a.typeOfArrival }}</td>
                             <td>{{ a.salesAccount }}</td>
+                            <td>{{ a.firstPrice }}</td>
+                            <td>{{ a.unitPrice }}</td>
                             <td>{{ a.date_add }}</td>
                             <td>{{ a.date_upd }}</td>
                         </tr>
@@ -271,6 +309,8 @@
                             <th>Тип операции</th>
                             <th>Вид прихода</th>
                             <th>Счет реализации</th>
+                            <th>Первичная цена</th>
+                            <th>Валюта</th>
                             <th>Дата добавления</th>
                             <th>Дата обновления</th>
                         </tr>
@@ -321,6 +361,8 @@ $('#modalEdit').on('shown.bs.modal', function (e) {
             typeOperation = $("#typeOperation").val(),
             viewComing = $("#viewComing").val(),
             salesAccount = $("#salesAccount").val();
+        ferstPrice = $("#firstPrice").val();
+        valuta = $("#valuta").val();
 
         let data={
             'name':name,
@@ -329,7 +371,9 @@ $('#modalEdit').on('shown.bs.modal', function (e) {
             'dateDogovor':dateDogovor,
             'typeOperation':typeOperation,
             'viewComing':viewComing,
-            'salesAccount':salesAccount
+            'salesAccount':salesAccount,
+            'firstPrice':ferstPrice.replace(/,/,'.'),
+            'valuta':valuta
         };
 addAction('пользователь добавил контракт');
         $.ajax({
@@ -361,6 +405,8 @@ addAction('пользователь добавил контракт');
             typeOperation = $("#typeOperationUpd").val(),
             viewComing = $("#viewComingUpd").val(),
             salesAccount = $("#salesAccountUpd").val();
+        ferstPrice = $("#firstPriceUpd").val();
+        valuta = $("#valutaUpd").val();
 
         let data={
             'id':data_id_upd,
@@ -370,7 +416,9 @@ addAction('пользователь добавил контракт');
             'dateDogovor':dateDogovor,
             'typeOperation':typeOperation,
             'viewComing':viewComing,
-            'salesAccount':salesAccount
+            'salesAccount':salesAccount,
+            'firstPrice':ferstPrice.replace(/,/,'.'),
+            'valuta':valuta
         };
       addAction('пользователь изменил контракт  '+data_id_upd);
         $.ajax({

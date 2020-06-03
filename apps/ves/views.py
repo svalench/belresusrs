@@ -57,6 +57,7 @@ class StartView(LoginRequiredMixin, CreateView):
         agentsJ = serializers.serialize('json', agents)
         productionJ = serializers.serialize('json', production)
         autoJ = json.dumps(my_custom_sql(), indent=4, sort_keys=True, default=str)
+        contract =  serializers.serialize('json',contract)
         #autoJ = my_custom_sql()
         #print(auto[0].datanakladnayaauto_set.get().productionId.name)
         if (one_entry.Auto == True):

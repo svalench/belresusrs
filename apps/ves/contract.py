@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
 
+import numpy
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -18,7 +19,8 @@ def showContract(request):
 def AddContract(request):
     form = request.POST
     contract = CatalogContract(name=form['name'], parentContragentId_id=form['agent'],parentMaterialId_id=form['tmc'],date=form['dateDogovor'],
-                               typeOfOperation=form['typeOperation'],typeOfArrival=form['viewComing'],salesAccount=form['salesAccount'])
+                               typeOfOperation=form['typeOperation'],typeOfArrival=form['viewComing'],salesAccount=form['salesAccount'],
+                               firstPrice=numpy.float(form['firstPrice']),unitPrice=form['valuta'])
     contract.save()
     payload = {'success': True}
     return HttpResponse(json.dumps(payload, indent=4, sort_keys=True, default=str), content_type='application/json')
@@ -28,7 +30,8 @@ def UpdContract(request):
     form = request.POST
     contract = CatalogContract.objects.filter(id=form['id'])
     contract.update(name=form['name'], parentContragentId_id=form['agent'],parentMaterialId_id=form['tmc'],date=form['dateDogovor'],
-                               typeOfOperation=form['typeOperation'],typeOfArrival=form['viewComing'],salesAccount=form['salesAccount'])
+                               typeOfOperation=form['typeOperation'],typeOfArrival=form['viewComing'],salesAccount=form['salesAccount'],
+                    firstPrice=numpy.float(form['firstPrice']),unitPrice=form['valuta'])
     payload = {'success': True}
     return HttpResponse(json.dumps(payload, indent=4, sort_keys=True, default=str), content_type='application/json')
 

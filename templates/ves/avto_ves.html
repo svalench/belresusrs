@@ -34,7 +34,7 @@
                 <td>Cell 2</td>
                 <td>Cell 3</td>
                 <td>Cell 3</td>
-                <td><button class="btn btn-primary btM" type="button">------></button></td>
+                <td><button class="btn btn-primary btM" onclick="replaceRight()" type="button">------></button></td>
             </tr>
 
         </tbody>
@@ -149,6 +149,33 @@ const displayBlock = (blockId) => {
             $(blockId).animate({height: 'hide'}, 300);
         }
 };
+//=================================================================================================================================================
+//==================================================================================================================================================================================================
+function replaceRight(num){
+    let actual =auto_in.find(obj => obj.number == num);
+    console.log(actual);
+    $("#p1ButtonClearForm").trigger('click');
+                $("#p2ButtonClearForm").trigger('click');
+                $("#p3ButtonClearForm").trigger('click');
+                $("#p4ButtonClearForm").trigger('click');
+    chooseTabs(actual.operatrion);
+    $("#gos_num_avto").val(actual.number);
+    $("#gos_num_pricep").val(actual.numberPricep);
+    $("#p"+actual.operatrion+"Contragent").val(actual.nameagent);
+    $("#p"+actual.operatrion+"Contragent").attr('data-id',actual.agents_id);
+    $("#p"+actual.operatrion+"DateInvoice").val(actual.nakladnayaDate);
+    $("#p"+actual.operatrion+"SeriesInvoice").val(actual.seria);
+    $("#p"+actual.operatrion+"NumberInvoice").val(actual.numberNakladnaia);
+    $("#p"+actual.operatrion+"NameDriver").val(actual.driver);
+    $("#p"+actual.operatrion+"Description").val(actual.description);
+    $("#p"+actual.operatrion+"Contract").val(actual.contractname);
+    $("#p"+actual.operatrion+"Contract").attr('data-id',actual.contractid);
+    $("#p"+actual.operatrion+"TypeInvoice").val();
+    $("#p"+actual.operatrion+"UnitContractPrice").val(actual.unitPrice);
+    $("#p"+actual.operatrion+"ContractPrice").val(actual.firstPrice);
+}
+
+
 </script>
 {#check Field#}
     <script>
@@ -258,21 +285,7 @@ const changeLabel = (idInput,idLabel,labelTextTrue,labelTextFalse) =>{
        }
    };
 
-{#const checkAllFields = () => {#}
-{#    let status=0;#}
-{#    arrayInputId.forEach(function(item,i){#}
-{#        if (($("#"+item+"").val()==='') || ($("#"+item+"").val()===0)) {#}
-{#            status++#}
-{#            $("#"+item+"").addClass('border-danger');#}
-{#            $("label[for="+item+"]").text(arrayLabelFalse[i]).css("color","#dc3545");#}
-{#                                          };#}
-{#                                          });#}
-{#    if (status>0){#}
-{#        return false;#}
-{#    } else {#}
-{#        return true;#}
-{#    }#}
-{#        };#}
+
 
 const clearFields = () => {
     arrayInputId.forEach(function(item,i){
@@ -491,10 +504,10 @@ function tableAutoIn(){
         ready+=`<tr>
                 <td>${a.number}</td>
                 <td>${a.operatrion}</td>
-                <td>${a.name}</td>
+                <td>${a.nameagent}</td>
                 <td>Cell 3</td>
                 <td>${a.last_in}</td>
-                <td><button id="to_right${a.id}" class="btn btn-primary btM" type="button">------></button></td>
+                <td><button id="to_right${a.id}" class="btn btn-primary btM" onclick="replaceRight('${a.number}')" type="button">------></button></td>
             </tr>`;
     });
     $("#auti_in").html(ready);

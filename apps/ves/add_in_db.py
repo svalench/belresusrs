@@ -50,11 +50,11 @@ def addAutoNew(request):
             form['DateInvoice'] = None
         if (not 'ContractPrice' in form):
             form['ContractPrice'] = None
-        auto = Auto(number=form['gos_num_avto'], agents_id=form['Contragent'], driver=form['NameDriver'], parentContractId_id=form['Contract'],
-                    number_pricep=form['gos_num_pricep'],  last_in=last_in, catalog_id=form['DataAuto'], catalogPricep=form['DataTrailer'],
+        auto = Auto(number=form['gos_num_avto'], agents_id=form['Contragent'], driver=form['NameDriver'], parentcontractid_id=form['Contract'],
+                    number_pricep=form['gos_num_pricep'],  last_in=last_in, catalog_id=form['DataAuto'], catalogpricep=form['DataTrailer'],
                     description= form['Description'], seria=form['SeriesInvoice'],numberNakladnaia=form['NumberInvoice'], nakladnayaDate = form['DateInvoice'],
                     ves_nakladnaya=form['WeightInvoice'], price_ed_iz=form['ContractPrice'], discont= form['DirtPercent'],
-                     weghtIn=float(form['ves']), parentUserId_id=request.user.id,operatrion = form['operation'],
+                     weghtIn=float(form['ves']), parentuserid_id=request.user.id,operatrion = form['operation'],
                 status_in=True)
         auto.save()
     allIn = Auto.objects.filter( status_in=True)
@@ -72,7 +72,9 @@ from django.db import connection
 
 def my_custom_sql():
     with connection.cursor() as cursor:
-        sql = "SELECT a.*,ag.* FROM ves_auto a JOIN ves_agent ag ON ag.id=a.agents_id  WHERE a.status_in=true"
+        sql = "SELECT a.*,ag.name as nameAgent, c.name as contractName, c.id as contractId, c.*,ag.* FROM ves_auto a " \
+              "LEFT JOIN ves_agent ag ON ag.id=a.agents_id" \
+              " LEFT JOIN ves_catalogcontract c ON c.id=a.parentContractId_id  WHERE a.status_in=true"
         cursor.execute(sql)
         columns = [col[0] for col in cursor.description]
         return [

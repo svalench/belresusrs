@@ -78,6 +78,8 @@ class CatalogContract(models.Model):
     typeOfOperation = models.CharField('тип опреации',max_length=255, db_index=True)
     typeOfArrival = models.CharField('вид прихода',max_length=255, db_index=True)
     salesAccount = models.CharField('счет реализации', max_length=255, db_index=True)
+    firstPrice = models.FloatField('первичная цена',db_index=True, null=True)
+    unitPrice = models.CharField('валюта',null=True,max_length=20)
     date_add = models.DateTimeField(auto_now_add=True, db_index=True)
     date_update = models.DateTimeField(auto_now=True)
 
@@ -125,12 +127,12 @@ class Auto(models.Model):
     id = models.AutoField(primary_key=True)
     agents = models.ForeignKey(Agent, on_delete=models.SET_NULL, null=True, blank=True,db_index=True)
     catalog = models.ForeignKey(CatalogAuto, on_delete=models.SET_NULL, null=True, blank=True, db_index=True)
-    catalogPricep = models.ForeignKey(CatalogTrailer, on_delete=models.SET_NULL, null=True, blank=True, db_index=True)
-    parentUserId = models.ForeignKey('User', on_delete=models.CASCADE, null=True, blank=True,
+    catalogpricep = models.ForeignKey(CatalogTrailer, on_delete=models.SET_NULL, null=True, blank=True, db_index=True)
+    parentuserid = models.ForeignKey('User', on_delete=models.CASCADE, null=True, blank=True,
                                      db_index=True)
-    parentResponseId = models.ForeignKey('CatalogResponsiblePerson', on_delete=models.CASCADE, null=True, blank=True,
+    parentresponseid = models.ForeignKey('CatalogResponsiblePerson', on_delete=models.CASCADE, null=True, blank=True,
                                          db_index=True)
-    parentContractId = models.ForeignKey('CatalogContract', on_delete=models.CASCADE, null=True, blank=True,
+    parentcontractid = models.ForeignKey(CatalogContract, on_delete=models.CASCADE, null=True, blank=True,
                                          db_index=True)
 
 
