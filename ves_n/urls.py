@@ -19,6 +19,7 @@ from django.urls import path, include
 from apps.ves.add_in_db import addAutoNew
 from apps.ves.contract import showContract, AddContract, UpdContract, deleteContract
 from apps.ves.production import showProduction, AddProduction, UpdProduction, deleteProduction
+from apps.ves.responseblePerson import showPerson, AddPerson, UpdPerson, deletePerson
 from apps.ves.trailer import showTrailer, UpdTrailer, AddTrailer, deleteTrailer
 from ves_n.views import *
 
@@ -69,6 +70,11 @@ urlpatterns = [
     path('data/productionAdd', AddProduction, name='productionAdd'),
     path('data/productionUpd', UpdProduction, name='productionUpd'),
     path('data/productionDel', deleteProduction, name='productionDel'),
+    # отвественные лица
+    path('data/personShow', showPerson, name='personShow'),
+    path('data/personAdd', AddPerson, name='personAdd'),
+    path('data/personUpd', UpdPerson, name='personnUpd'),
+    path('data/personDel', deletePerson, name='personDel'),
 
     #отчеты
     path('reportAutoAgent/get', reportAutoAgent, name='reportAutoAgent'),
