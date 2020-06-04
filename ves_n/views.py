@@ -137,7 +137,7 @@ def GetDataZd(request):
 
     try:
         ves = PlcRemoteUse('192.168.0.2')
-        ves.getWeight()
+        ves.getWeightVagon()
         bitmask = ves.getSatusBit(0)
         weight = ves.ves
     except:

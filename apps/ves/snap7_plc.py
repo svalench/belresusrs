@@ -84,3 +84,9 @@ class PlcRemoteUse():
         val = struct.unpack('>f', value_db_tia[0:4])
         self.ves=val[0]
         return val[0]
+
+    def getWeightVagon(self):
+        value_db_tia = self.client.db_read(4, 3110, 4)
+        val = struct.unpack('>f', value_db_tia[0:4])
+        self.ves=val[0]/100
+        return val[0]
