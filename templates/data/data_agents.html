@@ -60,6 +60,14 @@
               <input type="text" id="description" class="form-control">
               <label data-error="измените" data-success="принято" for="description">Описание</label>
             </div>
+              <div class="md-form mb-5">
+              <input type="text" id="punktIn" class="form-control">
+              <label data-error="измените" data-success="принято" for="punktIn">пункт погрузки</label>
+            </div>
+               <div class="md-form mb-5">
+              <input type="text" id="payer" class="form-control">
+              <label data-error="измените" data-success="принято" for="payer">пплательщик</label>
+            </div>
 
 		     <div class="md-form mb-5">
               <input type="text" class="form-control" hidden>
@@ -121,6 +129,14 @@
 		     <div class="md-form mb-5">
               <input type="text" id="descriptionUpd" class="form-control">
               <label data-success="принято" for="descriptionUpd">Описание</label>
+            </div>
+                <div class="md-form mb-5">
+              <input type="text" id="punktInUpd" class="form-control">
+              <label data-error="измените" data-success="принято" for="punktInUpd">пункт погрузки</label>
+            </div>
+               <div class="md-form mb-5">
+              <input type="text" id="payerUpd" class="form-control">
+              <label data-error="измените" data-success="принято" for="payerUpd">пплательщик</label>
             </div>
 
            <div class="md-form mb-5">
@@ -185,6 +201,8 @@
       <th class="th-sm">УНП</th>
         <th class="th-sm">Адрес</th>
 	  <th class="th-sm">Описание</th>
+        <th class="th-sm">Пункт разругки</th>
+         <th class="th-sm">Плательщик</th>
       <th class="th-sm">Дата добавления</th>
         <th class="th-sm">Дата обновления</th>
 
@@ -198,6 +216,8 @@
       <td>{{ a.unp }}</td>
          <td>{{ a.address }}</td>
       <td>{{ a.description }}</td>
+        <td>{{ a.dischargePoint }}</td>
+        <td>{{ a.payer }}</td>
       <td>{{ a.date_add }}</td>
         <td>{{ a.date_update }}</td>
     </tr>
@@ -212,6 +232,8 @@
       <th >УНП</th>
         <th >Адрес</th>
 	  <th >Описание</th>
+            <th >Пункт разругки</th>
+         <th>Плательщик</th>
       <th >Дата добавления</th>
       <th >Дата обновления</th>
 			</tr>
@@ -281,6 +303,8 @@
             {#let numHouse = $("#numH").val();#}
             let address = $("#addressContragentAdd").val();
             let description = $("#description").val();
+            let payer = $("#payer").val();
+            let punkt = $("#punktIn").val();
             // validation
             if(!name){
                  addAction('оператор добавляя запись в список не указал название контрагента');
@@ -313,7 +337,9 @@
                  "name":name,
                  "unp":unp,
                  "address": address,
-                 "description":description
+                 "description":description,
+                 'payer':payer,
+                 'punkt':punkt
              };
              $.ajax({
                 type: "POST",
@@ -349,6 +375,8 @@
             let unp = $("#unpUpd").val();
             let address = $("#addressContragentUpd").val();
             let description = $("#descriptionUpd").val();
+            let payer = $("#payerUpd").val();
+            let punkt = $("#punktInUpd").val();
             // validation
             if(!name){
                  addAction('оператор обновляя запись в список не указал название контрагента');
@@ -381,7 +409,9 @@
                  "unp":unp,
                  "address":address,
                  "description":description,
-                 "id":id_select
+                 "id":id_select,
+                 'payer':payer,
+                 'punkt':punkt
              };
              $.ajax({
                 type: "POST",

@@ -68,7 +68,7 @@ def addVagonPost(request):
 def addContragentView(request):
     form = request.POST
     now = datetime.now()
-    agent = Agent(name=form['name'],unp=form["unp"], description=form['description'], address=form['address'])
+    agent = Agent(name=form['name'],unp=form["unp"], description=form['description'], address=form['address'],payer=form['payer'],dischargePoint=form['punkt'])
     agent.save()
     payload = {'success': True}
     return HttpResponse(json.dumps(payload), content_type='application/json')
@@ -82,6 +82,8 @@ def updContragentView(request):
     agetnt.name = form['name']
     agetnt.unp = form['unp']
     agetnt.description = form['description']
+    agetnt.payer = form['payer']
+    agetnt.dischargePoint = form['punkt']
     agetnt.address = address
     agetnt.save()
     payload = {'success': True}

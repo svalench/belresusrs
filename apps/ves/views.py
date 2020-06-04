@@ -62,7 +62,7 @@ class StartView(LoginRequiredMixin, CreateView):
         #print(auto[0].datanakladnayaauto_set.get().productionId.name)
         if (one_entry.Auto == True):
             print('woops')
-            #raise exceptions.PermissionDenied
+            raise exceptions.PermissionDenied
         data = {'auto_in': auto,'auto_in_J': autoJ,'catalog':catalogJ ,'contract':contract, 'agentsJ':agentsJ,'production':productionJ,'agents':agents,'JAuto':json1}
         return render(request, 'ves/avto_ves.html', data)
 
