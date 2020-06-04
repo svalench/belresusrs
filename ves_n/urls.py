@@ -18,6 +18,7 @@ from django.urls import path, include
 
 from apps.ves.add_in_db import addAutoNew, addVagonNew
 from apps.ves.contract import showContract, AddContract, UpdContract, deleteContract
+from apps.ves.detectNumber import detectNumber
 from apps.ves.production import showProduction, AddProduction, UpdProduction, deleteProduction
 from apps.ves.responseblePerson import showPerson, AddPerson, UpdPerson, deletePerson
 from apps.ves.trailer import showTrailer, UpdTrailer, AddTrailer, deleteTrailer
@@ -54,6 +55,7 @@ urlpatterns = [
     path('onoff/zd/svet1/',onOffZd,name='onoffzd'),
     path('add/auto/new',addAutoNew,name='newAddAuto'),
     path('add/train/new',addVagonNew,name='newAddVagon'),
+    path('detect/auto/number', detectNumber, name='detectNumber'),
 
     #данные бд контрагент
     path('data/catalogContract',showContract,name='catalogcontract'),

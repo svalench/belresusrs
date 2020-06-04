@@ -78,7 +78,32 @@
 
 
  <script>
+ function detect(path) {
+        data={'path':path};
+        $.ajax({
+            type: "POST",
+            url: "{% url 'detectNumber' %}",
+            traditional: true,
+            dataType: 'json',
+            data: data,
+            success: function (ret) {
+               insertAuto(ret.number)
+            },
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+    }
 
+ function insertAuto(num){
+     if(num==="false"){
+         alert("омер не найден");
+     }else{
+       $("#gos_num_avto").val(num);
+     }
+ }
 
      function correct() {
             addAction('Попытка изменить вес');
@@ -100,6 +125,7 @@
 
 
         function fixVes() {
+     detect({% static 'camera/cam1.jpg' %});
             addAction('вес зафиксирован');
             $("#vesFix").html($("#vesOnline").html());
         }

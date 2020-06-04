@@ -1,0 +1,17 @@
+Cython
+matplotlib
+setuptools
+numpy==1.17.*
+Keras==2.2.*
+imgaug
+tensorflow==1.15
+opencv_python
+imutils
+scikit_image
+jupyter
+asyncio
+GitPython
+termcolor
+tqdm
+openpyxl==3.0.3
+docxtpl==0.10.0
