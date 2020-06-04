@@ -1,204 +1,485 @@
 {% load static %}
-<div style="padding: 10px 0;">
-        <div class="container-fluid">
+<div class="container-fluid">
             <div class="row no-gutters">
-                <div class="col-12 text-center align-self-center" id="clickDataNakladnaya" style="padding-top: 5px; cursor: pointer;"><span class="text-center text-black-50" style="font-size: 30px;">Заполнение накладной</span>
+                <div class="col-12 text-center align-self-center" id="clickDataNakladnaya" style="padding-top: 5px; cursor: pointer;"><span class="text-center text-black-50" style="font-size: 30px;">Информация о транспорте</span>
                     <hr style="margin-top: 0;">
                 </div>
             </div>
-            <div class="row no-gutters" id="DanniePoTransporty" style="display:none;">
-                <div class="col-6 border border-primary" style="background-image: url({% static 'img/back1.svg' %});background-repeat: no-repeat;">
-                    <div class="row no-gutters">
-                        <div class="col-12 text-center"><span style="font-size: 21px;">Данные по транспорту</span></div>
-                    </div>
-                    <div class="row no-gutters border border-secondary border-right-0 border-left-0 border-bottom-0" style="padding-bottom: 5px;">
-                        <div class="col-4 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="name_driver">Водитель</label></div>
-                        <div class="col-6 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="data_auto">Поезд</label></div>
-                        <div class="col-2 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="Nputev">№ путевого листа</label></div>
-                        <div class="col-4 d-flex d-xl-flex justify-content-center align-items-center"><input type="text" id="name_driver" class="form-control text-center" style="width: 98%" placeholder="Фамилия И.О."></div>
-                        <div class="col-6 d-flex d-xl-flex justify-content-center align-items-center"><input type="text" id="data_auto" class="form-control text-center" style="width: 98%;cursor: not-allowed;" readonly=""></div>
-                        <div class="col-2 d-flex d-xl-flex justify-content-center align-items-center"><input class="form-control text-center" type="text" id="Nputev" style="width: 98%;"></div>
-                    </div>
-                    <div class="row no-gutters border border-primary border-left-0 border-right-0" style="padding-bottom: 5px;">
-                        <div class="col-6 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="pogruzka">Пункт погрузки</label></div>
-                        <div class="col-6 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="razgruzka">Пункт разгрузки</label></div>
-                        <div class="col-6 d-flex d-xl-flex justify-content-center align-items-center"><textarea id="pogruzka" class="form-control" style="width: 98%;min-height: 38px;height: 38px;"></textarea></div>
-                        <div class="col-6 d-flex d-xl-flex justify-content-center align-items-center"><textarea id="razgruzka" class="form-control" style="width: 98%;min-height: 38px;height: 38px;"></textarea></div>
-                    </div>
-                    <div class="row no-gutters border border-primary border-left-0 border-right-0 border-top-0" style="padding-bottom: 5px;">
-                        <div class="col-6 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="agent">Грузоотправитель</label></div>
-                        <div class="col-6 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="agentPoluchit">Грузополучатель</label></div>
-                        <div class="col-6 d-flex d-xl-flex justify-content-center align-items-center"><textarea id="agent" class="form-control" style="width: 98%;min-height: 38px;height: 38px;cursor: not-allowed;" readonly=""></textarea></div>
-                        <div class="col-6 d-flex d-xl-flex justify-content-center align-items-center"><textarea id="agentPoluchit" class="form-control" style="width: 98%;min-height: 38px;height: 38px;cursor: not-allowed;" readonly=""></textarea></div>
-                        <div class="col-6 d-flex d-xl-flex justify-content-center align-items-center" style="padding-top: 5px;padding-bottom: 5px;"><button class="btn btn-outline-primary" type="button" style="width: 70%;min-height: 38px;height: 38px;" onclick="show_serchAgent()">Выбрать</button></div>
-                        <div class="col-6 d-flex d-xl-flex justify-content-center align-items-center" style="padding-top: 5px;padding-bottom: 5px;"><button class="btn btn-outline-primary" type="button" style="width: 70%;min-height: 38px;height: 38px;" onclick="show_serchAgent()">Выбрать</button></div>
-                    </div>
-                    <div class="row no-gutters border border-primary border-left-0 border-right-0 border-top-0" style="padding-bottom: 5px;">
-                        <div class="col-6 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="razreshil">Отпуск разрешил</label></div>
-                        <div class="col-6 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="osnovanie">Основание отпуска</label></div>
-                        <div class="col-6 d-flex d-xl-flex justify-content-center align-items-center"><input type="text" id="razreshil" class="form-control text-center" style="width: 98%"></div>
-                        <div class="col-6 d-flex d-xl-flex justify-content-center align-items-center"><input type="text" id="osnovanie" class="form-control text-center" style="width: 98%"></div>
-                    </div>
-                    <div class="row no-gutters border border-secondary border-right-0 border-left-0 border-top-0" style="padding-bottom: 5px;">
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="prinal">Товар к доставке принял</label></div>
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="sdal">Сдал грузоотправитель</label></div>
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="gruzopoluchatel">Принял грузопучатель</label></div>
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="doverennost">Доверенность</label></div>
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><input type="text" id="prinal" class="form-control text-center" style="width: 98%"></div>
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><input type="text" id="sdal" class="form-control text-center" style="width: 98%"></div>
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><input class="form-control text-center" type="text" id="gruzopoluchatel" style="width: 98%;"></div>
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><textarea id="doverennost" class="form-control" style="width: 98%;min-height: 38px;height: 38px;"></textarea></div>
-                    </div>
-                </div>
-                <div class="col-6 text-center border border-primary border-left-0" style="background-image: url({% static 'img/back2.svg' %});">
-                    <div class="row no-gutters">
-                        <div class="col"><span style="font-size: 21px;">Поля накладной</span></div>
-                    </div>
-                    <div class="row no-gutters border border-secondary border-right-0 border-left-0 border-bottom-0" style="padding-bottom: 5px;">
-                        <div class="col-2 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label text-center" for="ttn">Тип накладной</label></div>
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label text-center" for="seria">Серия накладной</label></div>
-                        <div class="col-4 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label text-center" for="nakladnaya">Номер накладной</label></div>
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label text-center" for="dateNakladnaya">Дата накладной</label></div>
-                        <div class="col-2 d-flex d-xl-flex justify-content-center align-items-center"><select id="ttn" class="form-control" style="width:80%;"><option value="1" selected="">ТН</option><option value="2">ТТН</option></select></div>
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><input type="text" id="seria" class="form-control text-center" style="width: 98%;"></div>
-                        <div class="col-4 d-flex d-xl-flex justify-content-center align-items-center"><input type="text" id="nakladnaya" class="form-control text-center" style="width: 98%;"></div>
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><input id="dateNakladnaya" class="form-control" type="date" style="width:98%"></div>
-                    </div>
-                    <div class="row no-gutters border border-primary border-left-0 border-right-0 border-bottom-0" style="padding-bottom:5px">
-                        <div class="col-4 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="name_tovar">Наименование товара</label></div>
-                        <div class="col-2 offset-2 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="ves_nakladnaya">Количество</label></div>
-                        <div class="col-1 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="ed_ves">Ед.</label></div>
-                        <div class="col-2 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="cena">Цена</label></div>
-                        <div class="col-1 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="valuta">Валюта</label></div>
-                        <div class="col-4 d-flex d-xl-flex justify-content-center align-items-center"><textarea id="name_tovar" class="form-control" style="width: 98%;min-height: 38px;height: 38px;"></textarea></div>
-                        <div class="col-2 d-flex d-xl-flex justify-content-center align-items-center"><button class="btn btn-outline-primary d-xl-flex justify-content-xl-center align-items-xl-center" type="button" style="width: 70%;min-height: 38px;height: 38px;cursor: not-allowed;" readonly="" onclick="show_serchTovar();">Выбрать</button></div>
-                        <div class="col-2 d-flex d-xl-flex justify-content-center align-items-center"><input type="text" id="ves_nakladnaya" class="form-control text-center" style="width: 98%;"></div>
-                        <div class="col-1 d-flex d-xl-flex justify-content-center align-items-center"><select id="ed_ves" class="form-control" style="width: 98%;padding-left: 6px;"><option value="1" selected="">кг</option><option value="3">тн</option></select></div>
-                        <div class="col-2 d-flex d-xl-flex justify-content-center align-items-center"><input type="text" id="cena" class="form-control text-center" style="width: 98%;"></div>
-                        <div class="col-1 d-flex d-xl-flex justify-content-center align-items-center"><select id="valuta" class="form-control" style="width: 98%;padding-left: 6px;"><option value="1" selected="">BYN</option><option value="2">USD</option><option value="3">EUR</option></select></div>
-                    </div>
-                    <div class="row no-gutters border border-danger" style="padding-bottom: 5px;">
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="price_no_nds">Стоимость</label></div>
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="nds">Ставка НДС</label></div>
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="summ_nds">Сумма НДС</label></div>
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" id="cena_nds" for="">Стоимость с НДС</label></div>
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><input type="text" id="price_no_nds" class="form-control text-center" style="width: 98%;cursor: not-allowed;" readonly=""></div>
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><input type="text" id="nds" class="form-control text-center" style="width: 98%" value="20"></div>
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><input class="form-control text-center" type="text" id="summ_nds" style="width: 98%;cursor: not-allowed;" readonly=""></div>
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><input class="form-control text-center" type="text" id="cena_nds" style="width: 98%;cursor: not-allowed;" readonly=""></div>
-                    </div>
-                    <div class="row no-gutters border border-primary border-right-0 border-left-0 border-top-0" style="padding-bottom: 5px;">
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="kol_mest">Количествово мест</label></div>
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="mass_gruza">Масса груза</label></div>
-                        <div class="col-6 d-flex d-xl-flex justify-content-center align-items-center"><label class="col-form-label" for="description">Описание</label></div>
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><input type="text" id="kol_mest" class="form-control text-center" style="width: 98%"></div>
-                        <div class="col-3 d-flex d-xl-flex justify-content-center align-items-center"><input type="text" id="mass_gruza" class="form-control text-center" style="width: 98%"></div>
-                        <div class="col-6 d-flex d-xl-flex justify-content-center align-items-center"><textarea id="description" class="form-control" style="width: 98%;min-height: 38px;height: 38px;"></textarea></div>
-                    </div>
-                    <div class="row no-gutters" style="padding-top: 1.5%;">
-                        <div class="col-6 offset-4 offset-xl-3 d-flex justify-content-xl-center" type=""><span style="font-size: 21px;margin-top: 0px;margin-bottom: 10px;">Действие над формой</span></div>
-                        <div class="col-3 offset-4 offset-xl-3"><button class="btn btn-success btn-lg text-sm-center d-xl-flex justify-content-xl-center btn-success" type="button" style="width: 98%;font-size: 26px;" onclick="save()">Сохранить</button></div>
-                        <div class="col-3"><button class="btn btn-outline-warning btn-lg" type="button" style="width: 98%;font-size: 26px;" onclick="clearFields()">Очистить</button></div>
+
+
+    <div class="row no-gutters" id="DanniePoTransporty" style="display:none;">
+    <div class="col-12">
+        <div>
+            <ul class="nav nav-tabs nav-justified">
+                <li class="nav-item"><a role="tab" data-toggle="tab" class="nav-link active" href="#tab-1">Приемка смешанного стеклобоя</a></li>
+                <li class="nav-item"><a role="tab" data-toggle="tab" class="nav-link" href="#tab-2">Отгрузка стекла</a></li>
+                <li class="nav-item"><a role="tab" data-toggle="tab" class="nav-link" href="#tab-3">Отгрузка металлов и ПЭТ</a></li>
+                <li class="nav-item"><a role="tab" data-toggle="tab" class="nav-link" href="#tab-4">Отгрузка отходов</a></li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="tab-1">
+                    <div class="row" style="padding-top: 5px;">
+                        <div class="col-6 border border-primary border-top-0 border-left-0 border-bottom-0" style="background-image: url({% static 'img/back1.svg' %});background-repeat: no-repeat;background-position: center;background-size: contain;">
+                            <div class="row no-gutters">
+                                <div class="col-12 text-center"><span style="font-size: 21px;">Данные по транспорту</span></div>
+                            </div>
+
+                            <div class="row no-gutters border border-primary border-left-0 border-right-0" style="padding-bottom: 5px;">
+                                <div class="col-6 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p1Contragent">Контрагент</label></div>
+                                <div class="col-6 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p1Contract">Договор</label></div>
+                                <div class="col-6 text-center d-flex justify-content-center align-items-center"><textarea id="p1Contragent" class="form-control" style="width: 98%;min-height: 38px;height: 38px;" readonly></textarea></div>
+                                <div class="col-6 text-center d-flex justify-content-center align-items-center"><textarea id="p1Contract" class="form-control" style="width: 98%;min-height: 38px;height: 38px;" readonly></textarea></div>
+                                <div class="col-6 text-center d-flex justify-content-center align-items-center" style="padding-top: 5px;padding-bottom: 5px;">
+                                    <button class="btn btn-outline-primary" type="button" style="width: 70%;min-height: 38px;height: 38px;" onclick="show_serchAgent(1)">Выбрать</button></div>
+                                <div class="col-6 text-center d-flex justify-content-center align-items-center"
+                                    style="padding-top: 5px;padding-bottom: 5px;">
+                                    <button class="btn btn-outline-primary" type="button" style="width: 70%;min-height: 38px;height: 38px;" onclick="show_serchContract(1)">Выбрать</button></div>
+                            </div>
+                            <div class="row no-gutters border border-primary border-left-0 border-right-0 border-top-0" style="padding-bottom: 5px;">
+                                <div class="col-12 text-center"><label class="col-form-label d-flex justify-content-center align-items-center" for="p1Description">Описание</label></div>
+                                <div class="col-12 d-xl-flex justify-content-xl-center"><textarea id="p1Description" class="form-control" style="width: 98%;min-height: 136px;height: 38px;"></textarea></div>
+                            </div>
+                        </div>
+                        <div class="col-6 text-center border border-primary border-left-0 border-top-0 border-right-0 border-bottom-0" style="background-image: url({% static 'img/back2.svg' %});background-repeat: no-repeat;background-position: center;background-size: contain;">
+                            <div class="row no-gutters">
+                                <div class="col"><span style="font-size: 21px;">Поля накладной</span></div>
+                            </div>
+                            <div class="row no-gutters border border-secondary border-right-0 border-left-0 border-bottom-0" style="padding-bottom: 5px;">
+                                <div class="col-2 text-center d-flex justify-content-center align-items-center"><label class="col-form-label text-center" for="p1TypeInvoice">Тип накладной</label></div>
+                                <div class="col-3 text-center d-flex justify-content-center align-items-center"><label class="col-form-label text-center" for="p1SeriesInvoice">Серия накладной</label></div>
+                                <div class="col-4 text-center d-flex justify-content-center align-items-center"><label class="col-form-label text-center" for="p1NumberInvoice">Номер накладной</label></div>
+                                <div class="col-3 text-center d-flex justify-content-center align-items-center"><label class="col-form-label text-center" for="p1DateInvoice">Дата накладной</label></div>
+                                <div class="col-2 text-center d-flex justify-content-center align-items-center"><select id="p1TypeInvoice" class="custom-select form-control" style="width:80%;">
+                                    <option value="1" selected>ТН</option><option value="2">ТТН</option><option value="3" selected>ТЖН</option></select></div>
+                                <div class="col-3 text-center d-flex justify-content-center align-items-center"><input type="text" id="p1SeriesInvoice" class="form-control text-center" style="width: 60%;" /></div>
+                                <div class="col-4 text-center d-flex justify-content-center align-items-center"><input type="text" id="p1NumberInvoice" class="form-control text-center" style="width: 98%;" /></div>
+                                <div class="col-3 text-center d-flex justify-content-center align-items-center"><input id="p1DateInvoice" class="form-control" type="date" style="width:98%" /></div>
+                            </div>
+                            <div class="row no-gutters border border-primary border-left-0 border-right-0" style="padding-bottom:5px">
+                                <div class="col-3 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p1WeightInvoice">Вес по накладной</label></div>
+                                <div class="col-1 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p1UnitWeight">Ед.</label></div>
+                                <div class="col-2 offset-1 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p1ContractPrice">Первичная цена</label></div>
+                                <div class="col-1 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p1UnitContractPrice">Валюта</label></div>
+                                <div class="col-3 offset-1 text-center d-flex justify-content-center align-items-center"><label class="col-form-label d-xl-flex justify-content-xl-center align-items-xl-end" for="p1NdsPercent">% Ставка НДС</label></div>
+                                <div class="col-3 text-center d-flex justify-content-center align-items-center"><input type="text" id="p1WeightInvoice" class="form-control text-center" style="width: 98%;" /></div>
+                                <div class="col-1">
+                                    <select class="custom-select form-control" id="p1UnitWeight" style="width: 98%;padding-left: 6px;"><option value="1" selected>кг</option><option value="3">тн</option></select></div>
+                                <div class="col-2 offset-1 text-center d-flex justify-content-center align-items-center"><input type="text" id="p1ContractPrice" class="form-control text-center" style="width: 98%;" readonly /></div>
+                                <div class="col-1"><select class="custom-select form-control text-center" id="p1UnitContractPrice" style="width: 98%;padding-left: 5px;" disabled><option value="BYN" selected>BYN</option><option value="USD">USD</option><option value="EUR">EUR</option><option value="RUR">RUR</option></select></div>
+                                <div
+                                    class="col-3 offset-1 text-center d-flex justify-content-center align-items-center"><input type="text" id="p1NdsPercent" class="form-control text-center" style="width: 98%" value="20" /></div>
+                        </div>
+                        <div class="row no-gutters border border-primary border-left-0 border-right-0 border-top-0" style="padding-bottom: 5px;">
+                            <div class="col-4 text-center d-flex justify-content-center align-items-center"><label class="col-form-label text-center" for="p1TypeArrival">Вид прихода</label></div>
+                            <div class="col-3 offset-5 text-center d-flex justify-content-center align-items-center"><label class="col-form-label text-center" for="p1DirtPercent">% Засора</label></div>
+                            <div class="col-4 text-center d-flex justify-content-center align-items-center"><select class="custom-select form-control" id="p1TypeArrival"><option value="1" selected>От отходов производства</option><option value="2">От отходов потребления</option></select></div>
+                            <div class="col-3 offset-5 text-center d-flex justify-content-center align-items-center"><input type="text" id="p1DirtPercent" class="form-control" style="width: 98%;" /></div>
+                        </div>
+                        <div class="row no-gutters justify-content-end border border-primary border-left-0 border-right-0 border-top-0" style="padding-top: 5px;padding-bottom: 5px;">
+                            <div class="col d-xl-flex justify-content-xl-center align-items-xl-center"><span style="font-size: 26px;color: rgb(85,141,249);">Выберите действие с формой ---&gt; </span></div>
+                            <div class="col-3 mr-4"><button class="btn btn-outline-warning" id="p1ButtonClearForm" type="button" style="width: 98%;font-size: 26px;">Очистить</button></div>
+                            <div class="col-3"><button class="btn btn-success text-sm-center d-xl-flex justify-content-xl-center btn-success" onclick="saveFormTable(1)" type="button" style="width: 98%;font-size: 26px;">Сохранить</button></div>
+                        </div>
                     </div>
                 </div>
             </div>
+                <div role="tabpanel" class="tab-pane" id="tab-2">
+                <div class="row" style="padding-top: 5px;">
+                    <div class="col-6 border border-primary border-top-0 border-left-0 border-bottom-0" style="background-image: url({% static 'img/back1.svg' %});background-repeat: no-repeat;background-position: center;background-size: contain;">
+                        <div class="row no-gutters">
+                            <div class="col-12 text-center"><span style="font-size: 21px;">Данные по транспорту</span></div>
+                        </div>
+
+                        <div class="row no-gutters border border-primary border-left-0 border-right-0" style="padding-bottom: 5px;">
+                            <div class="col-6 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p2Contragent">Контрагент</label></div>
+                            <div class="col-6 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p2Contract">Договор</label></div>
+                            <div class="col-6 text-center d-flex justify-content-center align-items-center"><textarea id="p2Contragent" class="form-control" style="width: 98%;min-height: 38px;height: 38px;" readonly></textarea></div>
+                            <div class="col-6 text-center d-flex justify-content-center align-items-center"><textarea id="p2Contract" class="form-control" style="width: 98%;min-height: 38px;height: 38px;" readonly></textarea></div>
+                            <div class="col-6 text-center d-flex justify-content-center align-items-center" style="padding-top: 5px;padding-bottom: 5px;"><button class="btn btn-outline-primary" type="button" style="width: 70%;min-height: 38px;height: 38px;" onclick="show_serchAgent(2)">Выбрать</button></div>
+                            <div class="col-6 text-center d-flex justify-content-center align-items-center" style="padding-top: 5px;padding-bottom: 5px;"><button class="btn btn-outline-primary" type="button" style="width: 70%;min-height: 38px;height: 38px;" onclick="show_serchContract(2)">Выбрать</button></div>
+                        </div>
+                        <div class="row no-gutters border border-primary border-left-0 border-right-0 border-top-0" style="padding-bottom: 5px;">
+                            <div class="col-12 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p2Description">Описание</label></div>
+                            <div class="col-12 text-center d-flex justify-content-center align-items-center"><textarea id="p2Description" class="form-control" style="width: 98%;min-height: 120px;height: 38px;"></textarea></div>
+                        </div>
+                    </div>
+                    <div class="col-6 text-center border border-primary border-left-0 border-top-0 border-right-0 border-bottom-0" style="background-image: url({% static 'img/back2.svg' %});background-repeat: no-repeat;background-position: center;background-size: contain;">
+                        <div class="row no-gutters">
+                            <div class="col"><span style="font-size: 21px;">Поля накладной</span></div>
+                        </div>
+                        <div class="row no-gutters border border-secondary border-right-0 border-left-0 border-bottom-0" style="padding-bottom: 5px;">
+                            <div class="col-2 text-center d-flex justify-content-center align-items-center"><label class="col-form-label text-center" for="p2TypeInvoice">Тип накладной</label></div>
+                            <div class="col-3 text-center d-flex justify-content-center align-items-center"><label class="col-form-label text-center" for="p2SeriesInvoice">Серия накладной</label></div>
+                            <div class="col-4 text-center d-flex justify-content-center align-items-center"><label class="col-form-label text-center" for="p2NumberInvoice">Номер накладной</label></div>
+                            <div class="col-3 text-center d-flex justify-content-center align-items-center"><label class="col-form-label text-center" for="p1DateInvoice">Дата накладной</label></div>
+                            <div class="col-2 text-center d-flex justify-content-center align-items-center">
+                                <select class="custom-select form-control" id="p2TypeInvoice" style="width:80%;">
+                                    <option value="1">ТН-1</option>
+                                    <option value="2" selected>ТН-2</option>
+                                    <option value="3">ТТН-1</option><option value="4">ТТН-2</option>
+                                    <option value="6">ТТН-3</option><option value>ТТН-4</option>
+                                </select>
+                            </div>
+                            <div class="col-3 text-center d-flex justify-content-center align-items-center">
+                                <input type="text" id="p2SeriesInvoice" class="form-control text-center" style="width: 60%;" /></div>
+                        <div class="col-4 text-center d-flex justify-content-center align-items-center">
+                            <input type="text" id="p2NumberInvoice" class="form-control text-center" style="width: 98%;" /></div>
+                        <div class="col-3 text-center d-flex justify-content-center align-items-center">
+                            <input id="p1DateInvoice" class="form-control" type="date" style="width:98%" /></div>
+                    </div>
+                    <div class="row no-gutters border border-primary border-left-0 border-right-0" style="padding-bottom:5px">
+                        <div class="col-3 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p2TypeMaterialOut">Тип материала отгрузки</label></div>
+                        <div class="col-2 offset-1 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p2ContractPrice">Первичная цена</label></div>
+                        <div class="col-1 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p2UnitContractPrice">Валюта</label></div>
+                        <div class="col-3 offset-2 text-center d-flex justify-content-center align-items-center"><label class="col-form-label text-center d-flex justify-content-center align-items-center" for="p2NdsPercent">% Ставка НДС</label></div>
+                        <div class="col-3 text-center d-flex justify-content-center align-items-center">
+                            <select class="custom-select form-control" id="p2TypeMaterialOut" style="width: 98%;padding-left: 6px;">
+                                <option value="1" selected>Стекло бесцветное</option>
+                                <option value="2">Стекло коричневое</option>
+                                <option value="3">Стекло зеленое</option>
+                                <option value="4">Отсев</option></select>
+                        </div>
+                        <div
+                            class="col-2 offset-1 text-center d-flex justify-content-center align-items-center">
+                            <input type="text" id="p2ContractPrice" class="form-control" style="width: 98%;" readonly /></div>
+                    <div class="col-1 text-center d-flex justify-content-center align-items-center">
+                        <select class="custom-select form-control text-center" id="p2UnitContractPrice" style="width: 98%;padding-left: 5px;" disabled><option value="BYN" selected>BYN</option><option value="USD">USD</option><option value="3">EUR</option><option value="RUR">RUR</option></select></div>
+                    <div class="col-3 offset-2 text-center d-flex justify-content-center align-items-center">
+                        <input type="text" id="p2NdsPercent" class="form-control text-center" style="width: 98%" value="20" /></div>
+            </div>
+            <div class="row no-gutters justify-content-end border border-primary border-left-0 border-right-0 border-top-0" style="padding-top: 71px;padding-bottom: 5px;">
+                <div class="col d-flex justify-content-center align-items-center"><span style="font-size: 26px;color: rgb(85,141,249);">Выберите действие с формой ---&gt; </span></div>
+                <div class="col-3 mr-4"><button class="btn btn-outline-warning" id="p2ButtonClearForm" type="button" style="width: 98%;font-size: 26px;">Очистить</button></div>
+                <div class="col-3"><button class="btn btn-success text-sm-center d-xl-flex justify-content-xl-center btn-success" onclick="saveFormTable(2)" type="button" style="width: 98%;font-size: 26px;">Сохранить</button></div>
+            </div>
         </div>
     </div>
+</div>
+                <div role="tabpanel" class="tab-pane" id="tab-3">
+    <div class="row" style="padding-top: 5px;">
+        <div class="col-6 border border-primary border-top-0 border-left-0 border-bottom-0" style="background-image: url({% static 'img/back1.svg' %});background-repeat: no-repeat;background-position: center;background-size: contain;">
+            <div class="row no-gutters">
+                <div class="col-12 text-center"><span style="font-size: 21px;">Данные по транспорту</span></div>
+            </div>
+
+            <div class="row no-gutters border border-primary border-left-0 border-right-0" style="padding-bottom: 5px;">
+                <div class="col-6 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p3Contragent">Контрагент</label></div>
+                <div class="col-6 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p3Contract">Договор</label></div>
+                <div class="col-6 text-center d-flex justify-content-center align-items-center"><textarea id="p3Contragent" class="form-control" style="width: 98%;min-height: 38px;height: 38px;" readonly></textarea></div>
+                <div class="col-6 text-center d-flex justify-content-center align-items-center"><textarea id="p3Contract" class="form-control" style="width: 98%;min-height: 38px;height: 38px;" readonly></textarea></div>
+                <div class="col-6 text-center d-flex justify-content-center align-items-center" style="padding-top: 5px;padding-bottom: 5px;"><button class="btn btn-outline-primary" type="button" style="width: 70%;min-height: 38px;height: 38px;" onclick="show_serchAgent(3)">Выбрать</button></div>
+                <div class="col-6 text-center d-flex justify-content-center align-items-center" style="padding-top: 5px;padding-bottom: 5px;"><button class="btn btn-outline-primary" type="button" style="width: 70%;min-height: 38px;height: 38px;" onclick="show_serchContract(3)">Выбрать</button></div>
+            </div>
+            <div class="row no-gutters border border-primary border-left-0 border-right-0 border-top-0" style="padding-bottom: 5px;">
+                <div class="col-12 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p3Description">Описание</label></div>
+                <div class="col-12 text-center d-flex justify-content-center align-items-center"><textarea id="p3Description" class="form-control" style="width: 98%;min-height: 120px;height: 38px;"></textarea></div>
+            </div>
+        </div>
+        <div class="col-6 text-center border border-primary border-left-0 border-top-0 border-right-0 border-bottom-0" style="background-image: url({% static 'img/back2.svg' %});background-repeat: no-repeat;background-position: center;background-size: contain;">
+            <div class="row no-gutters">
+                <div class="col"><span style="font-size: 21px;">Поля накладной</span></div>
+            </div>
+            <div class="row no-gutters border border-secondary border-right-0 border-left-0 border-bottom-0" style="padding-bottom: 5px;">
+                <div class="col-2 text-center d-flex justify-content-center align-items-center"><label class="col-form-label text-center" for="p3TypeInvoice">Тип накладной</label></div>
+                <div class="col-3 text-center d-flex justify-content-center align-items-center"><label class="col-form-label text-center" for="p3SeriesInvoice">Серия накладной</label></div>
+                <div class="col-4 text-center d-flex justify-content-center align-items-center"><label class="col-form-label text-center" for="p3NumberInvoice">Номер накладной</label></div>
+                <div class="col-3 text-center d-flex justify-content-center align-items-center"><label class="col-form-label text-center" for="p3DateInvoice">Дата накладной</label></div>
+                <div class="col-2 text-center d-flex justify-content-center align-items-center">
+                    <select class="custom-select form-control" id="p3TypeInvoice" style="width:80%;">
+                        <option value="1">ТН-1</option>
+                        <option value="2">ТН-2</option>
+                        <option value="3" selected>ТТН-1</option>
+                        <option value="4">ТТН-2</option>
+                        <option value="6">ТТН-3</option>
+                        <option value>ТТН-4</option></select></div>
+                <div class="col-3 text-center d-flex justify-content-center align-items-center">
+                    <input type="text" id="p3SeriesInvoice" class="form-control text-center" style="width: 60%;" /></div>
+            <div class="col-4 text-center d-flex justify-content-center align-items-center">
+                <input type="text" id="p3NumberInvoice" class="form-control text-center" style="width: 98%;" /></div>
+            <div class="col-3 text-center d-flex justify-content-center align-items-center">
+                <input id="p3DateInvoice" class="form-control" type="date" style="width:98%" /></div>
+        </div>
+        <div class="row no-gutters border border-primary border-left-0 border-right-0" style="padding-bottom:5px">
+            <div class="col-3 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p3TypeMaterialOut">Тип материала отгрузки</label></div>
+            <div class="col-2 offset-1 d-flex justify-content-center align-items-center"><label class="col-form-label" for="p3ContractPrice">Первичная цена</label></div>
+            <div class="col-1 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p3UnitContractPrice">Валюта</label></div>
+            <div class="col-3 offset-2 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p3NdsPercent">% Ставка НДС</label></div>
+            <div class="col-3 text-center d-flex justify-content-center align-items-center"><select class="custom-select form-control" id="p3TypeMaterialOut" style="width: 98%;padding-left: 6px;">
+                <option value="1" selected>Цветной металлолом</option><option value="2">Черный металлолом</option><option value="3">ПЭТ - бутылки</option></select></div>
+            <div
+                class="col-2 offset-xl-1 text-center"><input type="text" id="p3ContractPrice" class="form-control" style="width: 98%;" readonly /></div>
+        <div class="col-1"><select class="custom-select form-control text-center" id="p3UnitContractPrice" style="width: 98%;padding-left: 5px;" disabled>
+            <option value="BYN" selected>BYN</option><option value="USD">USD</option><option value="EUR">EUR</option><option value="RUR">RUR</option></select></div>
+        <div
+            class="col-3 col-xl-3 offset-xl-2 d-xl-flex justify-content-xl-center"><input type="text" id="p3NdsPercent" class="form-control text-center" style="width: 98%" value="20" /></div>
+</div>
+<div class="row no-gutters border border-primary border-left-0 border-right-0 border-top-0" style="padding: 5px;padding-top: 4px;">
+    <div class="col-4 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p3NumberAccompanyingPassport"> № сопроводительного паспорта</label></div>
+    <div class="col-2 text-center d-flex justify-content-center align-items-center"><input type="text" id="p3NumberAccompanyingPassport" class="form-control text-center" style="width: 98%;" /></div>
+    <div class="col-3 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p3NumberWayList"> № сопроводительного паспорта</label></div>
+    <div class="col-2 text-center d-flex justify-content-center align-items-center"><input type="text" id="p3NumberWayList" class="form-control text-center" style="width: 98%;" /></div>
+</div>
+<div class="row no-gutters justify-content-end border border-primary border-left-0 border-right-0 border-top-0" style="padding-top: 23px;padding-bottom: 5px;">
+    <div class="col text-center d-flex justify-content-center"><span style="font-size: 26px;color: rgb(85,141,249);">Выберите действие с формой ---&gt; </span></div>
+    <div class="col-3 mr-4"><button class="btn btn-outline-warning" id="p3ButtonClearForm" type="button" style="width: 98%;font-size: 26px;">Очистить</button></div>
+    <div class="col-3"><button class="btn btn-success text-sm-center d-xl-flex justify-content-xl-center btn-success" onclick="saveFormTable(3)" type="button" style="width: 98%;font-size: 26px;">Сохранить</button></div>
+</div>
+</div>
+</div>
+</div>
+                <div role="tabpanel" class="tab-pane" id="tab-4">
+    <div class="row" style="padding-top: 5px;">
+        <div class="col-6 border border-primary border-top-0 border-left-0 border-bottom-0" style="background-image: url({% static 'img/back1.svg' %});background-repeat: no-repeat;background-position: center;background-size: contain;">
+            <div class="row no-gutters">
+                <div class="col-12 text-center"><span style="font-size: 21px;">Данные по транспорту</span></div>
+            </div>
+
+            <div class="row no-gutters border border-primary border-left-0 border-right-0" style="padding-bottom: 5px;">
+                <div class="col-12 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p4Description">Описание</label></div>
+                <div class="col-12 text-center d-flex justify-content-center align-items-center"><textarea id="p4Description" class="form-control" style="width: 98%;min-height: 120px;height: 38px;"></textarea></div>
+            </div>
+        </div>
+        <div class="col-6 text-center border border-primary border-left-0 border-top-0 border-right-0 border-bottom-0" style="background-image: url({% static 'img/back2.svg' %});background-repeat: no-repeat;background-position: center;background-size: contain;">
+            <div class="row no-gutters">
+                <div class="col"><span style="font-size: 21px;">Дополнительные поля</span></div>
+            </div>
+            <div class="row no-gutters border border-secondary border-left-0 border-right-0 border-bottom-0" style="padding-bottom: 5px;padding-top: 5px;">
+                <div class="col-4 text-center d-flex justify-content-center align-items-center"><label class="col-form-label" for="p4NumberAccompanyingPassport"> Номер сопроводительного паспорта</label></div>
+                <div class="col-3 text-center d-flex justify-content-center align-items-center"><input type="text" id="p4NumberAccompanyingPassport" class="form-control text-center" style="width: 98%;" /></div>
+            </div>
+            <div class="row no-gutters justify-content-end border border-primary border-left-0 border-right-0" style="padding-top: 56px;padding-bottom: 5px;">
+                <div class="col text-center d-flex justify-content-center"><span style="font-size: 26px;color: rgb(85,141,249);">Выберите действие с формой ---&gt; </span></div>
+                <div class="col-3 mr-4"><button class="btn btn-outline-warning" id="p4ButtonClearForm" type="button" style="width: 98%;font-size: 26px;">Очистить</button></div>
+                <div class="col-3"><button class="btn btn-success text-center d-flex justify-content-center btn-success" onclick="saveFormTable(4)" type="button" style="width: 98%;font-size: 26px;">Сохранить</button></div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+        </div>
 
 
 <script>
 
 
-    $("#cena").keyup(function () {
-        let kol = $("#ves_nakladnaya").val();
-        let res = $(this).val() * kol * ((($("#nds").val()) / 100) + 1);
-        let sumnds = $(this).val() * kol * ((($("#nds").val()) / 100) );
-        let nonds = $("#cena").val() * kol;
-        $("#cena_nds").val(res);
-        $("#price_no_nds").val(nonds);
-        $("#summ_nds").val(sumnds);
 
-    });
-    $("#nds").keyup(function () {
-        let kol = $("#ves_nakladnaya").val();
-        let res = $("#cena").val() * kol * ((($("#nds").val()) / 100) + 1);
-        let sumnds = $("#cena").val() * kol * ((($("#nds").val()) / 100) );
-        let nonds = $("#cena").val() * kol;
-        $("#cena_nds").val(res);
-        $("#price_no_nds").val(nonds);
-         $("#summ_nds").val(sumnds);
-    });
+    let agents = "{{ agentsJ }}";
+            agents = agents.replace(/&quot;/g,'"');
+            agents = JSON.parse(agents);
+        let tovar = "{{ production }}";
+            tovar = tovar.replace(/&quot;/g,'"');
+            tovar = JSON.parse(tovar);
+
+             const nameId1=['p1NameDriver','p1DataAuto','p1DataTrailer','p1Contragent','p1Contract','p1Description','p1SeriesInvoice',
+    'p1NumberInvoice','p1DateInvoice','p1WeightInvoice','p1NdsPercent','p1ContractPrice','p1DirtPercent'],
+        nameId2=['p2NameDriver','p2DataAuto','p2DataTrailer','p2Contragent','p2Contract','p2Description','p2SeriesInvoice',
+            'p2NumberInvoice','p2DateInvoice','p2TypeMaterialOut','p2NdsPercent','p2ContractPrice','p2NdsPercent'],
+        nameId3=['p3NameDriver','p3DataAuto','p3DataTrailer','p3Contragent','p3Contract','p3Description','p3SeriesInvoice',
+            'p3NumberInvoice','p3DateInvoice','p3TypeMaterialOut','p3NdsPercent','p3ContractPrice','p3NdsPercent','p3NumberAccompanyingPassport',
+            'p3NumberWayList'],
+        nameId4=['p4NameDriver','p4DataAuto','p4DataTrailer','p4Contragent','p4Contract','p4Description',
+            'p4NumberAccompanyingPassport'];
+    const nameSel1=['p1TypeInvoice','p1UnitWeight','p1UnitContractPrice','p1TypeArrival'],
+        nameSel2=['p2TypeInvoice','p2TypeMaterialOut','p2UnitContractPrice'],
+        nameSel3=['p3TypeInvoice','p3TypeMaterialOut','p3UnitContractPrice'],
+        nameSel4=['aaassaasasasa'];
 
 
-    function save() {
-        let catalogId = $('#data_auto').attr('data-id');
-        let typeCar = $("[name='cheks']:checked").val();
-        let ves = $("#vesFix").html();
-        let name = $("#name_tovar").val();
-        let nakladnaya = $("#nakladnaya").val();
-        let seria = $("#seria").val();
-        let ttn = $("#ttn").val();
-        let ed = $("#ed_ves").val();
-        let ves_nakladnaya = $("#ves_nakladnaya").val();
-        let valuta = $("#valuta").val();
-        let price = $("#cena").val();
-        let nds = $("#nds").val();
-        let price_nds = $("#cena_nds").val();
-        let nameDrive = $("#name_driver").val();
-        let numberPricep = $("#gos_num_pricep").html();
-        var num = $('#gos_num_avto').html();
-        var arrAuto = num.split('-');
-        var arrPricep = num.split('-');
-        let numAuto = arrAuto.join("");
-        let nunu = numAuto;
-        let numPricep = arrPricep.join("");
-        let prov = parseInt(nunu);
-        if (!prov || prov == 0) {
-            alert('ошибка с номером автотранспорта');
-            return;
+{#   Функция открывает перевамаемый табс#}
+    const chooseTabs = (numberTabs) =>{
+    $('.nav-link').removeClass('active');
+    $('.tab-pane').removeClass('active');
+
+    $('.nav-link[href="#tab-'+numberTabs+'"]').addClass("active");
+    $('#tab-'+numberTabs).addClass("active");
+
+    $("#DanniePoTransporty").animate({height: 'show'}, 300);
+}
+
+
+
+                {#запрет на манипулирование с радио кнопкой#}
+    const disabledSelectBruttoNetto=(brutto,netto)=>{
+        if (brutto=='' || brutto==0) {
+            $("#brutto").prop('checked',true);
+        } else {
+            $("#tara").prop('checked',true);
         }
-        Table[0] = [
-            name,                                       //1
-            ves_nakladnaya,                             //2
-            ed,                                         //3
-            price,                                      //4
-            $('#price_no_nds').val(),                   //5
-            valuta,                                     //6
-            price_nds,                                  //7
-            nds,                                        //8
-            ttn,                                        //9
-            seria,                                      //10
-            nakladnaya,                                 //11
-            $("#razreshil").val(),                      //12
-            $("#pogruzka").val(),                       //13
-            $("#N_p_lista").val(),                      //14
-            $("#prinyal").val(),                        //15
-            nameDrive,                                  //16
-            $('#sdal').val(),                           //17
-            $('#osnovanie').val()   ,                    //18
-            $("#name_tovar").attr('data-id') ,          //19
-            $("#dateNakladnaya").val()                  //20
-        ]
-        ;
+        $("#brutto").prop("disabled",true);
+        $("#tara").prop("disabled",true);
+    }
 
-        let data = {
-            "nakladnaya": Table,
-            "contragent": $("#agent").attr('data-id'),
-            'typeCar': typeCar,
-            'numAuto': numAuto,
-            'numPricep': numberPricep,
-            "ves": ves,
-            "catalogId":catalogId
-        };
-        console.log(data);
+    {#при нажатии кнопки сохранить получаем id всех полей указанной формы#}
+    const saveFormTable=(number)=>{
+        let idFieldText,idFieldSelect;
+        switch (+number){
+            case 1:
+                idFieldText = nameId1;
+                idFieldSelect = nameSel1;
+                break;
+            case 2:
+                idFieldText = nameId2;
+                idFieldSelect = nameSel2;
+                break;
+            case 3:
+                idFieldText = nameId3;
+                idFieldSelect = nameSel3;
+                break;
+            case 4:
+                idFieldText = nameId4;
+                idFieldSelect = nameSel4;
+                break;
+        }
+        let res ={};
+        idFieldText.forEach(function(a,b){
+            let key = a.slice(2);
+            if(key==="Contragent") {
+                res[key] = $("#" + a).attr("data-id");
+            }else if(key==="Contract"){
+                res[key] = $("#"+a).attr("data-id");
+
+            }else{
+                res[key] = $("#"+a).val();
+            }
+
+        });
+         idFieldSelect.forEach(function(a,b){
+            let key = a.slice(2);
+            res[key] = $("#"+a).val();
+        });
+        res.gos_num_avto= $("#gos_num_avto").val();
+        res.gos_num_pricep=$("#gos_num_pricep").val();
+        res.operation = +number;
+        res.ves=$("#vesFix").html();
+        console.log(res);
+        save(res);
+
+
+    }
+
+    $("#p1ButtonClearForm").click(()=>{
+        nameId1.forEach((item)=>{
+            $('#'+item).val('');
+        });
+        nameSel1.forEach((item)=>{
+            $('#'+item).val(1);
+        });
+        clearCommonVesNakladnay()
+
+    });
+
+        const clearCommonVesNakladnay = () =>{
+        $("#brutto").removeAttr("disabled");
+        $("#tara").removeAttr("disabled");
+        $('table tr').removeClass('marked');
+         $('#gos_num_avto').val('');
+          $('#gos_num_pricep').val('');
+}
+    $("#p2ButtonClearForm").click(()=>{
+        nameId2.forEach((item)=>{
+            $('#'+item).val('');
+        });
+        nameSel2.forEach((item)=>{
+            $('#'+item).val(1);
+        });
+        clearCommonVesNakladnay()
+    });
+    $("#p3ButtonClearForm").click(()=>{
+        nameId3.forEach((item)=>{
+            $('#'+item).val('');
+        });
+        nameSel3.forEach((item)=>{
+            $('#'+item).val(1);
+        })
+        clearCommonVesNakladnay()
+    });
+    $("#p4ButtonClearForm").click(()=>{
+        nameId4.forEach((item)=>{
+            $('#'+item).val('');
+        });
+        nameSel4.forEach((item)=>{
+            $('#'+item).val(1);
+        });
+        clearCommonVesNakladnay()
+    });
+$(document).ready(function(){
+    tableAutoIn();
+});
+let auto_in = "{{ auto_in_J|escapejs }}";
+{#auto_in = auto_in.replace(/&quot;/g,'"');#}
+auto_in = JSON.parse(auto_in);
+    //=================================================================================================================================================
+//==================================================================================================================================================================================================
+function replaceRight(num){
+    let actual =auto_in.find(obj => obj.number == num);
+    console.log(actual);
+    $("#p1ButtonClearForm").trigger('click');
+                $("#p2ButtonClearForm").trigger('click');
+                $("#p3ButtonClearForm").trigger('click');
+                $("#p4ButtonClearForm").trigger('click');
+    chooseTabs(actual.operatrion);
+    $("#gos_num_avto").val(actual.number);
+    $("#gos_num_pricep").val(actual.numberPricep);
+    $("#p"+actual.operatrion+"Contragent").val(actual.nameagent);
+    $("#p"+actual.operatrion+"Contragent").attr('data-id',actual.agents_id);
+    $("#p"+actual.operatrion+"DateInvoice").val(actual.nakladnayaDate);
+    $("#p"+actual.operatrion+"SeriesInvoice").val(actual.seria);
+    $("#p"+actual.operatrion+"NumberInvoice").val(actual.numberNakladnaia);
+    $("#p"+actual.operatrion+"NameDriver").val(actual.driver);
+    $("#p"+actual.operatrion+"Description").val(actual.description);
+    $("#p"+actual.operatrion+"Contract").val(actual.contractname);
+    $("#p"+actual.operatrion+"Contract").attr('data-id',actual.contractid);
+    $("#p"+actual.operatrion+"TypeInvoice").val();
+    $("#p"+actual.operatrion+"UnitContractPrice").val(actual.unitPrice);
+    $("#p"+actual.operatrion+"ContractPrice").val(actual.firstPrice);
+    $("#p"+actual.operatrion+"NdsPercent").val(actual.nds);
+    $("#p"+actual.operatrion+"WeightInvoice").val(actual.ves_nakladnaya);
+    $("#p"+actual.operatrion+"DirtPercent").val(actual.discont);
+    $("#p"+actual.operatrion+"TypeInvoice").val(actual.type);
+    $("#p"+actual.operatrion+"TypeArrival").val(actual.typeOperation);
+    $("#p"+actual.operatrion+"TypeMaterialOut").val(actual.typeMaterial);
+    $("#p"+actual.operatrion+"NumberAccompanyingPassport").val(actual.numberPasport);
+    $("#p"+actual.operatrion+"NumberWayList").val(actual.numberPassportList);
+    $(".btn-menu").trigger('click');
+}
+
+
+function tableAutoIn(){
+    let ready='';
+    auto_in.forEach(function(a,b){
+        ready+=`<tr>
+                <td>${a.number}</td>
+                <td>${a.operatrion}</td>
+                <td>${a.nameagent}</td>
+                <td>Cell 3</td>
+                <td>${a.last_in}</td>
+                <td><button id="to_right${a.id}" class="btn btn-primary btM" onclick="replaceRight('${a.number}')" type="button">------></button></td>
+            </tr>`;
+    });
+    $("#auti_in").html(ready);
+}
+
+
+
+    function save(data) {
+
         $.ajax({
             type: "POST",
-            url: urlAjaxAdd,
+            url: "{% url 'newAddVagon' %}",
             traditional: true,
             dataType: 'json',
             data: data,
-            success: function () {
+            success: function (ret) {
+                 auto_in = ret.all;
                 console.log('Auto Add in DB');
+                 $("#p1ButtonClearForm").trigger('click');
+                $("#p2ButtonClearForm").trigger('click');
+                $("#p3ButtonClearForm").trigger('click');
+                $("#p4ButtonClearForm").trigger('click');
+                tableAutoIn();
             },
             beforeSend: function (xhr, settings) {
                 if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
@@ -209,8 +490,9 @@
 
 
     }
-
-    function show_serchAgent(agent) {
+    let typeoperation_in_window = 1;
+    function show_serchAgent(a,agent) {
+        typeoperation_in_window=a;
         if (agent == undefined) {
             agent = agents;
         }
@@ -236,7 +518,7 @@
                 retval.push(a);
             }
         });
-        show_serchAgent(retval);
+        show_serchAgent(typeoperation_in_window,retval);
 
     };
 
@@ -246,11 +528,61 @@
             alert("не выбран агент");
             return;
         }
-        $("#agent").val(agents[pk].fields.name);
-        $("#agent").attr("data-id", agents[pk].pk);
+        $("#p"+typeoperation_in_window+"Contragent").val(agents[pk].fields.name);
+        $("#p"+typeoperation_in_window+"Contragent").attr("data-id", agents[pk].pk);
         $("#serchAgent").modal("hide");
     }
 
+    ///  ---------------------------    contract modal -----------------------------------------------------------------
+
+    let contract = '{{ contract|escapejs }}';
+        contract = contract.replace(/&quot;/g,'"');
+        contract = JSON.parse(contract);
+         let newContract =[];
+            contract.forEach(function(a){
+            newContract.push(a.fields);
+    });
+    function show_serchContract(a,agent) {
+        typeoperation_in_window=a;
+        if (agent == undefined) {
+            agent = contract;
+        }
+        $("#serchContract").modal("show");
+        let html = "";
+        agent.forEach(function (a, i) {
+            html += "<li><button class='btn btn-info' onclick='selectContract(" + i + ")'>" + a.pk + " = " + a.fields.name + "</button></li>";
+        });
+        $("#contract_list").html(html);
+    }
+
+function serchStrContract(e) {
+        let str = $(e).val();
+        let obj = newContract.find(obj => obj.name == str);
+        let retval = [];
+        contract.forEach(function (a) {
+            if (a.fields.name.indexOf(str) > -1) {
+                retval.push(a);
+            }
+        });
+        show_serchContract(typeoperation_in_window,retval);
+
+    };
+        function selectContract(pk) {
+        $("#succesContract").attr("data-value", pk);
+        $("#succesContract").html("agent  -" + contract[pk].fields.name);
+    }
+     function addContract() {
+        let pk = $("#succesContract").attr("data-value");
+        if (pk == undefined) {
+            alert("не выбран агент");
+            return;
+        }
+        $("#p"+typeoperation_in_window+"Contract").val(contract[pk].fields.name);
+        $("#p"+typeoperation_in_window+"Contract").attr("data-id", contract[pk].pk);
+        $("#p"+typeoperation_in_window+"ContractPrice").val(contract[pk].fields.firstPrice);
+        $("#p"+typeoperation_in_window+"UnitContractPrice").val(contract[pk].fields.unitPrice);
+        $("#serchContract").modal("hide");
+    }
     //===========================================tovar serch=================================================
      function show_serchTovar(tavar) {
         if (tavar == undefined) {
@@ -309,6 +641,35 @@
     </div>
 </div>
 
+<!-- Modal поиск контракта -->
+<div class="modal fade" id="serchContract" tabindex="-1" role="dialog" aria-labelledby="serchContract" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="serchContractT">Выбор контрагента</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="bodySerchModal" class="modal-body">
+{#                <label>Поиск</label>#}
+                <input type="text" style="width:100%;" onkeyup="serchStrContract(this)" id="modalSerchContract" placeholder="Поиск">
+                <br>
+                <div id="succesContract">
+                </div>
+                <br>
+                <label>Список контрактов</label>
+                <ul id="contract_list">
+                </ul>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Отмена</button>
+                <button type="button" onclick="addContract();" class="btn btn-primary">Выбрать</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- Modal -->

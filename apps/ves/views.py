@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.core import exceptions
 from GLOBAL import GlobalAutoUse
-from apps.ves.add_in_db import my_custom_sql
+from apps.ves.add_in_db import my_custom_sql, vagonSql
 from apps.ves.models import User, GlobalData, Production, DataNakladnayaAuto, CatalogAuto, CatalogContract
 from django.core import serializers
 from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
@@ -42,6 +42,28 @@ class StartView(LoginRequiredMixin, CreateView):
     @login_required
     def menu_ves(request):
         return render(request, 'ves/menu_ves.html')
+
+
+    @login_required
+    def zd_ves(request):
+        one_entry = GlobalData.objects.get(id=1)
+        if (one_entry.Zd == True):
+            print('woops')
+            raise exceptions.PermissionDenied
+        zd = Vagon.objects.filter(status_in=True)
+        agents = Agent.objects.all()
+        contract = CatalogContract.objects.all()
+        production = Production.objects.all()
+        catalog = CatalogAuto.objects.all()
+        catalogJ = serializers.serialize('json', catalog)
+        agentsJ = serializers.serialize('json', agents)
+        productionJ = serializers.serialize('json', production)
+        autoJ = json.dumps(vagonSql(), indent=4, sort_keys=True, default=str)
+        contract = serializers.serialize('json', contract)
+        data = {'zd_in': zd, 'agetns': agents, 'auto_in_J': autoJ, 'catalog': catalogJ, 'contract': contract, 'agentsJ': agentsJ,
+                'production': productionJ, 'agents': agents}
+        return render(request, 'ves/zd_ves.html',data)
+
 
 
     @login_required
@@ -83,18 +105,6 @@ class StartView(LoginRequiredMixin, CreateView):
         return render(request, 'ves/avto_data.html', data)
 
 
-
-    @login_required
-    def zd_ves(request):
-        one_entry = GlobalData.objects.get(id=1)
-        if (one_entry.Zd == True):
-            print('woops')
-            raise exceptions.PermissionDenied
-        zd = Vagon.objects.filter(status_in=True)
-        agents = Agent.objects.all()
-
-        data = {'zd_in': zd, 'agetns': agents}
-        return render(request, 'ves/zd_ves.html',data)
 
 
     @login_required
