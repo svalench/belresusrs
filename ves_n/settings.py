@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'channels',
     'ves_n',
     'apps.ves',
+    'nomer',
 
 
 
