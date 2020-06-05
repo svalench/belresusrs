@@ -18,7 +18,7 @@ def showContract(request):
 
 def AddContract(request):
     form = request.POST
-    contract = CatalogContract(name=form['name'], parentContragentId_id=form['agent'],parentMaterialId_id=form['tmc'],date=form['dateDogovor'],
+    contract = CatalogContract(name=form['name'], parentContragentId_id=form['agent'],parentmaterialid_id=form['tmc'],datecontract=form['dateDogovor'],
                                typeOfOperation=form['typeOperation'],typeOfArrival=form['viewComing'],salesAccount=form['salesAccount'],
                                firstPrice=numpy.float(form['firstPrice']),unitPrice=form['valuta'])
     contract.save()
@@ -29,7 +29,7 @@ def AddContract(request):
 def UpdContract(request):
     form = request.POST
     contract = CatalogContract.objects.filter(id=form['id'])
-    contract.update(name=form['name'], parentContragentId_id=form['agent'],parentMaterialId_id=form['tmc'],date=form['dateDogovor'],
+    contract.update(name=form['name'], parentContragentId_id=form['agent'],parentmaterialid_id=form['tmc'],datecontract=form['dateDogovor'],
                                typeOfOperation=form['typeOperation'],typeOfArrival=form['viewComing'],salesAccount=form['salesAccount'],
                     firstPrice=numpy.float(form['firstPrice']),unitPrice=form['valuta'])
     payload = {'success': True}

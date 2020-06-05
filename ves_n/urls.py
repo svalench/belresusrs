@@ -19,6 +19,7 @@ from django.urls import path, include
 from apps.ves.add_in_db import addAutoNew, addVagonNew
 from apps.ves.contract import showContract, AddContract, UpdContract, deleteContract
 from apps.ves.detectNumber import detectNumber
+from apps.ves.docGeneration import actGenerate
 from apps.ves.production import showProduction, AddProduction, UpdProduction, deleteProduction
 from apps.ves.responseblePerson import showPerson, AddPerson, UpdPerson, deletePerson
 from apps.ves.trailer import showTrailer, UpdTrailer, AddTrailer, deleteTrailer
@@ -81,6 +82,7 @@ urlpatterns = [
 
     #отчеты
     path('reportAutoAgent/get', reportAutoAgent, name='reportAutoAgent'),
+    path('act/generate/get', actGenerate, name='actGenerate'),
 
     path('search/', serchAuto, name='search'),
 ]

@@ -42,7 +42,7 @@ class Production(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField('название', max_length=255, db_index=True)
     number = models.CharField('номер',null=True ,max_length=255, db_index=True)
-    characteristicTMC = models.CharField('характеристика ТМЦ', null=True, max_length=255, db_index=True)
+    characteristictmc = models.CharField('характеристика ТМЦ', null=True, max_length=255, db_index=True)
     typeTMC = models.CharField('тип ТМЦ', max_length=255, null=True, db_index=True)
     scoreTMC = models.CharField('счет ТМЦ', max_length=255, null=True, db_index=True)
     score = models.CharField('счет', max_length=255, null=True, db_index=True)
@@ -69,12 +69,12 @@ class Agent(models.Model):
 
 class CatalogContract(models.Model):
     id = models.AutoField(primary_key=True)
-    parentMaterialId = models.ForeignKey('Production', on_delete=models.CASCADE, null=True, blank=True,
+    parentmaterialid = models.ForeignKey('Production', on_delete=models.CASCADE, null=True, blank=True,
                                          db_index=True)
     parentContragentId = models.ForeignKey('Agent', on_delete=models.CASCADE, null=True, blank=True,
                                          db_index=True)
     name = models.CharField('название контракта',max_length=255, db_index=True)
-    date =  models.DateField("дата", null=True, blank=True)
+    datecontract =  models.DateField("дата", null=True, blank=True)
     typeOfOperation = models.CharField('тип опреации',max_length=255, db_index=True)
     typeOfArrival = models.CharField('вид прихода',max_length=255, db_index=True)
     salesAccount = models.CharField('счет реализации', max_length=255, db_index=True)
@@ -162,8 +162,8 @@ class Auto(models.Model):
     numberAttorney = models.CharField('номер доверенности', max_length=255, null=True, db_index=True)
     numberPasport = models.CharField('номер passport', max_length=255, null=True, db_index=True)
     numberSeats = models.CharField('количество мест', max_length=255, null=True, db_index=True)
-    type = models.IntegerField('тип накладной', null=True, db_index=True)
-    typeMaterial = models.IntegerField('тип мфтериала', null=True, db_index=True)
+    type = models.CharField('тип накладной', null=True, max_length=20, db_index=True)
+    typeMaterial = models.CharField('тип мфтериала',max_length=200 ,null=True, db_index=True)
     numberNakladnaia = models.BigIntegerField('номер в накладной', null=True, db_index=True)
     seria = models.CharField('серия накладной', max_length=255, null=True, db_index=True)
     price_no_nds = models.FloatField('цена  без ндс', null=True, db_index=True)
@@ -221,8 +221,8 @@ class Vagon(models.Model):
     numberAttorney = models.CharField('номер доверенности', max_length=255, null=True, db_index=True)
     numberPasport = models.CharField('номер passport', max_length=255, null=True, db_index=True)
     numberSeats = models.CharField('количество мест', max_length=255, null=True, db_index=True)
-    type = models.IntegerField('тип накладной', null=True, db_index=True)
-    typeMaterial = models.IntegerField('тип мфтериала', null=True, db_index=True)
+    type = models.CharField('тип накладной',max_length=20 ,null=True, db_index=True)
+    typeMaterial = models.CharField('тип мфтериала', max_length=255,null=True, db_index=True)
     numberNakladnaia = models.BigIntegerField('номер в накладной', null=True, db_index=True)
     seria = models.CharField('серия накладной', max_length=255, null=True, db_index=True)
     price_no_nds = models.FloatField('цена  без ндс', null=True, db_index=True)

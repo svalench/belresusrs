@@ -99,7 +99,7 @@
                                             <option  value="USD">
                                             <option  value="BYN">
                                             <option  value="EUR">
-                                            <option  value="RUR">
+                                            <option  value="RUB">
                                         </datalist>
                                         <label data-error="измените" data-success="принято"
                                             for="valuta">Влюта</label>
@@ -203,7 +203,7 @@
                                             <option  value="USD">
                                             <option  value="BYN">
                                             <option  value="EUR">
-                                            <option  value="RUR">
+                                            <option  value="RUB">
                                         </datalist>
                                         <label data-error="измените" data-success="принято"
                                             for="valutaUpd">Влюта</label>
@@ -283,10 +283,10 @@
                         {% for a in contract %}
                         <tr onclick="get_date('{{ a.date|date:"Y-m-d" }}',{{ a.id }})">
                             <td>{{ a.id }}</td>
-                            <td>{{ a.parentMaterialId.name }}</td>
+                            <td>{{ a.parentmaterialid.name }}</td>
                             <td>{{ a.parentContragentId.name }}</td>
                             <td>{{ a.name }}</td>
-                            <td>{{ a.date }}</td>
+                            <td>{{ a.datecontract }}</td>
                             <td>{{ a.typeOfOperation }}</td>
                             <td>{{ a.typeOfArrival }}</td>
                             <td>{{ a.salesAccount }}</td>

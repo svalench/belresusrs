@@ -20,7 +20,6 @@ from ves_n.setting_data import USER_ROLES_SETTINGS
 def addAutoNew(request):
     form = request.POST
     form._mutable = True
-    print(form)
     for key in form.keys():
         if(form[key]==''):
             form[key]=None
@@ -116,8 +115,6 @@ def addAutoNew(request):
     allIn = Auto.objects.filter( status_in=True)
     all= my_custom_sql()
     allIn = serializers.serialize('json', allIn)
-    print("==================================================")
-    print(all[0])
     payload = {'success': True,'autoIn':allIn,"all":all}
 
     return HttpResponse(json.dumps(payload, indent=4, sort_keys=True, default=str), content_type='application/json')
@@ -128,9 +125,41 @@ from django.db import connection
 
 def my_custom_sql():
     with connection.cursor() as cursor:
-        sql = "SELECT ag.name as nameAgent, c.name as contractName, c.id as contractId, c.*,ag.*,a.* FROM ves_auto a " \
+        sql = "SELECT ag.name as nameAgent,p.name as productname, c.name as contractName, c.id as contractId, c.*,ag.*,a.* FROM ves_auto a " \
               "LEFT JOIN ves_agent ag ON ag.id=a.agents_id" \
-              " LEFT JOIN ves_catalogcontract c ON c.id=a.parentContractId_id  WHERE a.status_in=true"
+              " LEFT JOIN ves_catalogcontract c ON c.id=a.parentContractId_id " \
+              "LEFT JOIN ves_production p ON p.id = c.parentmaterialid_id  WHERE a.status_in=true"
+        cursor.execute(sql)
+        columns = [col[0] for col in cursor.description]
+        return [
+            dict(zip(columns, row))
+            for row in cursor.fetchall()
+        ]
+
+def getAutoAll():
+    with connection.cursor() as cursor:
+        sql = "SELECT u.*,ag.name as nameAgent, p.characteristictmc as chartmc,c.name as contractName, c.id as contractId,p.*, c.*,ag.*,a.* FROM ves_auto a " \
+              "LEFT JOIN ves_agent ag ON ag.id=a.agents_id" \
+              " LEFT JOIN ves_catalogcontract c ON c.id=a.parentContractId_id" \
+              " LEFT JOIN ves_production p ON p.id = c.parentmaterialid_id " \
+              "LEFT JOIN ves_user u ON u.id = a.parentuserid_id"
+        cursor.execute(sql)
+        columns = [col[0] for col in cursor.description]
+        return [
+            dict(zip(columns, row))
+            for row in cursor.fetchall()
+        ]
+
+
+
+
+def getVagonAll():
+    with connection.cursor() as cursor:
+        sql = "SELECT u.*,ag.name as nameAgent, p.characteristictmc as chartmc,c.name as contractName, c.id as contractId,p.*, c.*,ag.*,a.* FROM ves_vagon a " \
+              "LEFT JOIN ves_agent ag ON ag.id=a.agent_vagon_id" \
+              " LEFT JOIN ves_catalogcontract c ON c.id=a.parentcontractid_id" \
+              " LEFT JOIN ves_production p ON p.id = c.parentmaterialid_id " \
+              "LEFT JOIN ves_user u ON u.id = a.parentuserid_id"
         cursor.execute(sql)
         columns = [col[0] for col in cursor.description]
         return [

@@ -18,7 +18,7 @@ print(MASK_RCNN_DIR, MASK_RCNN_LOG_DIR)
 # Import license plate recognition tools.
 import sys
 sys.path.insert(0, '/home/mvlab/belresusrs/nomer')
-from NomeroffNet import filters, RectDetector, TextDetector, OptionsDetector, Detector, textPostprocessing
+#from NomeroffNet import filters, RectDetector, TextDetector, OptionsDetector, Detector, textPostprocessing
 
 def loadModel():
     global nnet, textDetector, rectDetector, optionsDetector

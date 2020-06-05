@@ -51,7 +51,7 @@
                                     </div>
 
                                     <div class="md-form mb-5">
-                                        <input type="text" id="characteristicTmcAdd" class="form-control">
+                                        <input type="text" id="characteristicTmcAdd" class="form-control" list="listCharackteristicTmc">
                                         <label data-error="измените" data-success="принято"
                                             for="characteristicTmcAdd">Характеристика ТМЦ</label>
                                     </div>
@@ -130,7 +130,7 @@
                                     </div>
 
                                     <div class="md-form mb-5">
-                                        <input type="text" id="characteristicTmcUpdate" class="form-control">
+                                        <input type="text" id="characteristicTmcUpdate" class="form-control" list="listCharackteristicTmc">
                                         <label data-error="измените" data-success="принято"
                                             for="characteristicTmcAdd">Характеристика ТМЦ</label>
                                     </div>
@@ -154,7 +154,7 @@
                                     </div>
 
                                     <div class="md-form mb-5">
-                                        <input type="text" id="typeAccountingTmcUpdate" class="form-control">
+                                        <input type="text" id="typeAccountingTmcUpdate" class="form-control" >
                                         <label data-error="измените" data-success="принято"
                                             for="typeAccountingTmcAdd">Вид учета ТМЦ</label>
                                     </div>
@@ -235,7 +235,7 @@
                             <td>{{ a.id }}</td>
                             <td>{{ a.name }}</td>
                             <td>{{ a.number }}</td>
-                            <td>{{ a.characteristicTMC }}</td>
+                            <td>{{ a.characteristictmc }}</td>
                             <td>{{ a.typeTMC }}</td>
                             <td>{{ a.scoreTMC }}</td>
                             <td>{{ a.score }}</td>
@@ -268,6 +268,64 @@
         </div>
     </div>
 </div>
+
+    {#    DATALISTS___________#}
+    <div>
+        <datalist id="listUnitWeight">
+            <option value="кг"></option>
+            <option value="т"></option>
+        </datalist>
+        <datalist id="listUnitPrice">
+            <option value="BYN"></option>
+            <option value="RYB"></option>
+            <option value="USD"></option>
+            <option value="EUR"></option>
+        </datalist>
+        <datalist id="listViewComing">
+        <option value="От отходов потребления"></option>
+        <option value="От отходов производства"></option>
+        </datalist>
+        <datalist id="listViewTmc">
+        <option value="Материал"></option>
+        <option value="Продукция"></option>
+        </datalist>
+        <datalist id="listCharackteristicTmc">
+            <option value="Стеклобой смешанный тарный завод"></option>
+            <option value="Отходы цветной металлолом"></option>
+            <option value="Отходы металлолом"></option>
+            <option value="Отходы ПЭТ-бутылка"></option>
+            <option value="Отсев(продукция)"></option>
+            <option value="Стеклобой бесцветный"></option>
+            <option value="Стеклобой коричневый"></option>
+            <option value="Стеклобой зеленый"></option>
+            <option value="Отходы реализуемые для использования"></option>
+        </datalist>
+        <datalist id="listTypeInvoice">
+            <option value="ТЖН"></option>
+            <option value="ТТН"></option>
+            <option value="ТН"></option>
+            <option value="ТН-1"></option>
+            <option value="ТН-2"></option>
+            <option value="ТТН-1"></option>
+            <option value="ТТН-2"></option>
+            <option value="ТТН-3"></option>
+            <option value="ТТН-4"></option>
+            </datalist>
+        <datalist id="listViewOperation">
+            <option value="Покупка"></option>
+            <option value="Реализация ТМЦ"></option>
+            <option value="Прочая реализация ТМЦ"></option>
+        </datalist>
+        <datalist id="listViewVariantRealization">
+            <option value="Основной"></option>
+            <option value="Реализация материалов">
+            </option>
+        </datalist>
+        <datalist id="listNameTmc">
+
+         </datalist>
+
+    </div>
 
 <script>
 let mega_id;

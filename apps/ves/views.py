@@ -5,8 +5,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.core import exceptions
 from GLOBAL import GlobalAutoUse
-from apps.ves.add_in_db import my_custom_sql, vagonSql
-from apps.ves.models import User, GlobalData, Production, DataNakladnayaAuto, CatalogAuto, CatalogContract
+from apps.ves.add_in_db import my_custom_sql, vagonSql, getAutoAll, getVagonAll
+from apps.ves.models import User, GlobalData, Production, DataNakladnayaAuto, CatalogAuto, CatalogContract, \
+    CatalogResponsiblePerson
 from django.core import serializers
 from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
 from django.http import HttpResponseRedirect, HttpResponse
@@ -94,14 +95,11 @@ class StartView(LoginRequiredMixin, CreateView):
     def avto_data(request):
         autoAll = Auto.objects.all()
         agent = Agent.objects.all()
-        uniqZd = Auto.objects.raw(
-            'SELECT number, id FROM ves_auto WHERE id IN (SELECT   MIN(id) FROM ves_auto GROUP BY number)')
-        json =serializers.serialize('json', uniqZd)
+        person = CatalogResponsiblePerson.objects.all()
+        autoJ = getAutoAll()
+        to_js = json.dumps(autoJ, indent=4, sort_keys=True, default=str)
         jsonAgent = serializers.serialize('json', agent)
-        paginator = Paginator(autoAll, 10)  # Show 25 contacts per page
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        data = {'page_obj': page_obj,"data":json,"uniq":uniqZd,'Jagents':jsonAgent,"agents":agent}
+        data = {"data":json,'person':person,'allDataJS':to_js,'allData':autoJ,'Jagents':jsonAgent,"agents":agent}
         return render(request, 'ves/avto_data.html', data)
 
 
@@ -109,15 +107,14 @@ class StartView(LoginRequiredMixin, CreateView):
 
     @login_required
     def zd_data(request):
-        autoAll = Vagon.objects.all().order_by("-date_add")
-        uniqZd = Vagon.objects.raw('SELECT number, id FROM ves_vagon WHERE id IN (SELECT   MIN(id) FROM ves_vagon GROUP BY number)')
+        autoAll = Vagon.objects.all()
         agent = Agent.objects.all()
+        person = CatalogResponsiblePerson.objects.all()
+        autoJ = getVagonAll()
+        to_js = json.dumps(autoJ, indent=4, sort_keys=True, default=str)
         jsonAgent = serializers.serialize('json', agent)
-        json =serializers.serialize('json', uniqZd)
-        paginator = Paginator(autoAll, 10)  # Show 25 contacts per page
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        data = {'page_obj': page_obj,"data":json,"agents":agent,"uniq":uniqZd,'Jagents':jsonAgent}
+        data = {"data": json, 'person': person, 'allDataJS': to_js, 'allData': autoJ, 'Jagents': jsonAgent,
+                "agents": agent}
         return render(request, 'ves/zd_data.html', data)
 
 

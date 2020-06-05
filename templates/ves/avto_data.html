@@ -1,18 +1,1039 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+
+    <link rel="stylesheet" href="{% static 'css/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'js/datatables.min.js' %}"></script>
+    <script src="{% static 'js/table-equipment.js' %}"></script>
+    <script src="{% static 'js/mdb.min.js' %}"></script>
+
+    <style>
+        @media (min-width: 1200px) {
+  .modal-xl {
+    max-width: 90%;
+  }
+}
+
+    </style>
+
+
+<h4 style="position: absolute; top: 15px; left: 26%;color:#adb7b7;">Сводная таблица авто</h4>
+
+{#Модалка для XML и подробнее#}
+    <div class="modal fade" role="dialog" tabindex="-1" id="modalInfoP1">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Подробнее: Приемка смешанный стеклобой</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row pb-1">
+                            <div class="col"><label>Тип накладной</label><input type="text" id="p1TypeInvoice" class="form-control" value="ТТН" list="listTypeInvoice" /></div>
+                            <div class="col"><label>Номер накладной</label><input type="number" id="p1NumberInvoice" class="form-control" /></div>
+                            <div class="col"><label>Дата накладной</label><input id="p1DateInvoice" class="form-control" type="date" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-4"><label>Вид операции</label><input type="text" id="p1ViewOperation" class="form-control" value="Покупка" list="listViewOperation" /></div>
+                            <div class="col"><label>Склад</label><input type="text" id="p1Stock" class="form-control" value="СТЕКЛОЗАВОД Минск" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col"><label>МОЛ</label><input type="text" id="p1LoginUser" class="form-control" value="Авторизированный пользователь" readonly /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-3"><label>Вид ТМЦ</label><input type="text" id="p1ViewTmc" class="form-control p1Calculation" value="Материал" list="listViewTmc" /></div>
+                            <div class="col-3"><label>Счет ТМЦ</label><input type="text" id="p1AccountTmc" class="form-control p1Calculation" value="10.51" /></div>
+                            <div class="col"><label>Характеристика ТМЦ</label><input type="text" id="p1CharackteristicTmc" class="form-control p1Calculation" value="Стеклобой смешанный тарный завод" list="listCharackteristicTmc" /></div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col">
+                                <div class="row pb-1">
+                                    <div class="col-5"><label>Контрагенты</label><input type="text" id="p1Contragent" class="form-control" /></div>
+                                    <div class="col"><label>Договор</label><input type="text" id="p1Contract" class="form-control" /></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-2"><label>Сделка</label><input type="text" id="p1Deal" class="form-control" value="стеклобой" /></div>
+                            <div class="col-5"><label>Организация</label><input type="text" id="p1Organigation" class="form-control" /></div>
+                            <div class="col-5"><label>Вид прихода стекла</label><input type="text" id="p1ViewComingGlass" class="form-control p1Calculation" value="От отходов потребления" list="listViewComing" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-3"><label>Валюта</label><input type="text" id="p1UnitPrice" class="form-control p1Calculation" list="listUnitPrice" /></div>
+                            <div class="col-3"><label>Дата курса</label><input id="p1DatePrice" class="form-control" type="date" /></div>
+                            <div class="col-3"><label>Счет</label><input type="text" id="p1Account" class="form-control" value="60.1.5" /></div>
+                            <div class="col-3"><label>Вид прихода</label><input type="text" id="p1ViewComing" class="form-control" value="На склад" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-3"><label>% НДС</label><input type="number" id="p1PercentNds" class="form-control p1Calculation" value="20" min="0" max="100" /></div>
+                            <div class="col-3"><label>% скидка</label><input type="number" id="p1PercentDirt" class="form-control p1Calculation" value="2.5" step="0.1" min="0" max="100" /></div>
+                            <div class="col-3"><label>Ед.изм.</label><input type="text" id="p1UnitWeight" class="form-control p1Calculation" value="кг" list="listUnitWeight" /></div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col">
+                        <div class="table-responsive table-bordered">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>N</th>
+                                        <th>Вид ТМЦ /<br />Характеристика ТМЦ</th>
+                                        <th>Вид прихода</th>
+                                        <th>Валюта</th>
+                                        <th>Характеристика ТМЦ</th>
+                                        <th>Счет ТМЦ</th>
+                                        <th>Ед.изм.</th>
+                                        <th>Физ.вес /<br /> %скидки</th>
+                                        <th>Зачетный вес /<br />Кол-во ссора</th>
+                                        <th>Первая цена <br /></th>
+                                        <th>Ставка НДС /<br />Сумма НДС</th>
+                                        <th>Сумма без НДС /<br />Сумма с НДС</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr>
+                                        <td rowspan="2">1</td>
+                                        <td id="p1CellViewTmc">Материал</td>
+                                        <td id="p1CellViewComingGlass" rowspan="2">От отходов потребления</td>
+                                        <td id="p1CellUnitPrice" rowspan="2"></td>
+                                        <td id="p1CellCharackteristicTmc2" rowspan="2">Стеклобой смешанный тарный завод</td>
+                                        <td id="p1CellAccountTmc" rowspan="2">10.51</td>
+                                        <td id="p1CellUnitWeight" rowspan="2">кг</td>
+                                        <td id="p1CellPhysicalWeight">3.64</td>
+                                        <td id="p1CellOkWeight"></td>
+                                        <td id="p1CellFirstPrice" rowspan="2">50000</td>
+                                        <td id="p1CellPercentNds">20</td>
+                                        <td id="p1CellSumWithoutNds"></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td id="p1CellCharackteristicTmc1">Стеклобой смешанный тарный завод</td>
+                                        <td id="p1CellPercentDirt">2.5</td>
+                                        <td id="p1CellDirtWeight"></td>
+                                        <td id="p1CellSumNds"></td>
+                                        <td id="p1CellSumWithNds"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="table-responsive table-bordered">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>N</th>
+                                        <th>№ Транспортного средства</th>
+                                        <th>Водитель</th>
+                                        <th>Вес груженного</th>
+                                        <th>Вес порожнего</th>
+                                        <th>Время вьезда</th>
+                                        <th>Время выезда</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="1">1</td>
+                                        <td id="p1CellNumberAuto"></td>
+                                        <td id="p1CellNameDriver" rowspan="1"></td>
+                                        <td id="p1CellFullWeight" rowspan="1"></td>
+                                        <td id="p1CellEmptyWeight" rowspan="1"></td>
+                                        <td id="p1CellTimeIn" rowspan="1"></td>
+                                        <td id="p1CellTimeOut"></td>
+                                    </tr>
+                                    <tr></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4"><img class="img-fluid" id="p1Img1" src={% static "camera/cam1.jpg"  %} /></div>
+                    <div class="col-4"><img class="img-fluid" id="p1Img2" src={% static "camera/cam1.jpg"  %} /></div>
+                    <div class="col-4"><img class="img-fluid" id="p1Img3" src={% static "camera/cam1.jpg"  %} /></div>
+                </div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-success" id="p1CreateXml" type="button">создать XML для 1С</button><button class="btn btn-primary" id="p1SaveChange" type="button">СоХранить изменения</button></div>
+        </div>
+    </div>
+</div>
+    <div class="modal fade" role="dialog" tabindex="-1" id="modalInfoP2">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Подробнее: Отгрузка стекла</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row pb-1">
+                            <div class="col"><label>Тип накладной</label><input type="text" id="p2TypeInvoice" class="form-control" value="ТН-2" list="listTypeInvoice" /></div>
+                            <div class="col"><label>Номер накладной</label><input type="number" id="p2NumberInvoice" class="form-control" /></div>
+                            <div class="col-3"><label>Серия накладной</label><input type="number" id="p2SeriesInvoice" class="form-control" /></div>
+                            <div class="col"><label>Дата накладной</label><input id="p2DateInvoice" class="form-control" type="date" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-4"><label>Вид операции</label><input type="text" id="p2ViewOperation" class="form-control" value="Реализация ТМЦ" list="listViewOperation" /></div>
+                            <div class="col"><label>Склад</label><input type="text" id="p2Stock" class="form-control" value="СТЕКЛОЗАВОД Минск (Выпуск)" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col"><label>МОЛ</label><input type="text" id="p2LoginUser" class="form-control" value="Авторизированный пользователь" readonly /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-3"><label>Вид ТМЦ</label><input type="text" id="p2ViewTmc" class="form-control p2Calculation" value="Продукция" list="listViewTmc" /></div>
+                            <div class="col-3"><label>Счет ТМЦ</label><input type="text" id="p2AccountTmc" class="form-control p2Calculation" value="43.1" /></div>
+                            <div class="col"><label>Характеристика ТМЦ</label><input type="text" id="p2CharackteristicTmc" class="form-control p2Calculation" value="Отсев (продукция)" list="listCharackteristicTmc" /></div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col">
+                                <div class="row pb-1">
+                                    <div class="col-5"><label>Контрагенты</label><input type="text" id="p2Contragent" class="form-control" /></div>
+                                    <div class="col"><label>Договор</label><input type="text" id="p2Contract" class="form-control" /></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-2"><label>Сделка</label><input type="text" id="p2Deal" class="form-control" value="стеклобой" /></div>
+                            <div class="col-5"><label>Организация</label><input type="text" id="p2Organigation" class="form-control" value="ОАО &quot;Белресурсы&quot; - у.к.холдинга &quot;Белресурсы&quot;" /></div>
+                            <div class="col-5"><label>Вид варианта реализации</label><input type="text" id="p2ViewVariantRealization" class="form-control" value="Основной" list="listViewVariantRealization" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-3"><label>Валюта</label><input type="text" id="p2UnitPrice" class="form-control p2Calculation" list="listUnitPrice" /></div>
+                            <div class="col-3"><label>Дата курса</label><input id="p2DatePrice" class="form-control" type="date" /></div>
+                            <div class="col-3"><label>Счет</label><input type="text" id="p2Account" class="form-control" value="62.1.22" /></div>
+                            <div class="col-3"><label>Счет реализации</label><input type="text" id="p2AccountRealization" class="form-control" value="90.1.1" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-3"><label>% НДС</label><input type="number" id="p2PercentNds" class="form-control p2Calculation" value="0" min="0" max="100" /></div>
+                            <div class="col-3"><label>Ед.изм.</label><input type="text" id="p2UnitWeight" class="form-control p2Calculation" value="кг" list="listUnitWeight" /></div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col">
+                        <div class="table-responsive table-bordered">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>N</th>
+                                        <th>Характеристика ТМЦ</th>
+                                        <th><br />Вид ТМЦ /<br /><br />Счет ТМЦ</th>
+                                        <th>Валюта</th>
+                                        <th>Ед.изм./<br />Кол-во</th>
+                                        <th>Цена/<br />Сумма без НДС<br /></th>
+                                        <th>Ставка НДС /<br />Сумма НДС</th>
+                                        <th>Сумма с НДС</th>
+                                        <th>Поставщик</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="2">1</td>
+                                        <td id="p2CellCharackteristicTmc1" rowspan="2">Отсев (продукция)</td>
+                                        <td id="p2CellViewTmc" rowspan="1">Продукция<br /></td>
+                                        <td id="p2CellUnitPrice" rowspan="2"></td>
+                                        <td id="p2CellUnitWeight" rowspan="1">кг</td>
+                                        <td id="p2CellFirstPrice" rowspan="1">50000</td>
+                                        <td id="p2CellPercentNds">0</td>
+                                        <td id="p2CellSumWithNds" rowspan="2"></td>
+                                        <td>Белресурсы</td>
+                                    </tr>
+                                    <tr>
+                                        <td id="p2CellAccountTmc">43.1</td>
+                                        <td id="p2CellPhysicalWeight">3.64<br /></td>
+                                        <td id="p2CellSumWithoutNds"></td>
+                                        <td id="p2CellSumNds"></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="table-responsive table-bordered">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>N</th>
+                                        <th>№ Транспортного средства</th>
+                                        <th>Водитель</th>
+                                        <th>Вес груженного</th>
+                                        <th>Вес порожнего</th>
+                                        <th>Время вьезда</th>
+                                        <th>Время выезда</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="1">1</td>
+                                        <td id="p2CellNumberAuto"></td>
+                                        <td id="p2CellNameDriver"></td>
+                                        <td id="p2CellFullWeight"></td>
+                                        <td id="p2CellEmptyWeight"></td>
+                                        <td id="p2CellTimeIn"></td>
+                                        <td id="p2CellTimeOut"></td>
+                                    </tr>
+                                    <tr></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4"><img class="img-fluid" id="p2Img1" src={% static "camera/cam1.jpg"  %} /></div>
+                    <div class="col-4"><img class="img-fluid" id="p2Img2" src={% static "camera/cam1.jpg"  %} /></div>
+                    <div class="col-4"><img class="img-fluid" id="p2Img3" src={% static "camera/cam1.jpg"  %} /></div>
+                </div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-success" id="p2CreateXml" type="button">создать XML для 1С</button><button class="btn btn-primary" id="p2SaveChange" type="button">СоХранить изменения</button></div>
+        </div>
+    </div>
+</div>
+    <div class="modal fade" role="dialog" tabindex="-1" id="modalInfoP3">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Подробнее: Отгрузка металла и ПЭТ</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row pb-1">
+                            <div class="col"><label>Тип накладной</label><input type="text" id="p3TypeInvoice" class="form-control" value="ТНН-1" list="listTypeInvoice" /></div>
+                            <div class="col"><label>Номер накладной</label><input type="number" id="p3NumberInvoice" class="form-control" /></div>
+                            <div class="col-3"><label>Серия накладной</label><input type="number" id="p3SeriesInvoice" class="form-control" /></div>
+                            <div class="col"><label>Дата накладной</label><input id="p3DateInvoice" class="form-control" type="date" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-4"><label>Вид операции</label><input type="text" id="p3ViewOperation" class="form-control" value="Прочая реализация ТМЦ" list="listViewOperation" /></div>
+                            <div class="col"><label>Склад</label><input type="text" id="p3Stock" class="form-control" value="СТЕКЛОЗАВОД Минск (Выпуск)" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col"><label>МОЛ</label><input type="text" id="p3LoginUser" class="form-control" value="Авторизированный пользователь" readonly /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-3"><label>Вид ТМЦ</label><input type="text" id="p3ViewTmc" class="form-control p3Calculation" value="Материал" list="listViewTmc" /></div>
+                            <div class="col-3"><label>Счет ТМЦ</label><input type="text" id="p3AccountTmc" class="form-control p3Calculation" value="10.6" /></div>
+                            <div class="col"><label>Характеристика ТМЦ</label><input type="text" id="p3CharackteristicTmc" class="form-control p3Calculation" list="listCharackteristicTmc" value="Отходы цветной металлолом" /></div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col">
+                                <div class="row pb-1">
+                                    <div class="col-5"><label>Контрагенты</label><input type="text" id="p3Contragent" class="form-control" /></div>
+                                    <div class="col"><label>Договор</label><input type="text" id="p3Contract" class="form-control" /></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-2"><label>Сделка</label><input type="text" id="p3Deal" class="form-control" value="стеклобой" /></div>
+                            <div class="col-5"><label>Организация</label><input type="text" id="p3Organigation" class="form-control" value="ОАО &quot;Белресурсы&quot; - у.к.холдинга &quot;Белресурсы&quot;" /></div>
+                            <div class="col-5"><label>Вид варианта реализации</label><input type="text" id="p3ViewVariantRealization" class="form-control" value="Реализация материалов" list="listViewVariantRealization" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-3"><label>Валюта</label><input type="text" id="p3UnitPrice" class="form-control p3Calculation" list="listUnitPrice" /></div>
+                            <div class="col-3"><label>Дата курса</label><input id="p3DatePrice" class="form-control" type="date" /></div>
+                            <div class="col-3"><label>Счет</label><input type="text" id="p3Account" class="form-control" value="62.1.22" /></div>
+                            <div class="col-3"><label>Счет реализации</label><input type="text" id="p3AccountRealization" class="form-control" value="90.7.2" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-3"><label>% НДС</label><input type="number" id="p3PercentNds" class="form-control p3Calculation" value="0" step="0.1" min="0" max="100" /></div>
+                            <div class="col-2"><label>Ед.изм.</label><input type="text" id="p3UnitWeight" class="form-control p3Calculation" value="кг" list="listUnitWeight" /></div>
+                            <div class="col-3"><label>№ сопр. паспорта</label><input type="number" id="p3NumberAccompanyingPassport" class="form-control" min="0" /></div>
+                            <div class="col-2"><label>Принятый вес</label><input type="number" id="p3AcceptWeight" class="form-control p3Calculation" step="0.1" min="0" /></div>
+                            <div class="col-2"><label>Принятая цена</label><input type="number" id="p3AcceptPrice" class="form-control p3Calculation" min="0" /></div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col">
+                        <div class="table-responsive table-bordered">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>N</th>
+                                        <th>Характеристика ТМЦ</th>
+                                        <th><br />Вид ТМЦ /<br /><br />Счет ТМЦ</th>
+                                        <th>Валюта</th>
+                                        <th>Ед.изм./<br />Кол-во</th>
+                                        <th>Принятый вес /<br />Принятая цена</th>
+                                        <th>Цена/<br />Сумма без НДС<br /></th>
+                                        <th>Ставка НДС /<br />Сумма НДС</th>
+                                        <th>Сумма с НДС</th>
+                                        <th>Себестоимость</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="2">1</td>
+                                        <td id="p3CellCharackteristicTmc1" rowspan="2">Отходы цветной металлолом</td>
+                                        <td id="p3CellViewTmc" rowspan="1">Материал<br /></td>
+                                        <td id="p3CellUnitPrice" rowspan="2"></td>
+                                        <td id="p3CellUnitWeight" rowspan="1">кг</td>
+                                        <td id="p3CellAcceptWeight" rowspan="1"></td>
+                                        <td id="p3CellFirstPrice" rowspan="1">50000</td>
+                                        <td id="p3CellPercentNds">0</td>
+                                        <td id="p3CellSumWithNds" rowspan="2"></td>
+                                        <td id="p3CellPrimeCost" rowspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td id="p3CellAccountTmc">10.6</td>
+                                        <td id="p3CellPhysicalWeight">3.64<br /></td>
+                                        <td id="p3CellAcceptPrice"></td>
+                                        <td id="p3CellSumWithoutNds"></td>
+                                        <td id="p3CellSumNds"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="table-responsive table-bordered">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>N</th>
+                                        <th>№ Транспортного средства</th>
+                                        <th>Водитель</th>
+                                        <th>Вес груженного</th>
+                                        <th>Вес порожнего</th>
+                                        <th>Время вьезда</th>
+                                        <th>Время выезда</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="1">1</td>
+                                        <td id="p3CellNumberAuto"></td>
+                                        <td id="p3CellNameDriver"></td>
+                                        <td id="p3CellFullWeight"></td>
+                                        <td id="p3CellEmptyWeight"></td>
+                                        <td id="p3CellTimeIn"></td>
+                                        <td id="p3CellTimeOut"></td>
+                                    </tr>
+                                    <tr></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4"><img class="img-fluid" id="p3Img1" src={% static "camera/cam1.jpg"  %} /></div>
+                    <div class="col-4"><img class="img-fluid" id="p3Img2" src={% static "camera/cam1.jpg"  %} /></div>
+                    <div class="col-4"><img class="img-fluid" id="p3Img3" src={% static "camera/cam1.jpg"  %} /></div>
+                </div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-success" id="p3CreateXml" type="button">создать XML для 1С</button><button class="btn btn-primary" id="p3SaveChange" type="button">СоХранить изменения</button></div>
+        </div>
+    </div>
+</div>
+    <div class="modal fade" role="dialog" tabindex="-1" id="modalInfoP4">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Подробнее: Отгрузка отходов</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row pb-1">
+                            <div class="col-4"><label>№ сопр. паспорта<br /></label><input type="text" id="p4NumberAccompanyingPassport" class="form-control" /></div>
+                            <div class="col-3"><label>Дата </label><input id="p4DateInvoice" class="form-control" type="date" /></div>
+                            <div class="col-5"><label>Вид учета ТМЦ</label><input type="text" id="p4ViewOperation" class="form-control" value="Собственные ТМЦ" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col"><label>Склад</label><input type="text" id="p4Stock" class="form-control" value="СТЕКЛОЗАВОД Минск (Выпуск)" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-3"><label>Вид ТМЦ</label><input type="text" id="p4ViewTmc" class="form-control p4Calculation" value="Материал" list="listViewTmc" /></div>
+                            <div class="col-3"><label>Счет ТМЦ</label><input type="text" id="p4AccountTmc" class="form-control p4Calculation" value="10.6" /></div>
+                            <div class="col"><label>Характеристика ТМЦ</label><input type="text" id="p4CharackteristicTmc" class="form-control p4Calculation" list="listCharackteristicTmc" value="Отходы реализуемые для использования" /></div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row pb-1">
+                            <div class="col-7"><label>Организация</label><input type="text" id="p4Organigation" class="form-control" value="ОАО &quot;Белресурсы&quot; - у.к.холдинга &quot;Белресурсы&quot;" /></div>
+                            <div class="col-2"><label>Ед.изм.</label><input type="text" id="p4UnitWeight" class="form-control" value="кг" list="listUnitWeight" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-3"><label>Счет отнесения затрат</label><input type="text" id="p4ExpenseAccount" class="form-control p4Calculation" value="90.10" /></div>
+                            <div class="col-5"><label>Прочие доходы/расходы</label><input type="text" id="p4OtherIncomeExpenses" class="form-control p4Calculation" value="Отходы стеклобоя" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col"><label>МОЛ</label><input type="text" id="p4LoginUser" class="form-control" value="Авторизированный пользователь" readonly /></div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col">
+                        <div class="table-responsive table-bordered">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>N</th>
+                                        <th>Характеристика ТМЦ</th>
+                                        <th><br />Вид ТМЦ /<br /><br />Счет ТМЦ</th>
+                                        <th>Ед.изм./<br />Кол-во</th>
+                                        <th>Счет отнесения затрат/<br />Прочие доходы/расходы<br /></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="2">1</td>
+                                        <td id="p4CellCharackteristicTmc1" rowspan="2">Отходы реализуемые для использования</td>
+                                        <td id="p4CellViewTmc" rowspan="1">Материал<br /></td>
+                                        <td id="p4CellUnitWeight" rowspan="1">кг</td>
+                                        <td id="p4CellExpenseAccount" rowspan="1"></td>
+                                    </tr>
+                                    <tr>
+                                        <td id="p4CellAccountTmc">10.6</td>
+                                        <td id="p3CellPhysicalWeight">3.64<br /></td>
+                                        <td id="p4CellOtherIncomeExpenses"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="table-responsive table-bordered">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>N</th>
+                                        <th>№ Транспортного средства</th>
+                                        <th>Водитель</th>
+                                        <th>Вес груженного</th>
+                                        <th>Вес порожнего</th>
+                                        <th>Время вьезда</th>
+                                        <th>Время выезда</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="1">1</td>
+                                        <td id="p4CellNumberAuto"></td>
+                                        <td id="p4CellNameDriver"></td>
+                                        <td id="p4CellFullWeight"></td>
+                                        <td id="p4CellEmptyWeight"></td>
+                                        <td id="p4CellTimeIn"></td>
+                                        <td id="p4CellTimeOut"></td>
+                                    </tr>
+                                    <tr></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4"><img class="img-fluid" id="p4Img1" src={% static "camera/cam1.jpg"  %} /></div>
+                    <div class="col-4"><img class="img-fluid" id="p4Img2" src={% static "camera/cam1.jpg"  %} /></div>
+                    <div class="col-4"><img class="img-fluid" id="p4Img3" src={% static "camera/cam1.jpg"  %} /></div>
+                </div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-success" id="p4CreateXml" type="button">создать XML для 1С</button><button class="btn btn-primary" id="p4SaveChange" type="button">СоХранить изменения</button></div>
+        </div>
+    </div>
+</div>
+    <div role="dialog" tabindex="-1" class="modal fade" id="modalInfoAct">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">АКТ: О приемке смешанного стеклобоя по количеству и качеству (односторонний)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+            <div class="modal-body">
+                <form  action="{% url 'actGenerate' %}" method="POST"  target="_blank">
+                    {% csrf_token %}
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row pb-1">
+                            <div class="col-2"><label>№ Акта<br /></label><input type="text" id="actNumberAct" name="actNumberAct" class="form-control" /></div>
+                            <div class="col-3"><label>Дата приемки от </label><input id="actCurrentDateTime" class="form-control" type="datetime-local" /></div>
+                            <div class="col-2"><label>Ед.изм.</label><input type="text" id="actUnitWeight" class="form-control" value="кг" list="listUnitWeight" /></div>
+                            <div class="col-3"><label>Дата отгрузки</label><input id="actDateOut" name="actDateOut" class="form-control" type="date" /></div>
+                        </div>
+                        <input type="date" name="datecontract" id="datecontract" hidden>
+                        <div class="row pb-1">
+                            <div class="col-5"><label>Контрагент</label><input type="text" id="actContragent" name="actContragent" class="form-control" /></div>
+                            <div class="col-7"><label>Адрес контрагента</label><input type="text" id="actAddressContragent" name="actAddressContragent" class="form-control" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-6"><label>Договор</label><input type="text" id="actContract" name="actContract" class="form-control" /></div>
+                            <div class="col-6"><label>Наименование и номер транспортного средства</label><input type="text" id="actNameAuto" name="actNameAuto" class="form-control" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-2"><label>Тип накладной</label><input type="text" id="actViewTmc" name="actViewTmc" class="form-control" list="listTypeInvoice" value="ТЖН" /></div>
+                            <div class="col-3"><label>Номер накладной</label><input type="number"  id="actNumberInvoice" name="actNumberInvoice" class="form-control" min="0" /></div>
+                            <div class="col-3"><label>Дата накладной</label><input id="actDateInvoice" name="actDateInvoice" class="form-control" type="date" /></div>
+                            <div class="col-3"><label>Дата поступления </label><input id="actDateIn" name="actDateIn" class="form-control" type="date" /></div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row pb-1">
+                            <div class="col-7"><label>Должность лиц, участвующих в приемке</label><input type="text" id="actLoginUserProf" name="actLoginUserProf"  class="form-control" value="Должность авторизированный пользователь" readonly /></div>
+                            <div class="col-5"><label>ФИО лиц, участвующих в приемке</label><input type="text" id="actLoginUserName" name="actLoginUserName" class="form-control" value="Авторизированный пользователь" readonly /></div>
+                            <div class="col-7"><input type="text" id="actUserProf1" name="actUserProf1" class="form-control" /></div>
+                            <div class="col-5"><input type="text" id="actUserName1" name="actUserName1" list="listResponseblePerson" class="form-control" /></div>
+                            <div class="col-7"><input type="text" id="actUserProf2" name="actUserProf2"  class="form-control" /></div>
+                            <div class="col-5"><input type="text" id="actUserName2" name="actUserName2" list="listResponseblePerson" class="form-control" /></div>
+                            <div class="col-7"><input type="text" id="actUserProf3" name="actUserProf3"  class="form-control" /></div>
+                            <div class="col-5"><input type="text" id="actUserName3" name="actUserName3" list="listResponseblePerson" class="form-control" value=" " /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-3"><label>Вес по накладной</label><input type="number" name="actWeightInvoice"  id="actWeightInvoice" class="form-control actCalculation" min="0" /></div>
+                            <div class="col-2"><label>Вес с грузом</label><input type="number" name="actFullWeight" id="actFullWeight" class="form-control" min="0" readonly /></div>
+                            <div class="col-2"><label>Вес без груза</label><input type="number" name="actEmptyWeight" id="actEmptyWeight" class="form-control" min="0" readonly /></div>
+                            <div class="col-3"><label>Фактический вес</label><input type="number" name="actFactWeight" id="actFactWeight" class="form-control" min="0" readonly /></div>
+                            <div class="col-2"><label>% Засорения</label><input type="number" name="actPercentDirt" id="actPercentDirt" class="form-control actCalculation" min="0" max="100" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-3"><label>Вес недосдачи</label><input type="number" id="actNotWeight" name="actNotWeight" class="form-control" min="0" readonly /></div>
+                            <div class="col-3"><label>Зачетный вес </label><input type="number" id="actOkWeight" name="actOkWeight" class="form-control" min="0" readonly /></div>
+                            <div class="col-4"><label>Дата совместной приемки</label><input id="actDateCommonComming" name="actDateCommonComming" class="form-control" type="datetime-local" /></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-primary" id="actSaveChange" type="submit">СоХранить изменения и  Скачать акт</button></div>
+            </form>
+
+        </div>
+    </div>
+</div>
+    <div role="dialog" tabindex="-1" class="modal fade" id="modalInfoInvoiceType2">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Накладная: отгрузка стекла</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row pb-1">
+                            <div class="col"><label>УНП грузополучателя</label><input type="number" id="t2YnpConsignee" class="form-control" /></div>
+                            <div class="col"><label>Текущая дата</label><input id="t2CurrentDate" class="form-control" type="date" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-7"><label>Отпуск разрешил - должность</label><input type="text" id="t2VacationAllowedProf" class="form-control" /></div>
+                            <div class="col-5"><label>Отпуск разрешил - ФИО</label><input type="text" id="t2VacationAllowedName" class="form-control" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-7"><label>Сдал грузоотправитель- должность</label><input type="text" id="t2GetConsignorProf" class="form-control" /></div>
+                            <div class="col-5"><label>Сдал грузоотправитель - ФИО</label><input type="text" id="t2GetConsignorName" class="form-control" /></div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col">
+                                <div class="row pb-1">
+                                    <div class="col-7"><label>Контрагенты</label><input type="text" id="t2Contragent" class="form-control" /></div>
+                                    <div class="col-5"><label>Договор</label><input type="text" id="t2Contract" class="form-control" /></div>
+                                </div>
+                                <div class="row pb-1">
+                                    <div class="col"><label>Плательщик</label><input type="text" id="t2Payman" class="form-control" /></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col"><label>Наименование товара</label><input type="text" id="t2NameTmc" class="form-control t2Calculation" value="Стеклобой смешанный тарный завод" list="listNameTmc" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-3"><label>Валюта</label><input type="text" id="t2UnitPrice" class="form-control" list="listUnitPrice" /></div>
+                            <div class="col-3"><label>Ед.изм.</label><input type="text" id="t2UnitWeight" class="form-control t2Calculation" value="кг" list="listUnitWeight" /></div>
+                            <div class="col-3"><label>% НДС</label><input type="number" id="t2PercentNds" class="form-control t2Calculation" value="20" min="0" max="100" /></div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col">
+                        <div class="table-responsive table-bordered">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>N</th>
+                                        <th>Наименование товара</th>
+                                        <th>Ед.изм.</th>
+                                        <th>Количество</th>
+                                        <th>Первая цена <br /></th>
+                                        <th>Стоимость без НДС</th>
+                                        <th>Ставка НДС<br /></th>
+                                        <th>Сумма НДС <br /></th>
+                                        <th>Сумма с НДС</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td id="t2CellNameTmc">Стеклобой смешанный тарный завод</td>
+                                        <td id="t2CellUnitWeight">кг</td>
+                                        <td id="t2CellPhysicalWeight">3.64</td>
+                                        <td id="t2CellFirstPrice">50000</td>
+                                        <td id="t2CellSumWithoutNds"></td>
+                                        <td id="t2CellPercentNds">20</td>
+                                        <td id="t2CellSumNds"></td>
+                                        <td id="t2CellSumWithNds"></td>
+                                    </tr>
+                                    <tr></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-primary" id="t2SaveChange" type="button">СоХранить изменения</button></div>
+        </div>
+    </div>
+</div>
+    <div role="dialog" tabindex="-1" class="modal fade" id="modalInfoInvoiceType3">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Накладная: отгрузка металла и ПЭТ-бутылки</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row pb-1">
+                            <div class="col-4"><label>УНП грузополучателя</label><input type="number" id="t3YnpConsignee" class="form-control" /></div>
+                            <div class="col-3"><label>Текущая дата</label><input id="t3CurrentDate" class="form-control" type="date" /></div>
+                            <div class="col-5"><label>Водитель</label><input type="number" id="t3NameDriver" class="form-control" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-4"><label>Автомобиль</label><input type="number" id="t3NameAuto" class="form-control" /></div>
+                            <div class="col-4"><label>Прицеп</label><input type="number" id="t3NameTrailer" class="form-control" /></div>
+                            <div class="col-4"><label>К путевому листу №</label><input type="number" id="t3NumberWayList" class="form-control" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-7"><label>Отпуск разрешил - должность</label><input type="text" id="t3VacationAllowedProf" class="form-control" /></div>
+                            <div class="col-5"><label>Отпуск разрешил - ФИО</label><input type="text" id="t3VacationAllowedName" class="form-control" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-7"><label>Сдал грузоотправитель- должность</label><input type="text" id="t3GetConsignorProf" class="form-control" /></div>
+                            <div class="col-5"><label>Сдал грузоотправитель - ФИО</label><input type="text" id="t3GetConsignorName" class="form-control" /></div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col">
+                                <div class="row pb-1">
+                                    <div class="col-7"><label>Контрагенты</label><input type="text" id="t3Contragent" class="form-control" /></div>
+                                    <div class="col-5"><label>Договор</label><input type="text" id="t3Contract" class="form-control" /></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-5"><label>Наименование товара</label><input type="text" id="t3NameTmc" class="form-control t3Calculation" list="listNameTmc" /></div>
+                            <div class="col-7"><label>Пункт разгрузки</label><input type="text" id="t3AddressOut" class="form-control" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-3"><label>Валюта</label><input type="text" id="t3UnitPrice" class="form-control" list="listUnitPrice" /></div>
+                            <div class="col-3"><label>Ед.изм.</label><input type="text" id="t3UnitWeight" class="form-control t3Calculation" value="кг" list="listUnitWeight" /></div>
+                            <div class="col-3"><label>% НДС</label><input type="number" id="t3PercentNds" class="form-control t3Calculation" value="20" min="0" max="100" /></div>
+                            <div class="col-3"><label>Кол-во грузовых мест</label><input type="text" id="t3NumberLoadPlace" class="form-control t3Calculation" /></div>
+                        </div>
+                        <div class="row pb-1">
+                            <div class="col-5"><label>По доверенности</label><input type="text" id="t3Proxy" class="form-control t2Calculation" list="listNameTmc" /></div>
+                            <div class="col-7"><label>Выданной</label><input type="text" id="t3ProxyGiveOut" class="form-control" /></div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col">
+                        <div class="table-responsive table-bordered">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>N</th>
+                                        <th>Наименование товара</th>
+                                        <th>Ед.изм.</th>
+                                        <th>Количество</th>
+                                        <th>Первая цена <br /></th>
+                                        <th>Стоимость без НДС</th>
+                                        <th>Ставка НДС<br /></th>
+                                        <th>Сумма НДС <br /></th>
+                                        <th>Сумма с НДС</th>
+                                        <th>Количество грузовых мест</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td id="t3CellNameTmc"></td>
+                                        <td id="t3CellUnitWeight">кг</td>
+                                        <td id="t3CellPhysicalWeight">3.64</td>
+                                        <td id="t3CellFirstPrice">50000</td>
+                                        <td id="t3CellSumWithoutNds"></td>
+                                        <td id="t3CellPercentNds">20</td>
+                                        <td id="t3CellSumNds"></td>
+                                        <td id="t3CellSumWithNds"></td>
+                                        <td id="t3CellNumberLoadPlace"></td>
+                                    </tr>
+                                    <tr></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-primary" id="t2SaveChange" type="button">СоХранить изменения</button></div>
+        </div>
+    </div>
+</div>
+
+{#    DATALISTS___________#}
+    <div>
+        <datalist id="listUnitWeight">
+            <option value="кг"></option>
+            <option value="тн"></option>
+        </datalist>
+        <datalist id="listUnitPrice">
+            <option value="BYN"></option>
+            <option value="RUB"></option>
+            <option value="USD"></option>
+            <option value="EUR"></option>
+        </datalist>
+        <datalist id="listViewComing">
+        <option value="От отходов потребления"></option>
+        <option value="От отходов производства"></option>
+        </datalist>
+        <datalist id="listViewTmc">
+        <option value="Материал"></option>
+        <option value="Продукция"></option>
+        </datalist>
+        <datalist id="listCharackteristicTmc">
+            <option value="Стеклобой смешанный тарный завод"></option>
+            <option value="Отходы цветной металлолом"></option>
+            <option value="Отходы металлолом"></option>
+            <option value="Отходы ПЭТ-бутылка"></option>
+            <option value="Отсев(продукция)"></option>
+            <option value="Стеклобой бесцветный"></option>
+            <option value="Стеклобой коричневый"></option>
+            <option value="Стеклобой зеленый"></option>
+            <option value="Отходы реализуемые для использования"></option>
+        </datalist>
+        <datalist id="listTypeInvoice">
+            <option value="ТЖН"></option>
+            <option value="ТТН"></option>
+            <option value="ТН"></option>
+            <option value="ТН-1"></option>
+            <option value="ТН-2"></option>
+            <option value="ТТН-1"></option>
+            <option value="ТТН-2"></option>
+            <option value="ТТН-3"></option>
+            <option value="ТТН-4"></option>
+            </datalist>
+        <datalist id="listResponseblePerson">
+            {% for p in person %}
+            <option value="{{ p.ferst_name }} {{ p.second_name }} {{ p.last_name }}">{{ p.ferst_name }} {{ p.second_name }} {{ p.last_name }}</option>
+            {% endfor %}
+            </datalist>
+        <datalist id="listViewOperation">
+            <option value="Покупка"></option>
+            <option value="Реализация ТМЦ"></option>
+            <option value="Прочая реализация ТМЦ"></option>
+        </datalist>
+        <datalist id="listViewVariantRealization">
+            <option value="Основной"></option>
+            <option value="Реализация материалов">
+            </option>
+        </datalist>
+        <datalist id="listNameTmc">
+
+         </datalist>
+
+    </div>
+
+
+
+        <div class="container-fluid" style="padding-top: 20px;">
+        <div class="row">
+            <div class="col-12" id="commonTableAutoAllModal">
+                <div class="wrapper-modal-editor">
+
+<div class="row d-flex justify-content-center modalWrapper">
+
+    <div class="text-center">
+      <button class="btn btn-info" id="modalXml" disabled>1C<i class="fas fa-book ml-1"></i></button>
+    </div>
+
+    <div class="text-center">
+      <button class="btn btn-info" id="modalWord" disabled>Акт<i class="fas fa-file-word ml-1"></i></button>
+    </div>
+
+     <div class="text-center">
+      <button class="btn btn-info" id="modalExcelVertical" disabled>Накладная книжная<i class="fas fa-file-excel ml-1"></i></button>
+    </div>
+
+    <div class="text-center">
+      <button class="btn btn-info" id="modalExcelHorizontal" disabled>Накладная альбомная<i class="fas fa-file-excel ml-1"></i></button>
+    </div>
+
+    <div class="text-center">
+      <button class="btn btn-primary" id="modalMoreDetail"disabled>Подробнее<i class="fas fa-info-circle ml-1"></i></button>
+    </div>
+
+    <div class="text-center">
+      <button class="btn btn-outline-warning" data-toggle="modal" data-target="#filterModal">Фильтр<i class="fas fa-filter ml-1"></i></button>
+    </div>
+
+    <div class="text-center">
+      <button class="btn btn-outline-success" data-toggle="modal" data-target="#modalReport">Отчет<i class="fas fa-file ml-1"></i></button>
+    </div>
+
+
+
+  </div>
+
+
+
+
+
+
+<table id="editibleTable" class="table table-bordered table-hover table-sm text-center" cellspacing="0" width="100%">
+  <thead>
+
+    <tr>
+{#        <th class="th-sm">id</th>#}
+        <th class="th-sm">Госномер авто</th>
+{#        <th class="th-sm">Модель авто</th>#}
+        <th class="th-sm">Госномер прицепа</th>
+{#        <th class="th-sm">Модель прицепа</th>#}
+        <th class="th-sm">Водитель</th>
+        <th class="th-sm">Время въезда</th>
+        <th class="th-sm">Время выезда</th>
+        <th class="th-sm">Вес пустого</th>
+        <th class="th-sm">Вес груженого</th>
+        <th class="th-sm">Статус</th>
+{#        <th class="th-sm">№ сопроводительного паспорта</th>#}
+{#        <th class="th-sm">Склад</th>#}
+        <th class="th-sm">Скидка</th>
+        <th class="th-sm">Организация</th>
+        <th class="th-sm">Характеристика ТМЦ</th>
+{#	    <th class="th-sm">Исполнитель</th>#}
+{#        <th class="th-sm">Номер доверенности</th>#}
+{#        <th class="th-sm">Кол-во мест</th>#}
+{#        <th class="th-sm">Тип накладной</th>#}
+{#        <th class="th-sm">Серия накладной</th>#}
+        <th class="th-sm">Номер накладной</th>
+{#        <th class="th-sm">Вес по накладной</th>#}
+{#        <th class="th-sm">Ед.измерения</th>#}
+{#        <th class="th-sm">Цена без НДС</th>#}
+{#        <th class="th-sm">Цена с НДС</th>#}
+{#        <th class="th-sm">Валюта</th>#}
+{#        <th class="th-sm">Кто разрешил</th>#}
+{#        <th class="th-sm">Место погрузки</th>#}
+{#        <th class="th-sm">Кто принял</th>#}
+{#        <th class="th-sm">№ путевого листа</th>#}
+        <th class="th-sm">Контрагент</th>
+{#        <th class="th-sm">Наименование договора</th>#}
+{#        <th class="th-sm">Основание отпуска</th>#}
+
+
+    </tr>
+
+  </thead>
+  <tbody>
+{#  {% for a in page_obj %}#}
+{#    <tr  onclick="updateAgent({{ a.id }})">#}
+{#     <td>{{ a.id }}</td>#}
+{#      <td>{{ a.name }}</td>#}
+{#      <td>{{ a.unp }}</td>#}
+{#         <td>{{ a.address }}</td>#}
+{#      <td>{{ a.description }}</td>#}
+{#      <td>{{ a.date_add }}</td>#}
+{#        <td>{{ a.date_update }}</td>#}
+{#    </tr>#}
+{#  {% endfor %}#}
+  {% for  a in allData %}
+<tr onclick="getNumberSelect({{ a.id }});">
+        <td>{{ a.number}}</td>
+        <td>{{a.number_pricep}}</td>
+        <td>{{ a.driver }}</td>
+        <td>{{ a.last_in }}</td>
+        <td>{{ a.last_out }}</td>
+        <td>{{ a.weghtIn }}</td>
+        <td>{{ a.weghtOut }}</td>
+        <td>{% if a.status_in %} На территории {% else %} не на территории{% endif %}</td>
+        <td>{{ a.discont }}</td>
+        <td>{{ a.organization }}</td>
+        <td>{{ a.chartmc }}</td>
+        <td>{{ a.seria }} {{ a.numberNakladnaia }}</td>
+        <td>{{ a.nameagent }}</td>
+
+</tr>
+ {% endfor %}
+
+
+  </tbody>
+	<tfoot>
+		<tr>
+{#        <th>id</th>#}
+        <th>Госномер авто</th>
+{#        <th>Модель авто</th>#}
+        <th>Госномер прицепа</th>
+{#        <th>Модель прицепа</th>#}
+        <th>Водитель</th>
+        <th>Время въезда</th>
+        <th>Время выезда</th>
+        <th>Вес пустого</th>
+        <th>Вес груженого</th>
+        <th>Статус</th>
+{#        <th>№ сопроводительного паспорта</th>#}
+{#        <th>Склад</th>#}
+        <th>Скидка</th>
+        <th>Организация</th>
+        <th>Вид операции</th>
+{#	    <th>Исполнитель</th>#}
+{#        <th>Номер доверенности</th>#}
+{#        <th>Кол-во мест</th>#}
+{#        <th>Тип накладной</th>#}
+{#        <th>Серия накладной</th>#}
+        <th>Номер накладной</th>
+{#        <th>Вес по накладной</th>#}
+{#        <th>Ед.измерения</th>#}
+{#        <th>Цена без НДС</th>#}
+{#        <th>Цена с НДС</th>#}
+{#        <th>Валюта</th>#}
+{#        <th>Кто разрешил</th>#}
+{#        <th>Место погрузки</th>#}
+{#        <th>Кто принял</th>#}
+{#        <th>№ путевого листа</th>#}
+        <th>Контрагент</th>
+{#        <th>Наименование договора</th>#}
+{#        <th>Основание отпуска</th>#}
+			</tr>
+      </tfoot>
+</table>
+
+
+	</div>
+    </div>
+    </div>
+    </div>
+
+
+{#    _______________________________#}
     <div class="container">
 
 
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-            анализ
-        </button>
-        <input placeholder="search" id="search"/>
-        <button onclick="search()">поиск</button>
-        <button onclick="search(true)">сброс</button>
+{#        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">#}
+{#            анализ#}
+{#        </button>#}
+{#        <input placeholder="search" id="search"/>#}
+{#        <button onclick="search()">поиск</button>#}
+{#        <button onclick="search(true)">сброс</button>#}
         <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModal"
              aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -23,26 +1044,25 @@
                         </button>
                     </div>
                     <div id="modbody" class="modal-body">
-                        <h2>По контрагенту</h2>
-                        <hr>
+                        <h4>По контрагенту</h4>
                         <button class="btn btn-success" onclick="addAgent()" id="agent-select">перейти</button>
-                        <h2>По номеру</h2>
                         <hr>
+                        <h4>По номеру</h4>
                         <button class="btn btn-success" onclick="addNum()" id="number-select">перейти</button>
-                        <h2>По дате</h2>
                         <hr>
+                        <h4>По дате</h4>
                         <button class="btn btn-success" onclick="addDate()" id="date-select">перейти</button>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" onclick="returnModal();" class="btn btn-primary">назад</button>
+{#                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>#}
+                        <button type="button" onclick="returnModal();" class="btn btn-primary">Назад</button>
                     </div>
                 </div>
             </div>
         </div>
         <div id="filter-agent" style="display: none;">
             <div class="form-group">
-                <label for="exampleFormControlSelect1">Контрагенты</label>
+                <label for="kontrselect">Контрагенты</label>
                 <select class="form-control" id="kontrselect">
                     {% for a in agents %}
                         <option value="{{ a.id }}">{{ a.name }}</option>
@@ -56,7 +1076,7 @@
 
         <div id="filter-num" style="display: none;">
             <div class="form-group">
-                <label for="exampleFormControlSelect1">номер</label>
+                <label for="num">номер</label>
                 <select class="form-control" id="num">
                     {% for a in uniq %}
                         <option value="{{ a.number }}">{{ a.number }}</option>
@@ -70,7 +1090,7 @@
 
         <div id="filter-data" style="display: none;">
             <div class="form-group">
-                <label for="exampleFormControlSelect1">дата начала</label>
+                <label for="startTime">дата начала</label>
                 <input id="startTime" type="date">
                 <hr>
                 <label for="exampleFormControlSelect1">дата окончания</label>
@@ -93,93 +1113,114 @@
         </div>
 
 
-        <div class="accordion" id="accordionExample">
-            {% for a in page_obj %}
-                <div class="card">
-                    <div class="card-header" id="headingOne_{{ a.id }}">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link" type="button" data-toggle="collapse"
-                                    data-target="#collapseOne_{{ a.id }}"
-                                    aria-expanded="true" aria-controls="collapseOne_{{ a.id }}">
-                                {{ a.number }}
-                            </button>
-                        </h2>
-                    </div>
-
-                    <div id="collapseOne_{{ a.id }}" class="collapse" aria-labelledby="headingOne_{{ a.id }}"
-                         data-parent="#accordionExample">
-                        <div class="card-body">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th scope="col">агент</th>
-                                    <th scope="col">накладная</th>
-                                    <th scope="col">время въезда</th>
-                                    <th scope="col">время выезда</th>
-                                    <th scope="col">масса на въезде, кг</th>
-                                    <th scope="col">масса на выезде, кг</th>
-                                    <th scope="col">нетто, кг</th>
-                                    <th scope="col">статус</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>{{ a.agents.name }}</td>
-                                    <td>{{ a.nakladnaya }}</td>
-                                    <td>{{ a.last_in }}</td>
-                                    <td>{{ a.last_out }}</td>
-                                    <td>{{ a.ves_in }}</td>
-                                    <td>{{ a.ves_out }}</td>
-                                    <td>{{ a.netto }}</td>
-                                    {% if a.status_in %}
-                                        <td>
-                                            <span class="badge badge-warning">на территории</span>
-                                        </td> {% else %}
-                                        <td>
-                                            <span class="badge badge-success">выехал</span>
-                                        </td> {% endif %}
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
 
 
-        </div>
 
-        <div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-        {% endif %}
+</div>
+    <script>
 
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
-
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-        </div>
+let NUMBER_SET_VIEW_DOCUMENT;
 
 
-        {% csrf_token %}
+  $('table tr').on('click', function(e) {
+    $('table tr').removeClass('marked');
+    $(this).addClass('marked');
+    $('#modalMoreDetail').prop("disabled",false);
+    let operationT=$(".marked > td:eq(10)").text();
+    console.log(operationT)
+        switch (operationT){
+            case "Стеклобой смешанный тарный завод":
+
+              $('#modalWord').prop("disabled",false);
+              $('#modalXml').prop("disabled",false);
+              $('#modalExcelVertical').prop("disabled",true);
+              $('#modalExcelHorizontal').prop("disabled",true);
+              NUMBER_SET_VIEW_DOCUMENT=1;
+              break;
+            case "Отсев(продукция)":
+                case "Стеклобой бесцветный":
+                    case "Стеклобой коричневый":
+                        case "Стеклобой зеленый":
+
+              $('#modalWord').prop("disabled",true);
+              $('#modalXml').prop("disabled",false);
+              $('#modalExcelVertical').prop("disabled",false);
+              $('#modalExcelHorizontal').prop("disabled",true);
+              NUMBER_SET_VIEW_DOCUMENT=2;
+              break;
+            case "Отходы цветной металлолом":
+                case "Отходы металлолом":
+                    case "Отходы ПЭТ-бутылка":
+              $('#modalWord').prop("disabled",true);
+              $('#modalXml').prop("disabled",false);
+              $('#modalExcelVertical').prop("disabled",false);
+              $('#modalExcelHorizontal').prop("disabled",false);
+              NUMBER_SET_VIEW_DOCUMENT=3;
+              break;
+            case "Отходы реализуемые для использования":
+              $('#modalWord').prop("disabled",true);
+              $('#modalXml').prop("disabled",false);
+              $('#modalExcelVertical').prop("disabled",true);
+              $('#modalExcelHorizontal').prop("disabled",true);
+              NUMBER_SET_VIEW_DOCUMENT=4;
+              break;
+
+            default:
+              $('#modalWord').prop("disabled",true);
+              $('#modalXml').prop("disabled",true);
+              $('#modalExcelVertical').prop("disabled",true);
+              $('#modalExcelHorizontal').prop("disabled",true);
+              $('#modalMoreDetail').prop("disabled",true);
+              NUMBER_SET_VIEW_DOCUMENT=0;
 
 
-    </div>
+    }
+  });
+
+$(document).ready(function(){
+  $("#modalMoreDetail").click(()=>{
+      openModal(false,NUMBER_SET_VIEW_DOCUMENT);
+  });
+  $("#modalXml").click(()=>{
+      openModal(true,NUMBER_SET_VIEW_DOCUMENT);
+  });
+
+  $("#modalWord").click(()=>{
+      openModalAct();
+  });
+
+  $("#modalExcelVertical").click(()=>{
+      openModalVertical(NUMBER_SET_VIEW_DOCUMENT);
+  });
+
+  $("#modalExcelHorizontal").click(()=>{
+      openModalHorizontal();
+  });
+
+
+
+});
+let actual;
+function getNumberSelect(k){
+      actual =data.find(obj => obj.id == k);
+}
+
+</script>
+
+    <style>
+        table tr.marked {
+        background-color: #c2e9f7;
+        }
+    </style>
 
     <script src="{% static 'popper.js' %}"></script>
     <script src="{% static 'b.min.js' %}"></script>
 
 
     <script>
-        var data = '{{ data }}';
-        data = data.replace(/&quot;/g, '"');
+        var data = '{{ allDataJS| escapejs }}';
+        //data = data.replace(/\u0027/g, '"');
+        //data = data.replace(/None/g, 'null');
         data = JSON.parse(data);
         var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
 
@@ -292,43 +1333,7 @@
             });
         }
 
-        function getdata(data, url, c) {
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: data,
-                success: function (res) {
-                    switch (c) {
 
-                        case "agent":
-                             auto = JSON.parse(res.auto);
-                            resultFilter(res.col, res.srednee, res.sum, auto, c);
-                            break;
-                        case "num":
-                            auto = JSON.parse(res.auto);
-                            resultFilter(res.col, res.srednee, res.sum, auto, c);
-                            break;
-                        case "date":
-                             auto = JSON.parse(res.auto);
-                            resultFilter(res.col, res.srednee, res.sum, auto, c);
-                            break;
-                    }
-
-                },
-                beforeSend: function (xhr, settings) {
-                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    }
-                }
-            });
-        }
-
-        let autoStartView;
-
-        $(document).ready(function () {
-            autoStartView = $('#accordionExample').html();
-
-        });
 
         let agents = "{{ Jagents }}";
         agents = agents.replace(/&quot;/g, '"');
@@ -339,191 +1344,510 @@
         });
         let someAutoSearch;
 
-        function search(k = false) {
-            var str = $("#search").val();
-            if (k) {
-                str = "";
-            }
-            var data = {"request": "auto", "case": "auto", "search": str};
-            $.ajax({
-                type: "POST",
-                url: {% url 'search' %},
-                data: data,
-                success: function (res) {
-
-                    var htt = '';
-                    res.forEach(function (a) {
-                        htt += ' <div class="card">\n' +
-                            '                        <div class="card-header" id="headingOne_' + a.pk + '">\n' +
-                            '                            <h2 class="mb-0">\n' +
-                            '                                <button class="btn btn-link" type="button" data-toggle="collapse"\n' +
-                            '                                        data-target="#collapseOne_' + a.pk + '"\n' +
-                            '                                        aria-expanded="true" aria-controls="collapseOne_' + a.pk + '">\n' +
-                            '                                    ' + a.fields.number + '\n' +
-                            '                                </button>\n' +
-                            '                            </h2>\n' +
-                            '                        </div>\n' +
-                            '\n' +
-                            '                        <div id="collapseOne_' + a.pk + '" class="collapse" aria-labelledby="headingOne_' + a.pk + '"\n' +
-                            '                             data-parent="#accordionExample">\n' +
-                            '                            <div class="card-body">\n' +
-                            '                                <table class="table">\n' +
-                            '                                    <thead>\n' +
-                            '                                    <tr>\n' +
-                            '                                        <th scope="col">агент</th>\n' +
-                            '                                        <th scope="col">накладная</th>\n' +
-                            '                                        <th scope="col">время въезда</th>\n' +
-                            '                                        <th scope="col">время выезда</th>\n' +
-                            '                                        <th scope="col">масса на въезде, кг</th>\n' +
-                            '                                        <th scope="col">масса на выезде, кг</th>\n' +
-                            '                                         <th scope="col">нетто, кг</th>\n' +
-                            '                                         <th scope="col">статус</th>\n' +
-                            '                                    </tr>\n' +
-                            '                                    </thead>\n' +
-                            '                                    <tbody>\n' +
-                            '                                    <tr>\n' +
-                            '                                        <td>' + agent[a.fields.agents].fields.name + '</td>\n' +
-                            '                                        <td>' + a.fields.nakladnaya + '</td>\n' +
-                            '                                        <td>' + a.fields.last_in + '</td>\n' +
-                            '                                         <td>' + a.fields.last_out + '</td>\n' +
-                            '                                        <td>' + a.fields.ves_in + '</td>\n' +
-                            '                                        <td>' + a.fields.ves_out + '</td>\n' +
-                            '                                        <td>' + a.fields.netto + '</td>\n' +
-                            '                                       <td>\n' +
-                            '                                        ' + status_text(a.fields.status_in) + '\n' +
-                            '                                        </td>\n' +
-                            '                                    </tr>\n' +
-                            '                                    </tbody>\n' +
-                            '                                </table>\n' +
-                            '                            </div>\n' +
-                            '</div>\n' +
-                            '                        </div>';
-
-                    });
-                    $('#accordionExample').html(htt);
-                },
-                beforeSend: function (xhr, settings) {
-                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    }
-                }
-            });
-        }
-
-
-        function status_text(t) {
-            if (t) {
-                return '<span class="badge badge-warning">на территории</span>';
-            } else {
-                return '<span class="badge badge-success">не на территории</span>';
-            }
-        }
 
 
     </script>
 
+{#   Работа с полями ввода 1С и ПОДРОБНЕЕ#}
+    <script>
 
-    {# google charts #}
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
+$("#modalWord").click(function(e){
+    $("#actAddressContragent").val(actual.address);
+    $("#actContragent").val(actual.nameagent);
+    $("#actContract").val(actual.contractname);
+    $("#actWeightInvoice").val(actual.ves_nakladnaya);
+    $("#actUnitWeight").val(actual.ves_ed);
+    $("#datecontract").val(actual.datecontract);
+    $("#actNameAuto").val(actual.number);
+   $("#actDateInvoice").val(actual.nakladnayaDate);
+    $("#actPercentDirt").val(actual.discont);
+    $("#actNumberInvoice").val(actual.numberNakladnaia);
+    $("#actUnitWeight").val(actual.ves_ed);
+    $("#actViewTmc").val(actual.type);
+    let gruz,tara;
+    if(actual.weghtIn>actual.weghtOut){
+         tara = actual.weghtOut;
+         gruz = actual.weghtIn;
+    }else {
+         tara = actual.weghtIn;
+         gruz = actual.weghtOut;
+    }
+    $("#actFullWeight").val(gruz);
+    $("#actEmptyWeight").val(tara);
+    $("#actLoginUserProf").val(actual.role);
+    $("#actLoginUserName").val(actual.name+" "+actual.secondName+" "+ actual.lastName);
+
+});
+function transferDataToModal(super_num){
+    let gruz,tara;
+    if(actual.weghtIn>actual.weghtOut){
+         tara = actual.weghtOut;
+         gruz = actual.weghtIn;
+    }else {
+         tara = actual.weghtIn;
+         gruz = actual.weghtOut;
+    }
+alert(actual.seria);
+    $().val();
+    $("#p"+super_num+"CellNumberAuto").html(actual.number);
+    $("#gos_num_pricep").val(actual.numberPricep);
+    $("#p"+super_num+"SeriesInvoice").val(actual.seria);
+    $("#p"+super_num+"Contragent").val(actual.nameagent);
+    $("#p"+super_num+"DateInvoice").val(actual.nakladnayaDate);
+    $("#p"+super_num+"NumberInvoice").val(actual.numberNakladnaia);
+    $("#p"+super_num+"CellNameDriver").html(actual.driver);
+    $("#p"+super_num+"CellTimeIn").html(actual.last_in);
+    $("#p"+super_num+"CellTimeOut").html(actual.last_out);
+    $("#p"+super_num+"Description").val(actual.description);
+    $("#p"+super_num+"Contract").val(actual.contractname);
+    $("#p"+super_num+"Contract").attr('data-id',actual.contractid);
+    $("#p"+super_num+"TypeInvoice").val();
+    $("#p"+super_num+"CellFullWeight").html(gruz);
+    $("#p"+super_num+"CellEmptyWeight").html(tara);
+    $("#p"+super_num+"UnitPrice").val(actual.unitPrice);
+    $("#p"+super_num+"CellFirstPrice").html(actual.firstPrice);
+    $("#p"+super_num+"PercentNds").val(actual.nds);
+    $("#p"+super_num+"UnitWeight").val(actual.ves_ed);
+    $("#p"+super_num+"PercentDirt").val(actual.discont);
+    $("#p"+super_num+"TypeInvoice").val(actual.type);
+    $("#p"+super_num+"TypeArrival").val(actual.typeOperation);
+    $("#p"+super_num+"TypeMaterialOut").val(actual.typeMaterial);
+    $("#p"+super_num+"NumberAccompanyingPassport").val(actual.numberPasport);
+    $("#p"+super_num+"NumberWayList").val(actual.numberPassportList);
+    $("#p"+super_num+"ViewComingGlass").val(actual.typeOperation);
+    $("#p"+super_num+"CharackteristicTmc").val(actual.characteristictmc);
+    $("#p"+super_num+"AccountTmc").val(actual.scoreTMC);
+    $("#p"+super_num+"Account").val(actual.score);
+
+}
+
+function transferDataToModalAkt(num){
+    alert(num);
+    let gruz,tara;
+    if(actual.weghtIn>actual.weghtOut){
+         tara = actual.weghtOut;
+         gruz = actual.weghtIn;
+    }else {
+         tara = actual.weghtIn;
+         gruz = actual.weghtOut;
+    }
+    $("#t"+num+"CellNumberAuto").html(actual.number);
+    $("#gos_num_pricep").val(actual.numberPricep);
+    $("#t"+num+"SeriesInvoice").val(actual.seria);
+    $("#t"+num+"Contragent").val(actual.nameagent);
+    $("#t"+num+"DateInvoice").val(actual.nakladnayaDate);
+    $("#t"+num+"SeriesInvoice").val(actual.seria);
+    $("#t"+num+"NumberInvoice").val(actual.numberNakladnaia);
+    $("#t"+num+"NameDriver").val(actual.driver);
+        $("#t"+num+"YnpConsignee").val(actual.unp);
+    $("#t"+num+"CellTimeIn").val(actual.last_in);
+    $("#t"+num+"CellTimeOut").val(actual.last_out);
+    $("#t"+num+"Description").val(actual.description);
+    $("#t"+num+"Contract").val(actual.contractname);
+    $("#t"+num+"Contract").attr('data-id',actual.contractid);
+    $("#t"+num+"AddressOut").val(actual.dischargePoint);
+    $("#t"+num+"TypeInvoice").val();
+    $("#t"+num+"CellFullWeight").html(gruz);
+    $("#t"+num+"CellEmptyWeight").html(tara);
+    $("#t"+num+"UnitPrice").val(actual.unitPrice);
+    $("#t"+num+"CellFirstPrice").html(actual.firstPrice);
+    $("#t"+num+"PercentNds").val(actual.nds);
+    $("#t"+num+"UnitWeight").val(actual.ves_ed);
+    $("#t"+num+"PercentDirt").val(actual.discont);
+    $("#t"+num+"TypeInvoice").val(actual.type);
+    $("t"+num+"NumberWayList").val(actual.numberPassportList);
+    $("#t"+num+"TypeArrival").val(actual.typeOperation);
+    $("#t"+num+"TypeMaterialOut").val(actual.typeMaterial);
+    $("#t"+num+"NumberAccompanyingPassport").val(actual.numberPasport);
+    $("#t"+num+"NumberWayList").val(actual.numberPassportList);
+    $("#t"+num+"ViewComingGlass").val(actual.typeOperation);
+    $("#t"+num+"CharackteristicTmc").val(actual.characteristictmc);
+    $("#t"+num+"AccountTmc").val(actual.scoreTMC);
+    $("#t"+num+"Account").val(actual.score);
+
+}
+
+$(".p1Calculation").bind("change paste keyup", function () {
+    let iN = "#p" + this.id[1];
+    $(iN + "CellViewTmc").text($(iN + "ViewTmc").val());
+    $(iN + "CellAccountTmc").text($(iN + "AccountTmc").val());
+    $(iN + "CellCharackteristicTmc1").text($(iN + "CharackteristicTmc").val());
+    $(iN + "CellCharackteristicTmc2").text($(iN + "CharackteristicTmc").val());
+    $(iN + "CellViewComingGlass").text($(iN + "ViewComingGlass").val());
+    $(iN + "CellUnitPrice").text($(iN + "UnitPrice").val());
+    $(iN + "CellPercentNds").text($(iN + "PercentNds").val());
+    $(iN + "CellPercentDirt").text($(iN + "PercentDirt").val());
+    $(iN + "CellUnitWeight").text($(iN + "UnitWeight").val());
+    let physicalWeight = +$(iN + "CellPhysicalWeight").text(),
+        percentDirt = +$(iN + "CellPercentDirt").text(),
+        firstPrice = +$(iN + "CellFirstPrice").text(),
+        persentNds = +$(iN + "CellPercentNds").text(),
+        sumWithoutNds, sumWithNds, sumNds, okWeight, dirtWeight;
+
+    okWeight = +(physicalWeight * (1 - percentDirt / 100)).toFixed(3);
+    dirtWeight = +(physicalWeight - okWeight).toFixed(3);
+    sumWithoutNds = +(firstPrice * okWeight).toFixed(3);
+    sumNds = +(firstPrice * persentNds / 100).toFixed(3);
+    sumWithNds = +(sumWithoutNds + sumNds).toFixed(3);
+
+    $(iN + "CellOkWeight").text(okWeight);
+    $(iN + "CellDirtWeight").text(dirtWeight);
+    $(iN + "CellSumWithoutNds").text(sumWithoutNds);
+    $(iN + "CellSumNds").text(sumNds);
+    $(iN + "CellSumWithNds").text(sumWithNds);
+});
+
+$(".p2Calculation").bind("change paste keyup", function () {
+    let iN = "#p" + this.id[1];
+    $(iN + "CellViewTmc").text($(iN + "ViewTmc").val());
+    $(iN + "CellAccountTmc").text($(iN + "AccountTmc").val());
+    $(iN + "CellCharackteristicTmc1").text($(iN + "CharackteristicTmc").val());
+    $(iN + "CellUnitPrice").text($(iN + "UnitPrice").val());
+    $(iN + "CellPercentNds").text($(iN + "PercentNds").val());
+    $(iN + "CellUnitWeight").text($(iN + "UnitWeight").val());
+    let physicalWeight = +$(iN + "CellPhysicalWeight").text(),
+        firstPrice = +$(iN + "CellFirstPrice").text(),
+        persentNds = +$(iN + "CellPercentNds").text(),
+        sumWithoutNds, sumWithNds, sumNds, okWeight;
+
+    okWeight = +(physicalWeight).toFixed(3);
+    sumWithoutNds = +(firstPrice * okWeight).toFixed(3);
+    sumNds = +(firstPrice * persentNds / 100).toFixed(3);
+    sumWithNds = +(sumWithoutNds + sumNds).toFixed(3);
+
+    $(iN + "CellSumWithoutNds").text(sumWithoutNds);
+    $(iN + "CellSumNds").text(sumNds);
+    $(iN + "CellSumWithNds").text(sumWithNds);
+});
+
+$(".p3Calculation").bind("change paste keyup", function () {
+    let iN = "#p" + this.id[1];
+    $(iN + "CellViewTmc").text($(iN + "ViewTmc").val());
+    $(iN + "CellAccountTmc").text($(iN + "AccountTmc").val());
+    $(iN + "CellCharackteristicTmc1").text($(iN + "CharackteristicTmc").val());
+    $(iN + "CellUnitPrice").text($(iN + "UnitPrice").val());
+    $(iN + "CellPercentNds").text($(iN + "PercentNds").val());
+    $(iN + "CellUnitWeight").text($(iN + "UnitWeight").val());
+    $(iN + "CellAcceptWeight").text($(iN + "AcceptWeight").val());
+    $(iN + "CellAcceptPrice").text($(iN + "AcceptPrice").val());
+    let physicalWeight = +$(iN + "CellPhysicalWeight").text(),
+        acceptWeight = +$(iN + "CellAcceptWeight").text(),
+        acceptPrice = +$(iN + "CellAcceptPrice").text(),
+        firstPrice = +$(iN + "CellFirstPrice").text(),
+        persentNds = +$(iN + "CellPercentNds").text(),
+        sumWithoutNds, sumWithNds, sumNds, okWeight, primeCost;
+
+    sumWithoutNds = +(acceptWeight * acceptPrice).toFixed(3);
+    sumNds = +(acceptWeight * persentNds / 100).toFixed(3);
+    sumWithNds = +(sumWithoutNds + sumNds).toFixed(3);
+    primeCost = +(physicalWeight * acceptPrice).toFixed(3);
+
+    $(iN + "CellSumWithoutNds").text(sumWithoutNds);
+    $(iN + "CellSumNds").text(sumNds);
+    $(iN + "CellSumWithNds").text(sumWithNds);
+    $(iN + "CellPrimeCost").text(primeCost);
+});
+
+$(".p4Calculation").bind("change paste keyup", function () {
+    let iN = "#p" + this.id[1];
+    $(iN + "CellViewTmc").text($(iN + "ViewTmc").val());
+    $(iN + "CellAccountTmc").text($(iN + "AccountTmc").val());
+    $(iN + "CellCharackteristicTmc1").text($(iN + "CharackteristicTmc").val());
+    $(iN + "CellUnitWeight").text($(iN + "UnitWeight").val());
+    $(iN + "CellExpenseAccount").text($(iN + "ExpenseAccount").val());
+    $(iN + "CellOtherIncomeExpenses").text($(iN + "OtherIncomeExpenses").val());
+
+});
 
 
-        google.charts.load('current', {packages: ['corechart', 'bar']});
-        google.charts.setOnLoadCallback(drawFor1T);
-
-        function drawFor1T(auto = []) {
-            let min = 0;
-            var to_data = [['дата', 'вес нетто',]];
-            var to_circle = [['Дата', 'Вес за заезд']];
-            auto.forEach(function (a) {
-
-                if (a.fields.ves_in >= a.fields.ves_out) {
-                    min = a.fields.ves_in;
-                } else {
-                    min = a.fields.ves_out;
-                }
-                to_data.push([a.fields.last_in, min]);
-                to_circle.push([a.fields.last_in, a.fields.netto]);
-            });
-            var data = google.visualization.arrayToDataTable(to_data);
-
-            var options = {
-                title: 'График веса тара А/М',
-                chartArea: {width: '50%'},
-                hAxis: {
-                    title: 'вес',
-                    minValue: 0
-                },
-                vAxis: {
-                    title: 'дата'
-                }
-            };
-
-            var chart = new google.visualization.BarChart(document.getElementById('column'));
-
-            chart.draw(data, options);
+let super_num;
+const openModal = (xml, number, id) => {
+    transferFieldOpenModal(number);
+    super_num = number;
 
 
-//======================================================================================================
-            //circle
-            var data = google.visualization.arrayToDataTable(to_circle);
+    if (xml == false) {
+        $('#p' + number + 'CreateXml').removeClass('d-none').addClass('d-none');
+        $('#p' + number + 'SaveChange').removeClass('d-none');
+        $('#p' + number + 'Img1').removeClass('d-none');
+        $('#p' + number + 'Img2').removeClass('d-none');
+        $('#p' + number + 'Img3').removeClass('d-none');
+    }
+    if (xml == true) {
+        $('#p' + number + 'CreateXml').removeClass('d-none');
+        $('#p' + number + 'SaveChange').removeClass('d-none').addClass('d-none');
+        $('#p' + number + 'Img1').removeClass('d-none').addClass('d-none');
+        $('#p' + number + 'Img2').removeClass('d-none').addClass('d-none');
+        $('#p' + number + 'Img3').removeClass('d-none').addClass('d-none');
+    }
+    $('#modalInfoP' + number).modal('show');
+        transferDataToModal(number);
+};
 
-            var options = {
-                title: 'График нагруженности транспорта'
-            };
+const transferFieldOpenModal = (i) => {
+    let iN = "#p" + i;
+    super_num = i;
+    switch (i) {
+        case 1: {
+            $(iN + "CellViewTmc").text($(iN + "ViewTmc").val());
+            $(iN + "CellAccountTmc").text($(iN + "AccountTmc").val());
+            $(iN + "CellCharackteristicTmc1").text($(iN + "CharackteristicTmc").val());
+            $(iN + "CellCharackteristicTmc2").text($(iN + "CharackteristicTmc").val());
+            $(iN + "CellViewComingGlass").text($(iN + "ViewComingGlass").val());
+            $(iN + "CellUnitPrice").text($(iN + "UnitPrice").val());
+            $(iN + "CellPercentNds").text($(iN + "PercentNds").val());
+            $(iN + "CellPercentDirt").text($(iN + "PercentDirt").val());
+            $(iN + "CellUnitWeight").text($(iN + "UnitWeight").val());
+            let physicalWeight = +$(iN + "CellPhysicalWeight").text(),
+                percentDirt = +$(iN + "CellPercentDirt").text(),
+                firstPrice = +$(iN + "CellFirstPrice").text(),
+                persentNds = +$(iN + "CellPercentNds").text(),
+                sumWithoutNds, sumWithNds, sumNds, okWeight, dirtWeight;
 
-            var chartBouble = new google.visualization.PieChart(document.getElementById('piechart'));
+            okWeight = +(physicalWeight * (1 - percentDirt / 100)).toFixed(3);
+            dirtWeight = +(physicalWeight - okWeight).toFixed(3);
+            sumWithoutNds = +(firstPrice * okWeight).toFixed(3);
+            sumNds = +(firstPrice * persentNds / 100).toFixed(3);
+            sumWithNds = +(sumWithoutNds + sumNds).toFixed(3);
 
-            chartBouble.draw(data, options);
-
+            $(iN + "CellOkWeight").text(okWeight);
+            $(iN + "CellDirtWeight").text(dirtWeight);
+            $(iN + "CellSumWithoutNds").text(sumWithoutNds);
+            $(iN + "CellSumNds").text(sumNds);
+            $(iN + "CellSumWithNds").text(sumWithNds);
         }
-        // draw chart for agent data
-    function drawForAgent(datas) {
-  let min = 0;
-  let amx=0;
-            var to_data = [['дата', 'вес без груза',"вес с грузом"]];
-            var to_circle = [['Дата', 'Вес за заезд']];
-            auto.forEach(function (a) {
+        break;
+    case 2: {
+        $(iN + "CellViewTmc").text($(iN + "ViewTmc").val());
+        $(iN + "CellAccountTmc").text($(iN + "AccountTmc").val());
+        $(iN + "CellCharackteristicTmc1").text($(iN + "CharackteristicTmc").val());
+        $(iN + "CellUnitPrice").text($(iN + "UnitPrice").val());
+        $(iN + "CellPercentNds").text($(iN + "PercentNds").val());
+        $(iN + "CellUnitWeight").text($(iN + "UnitWeight").val());
+        let physicalWeight = +$(iN + "CellPhysicalWeight").text(),
+            firstPrice = +$(iN + "CellFirstPrice").text(),
+            persentNds = +$(iN + "CellPercentNds").text(),
+            sumWithoutNds, sumWithNds, sumNds, okWeight;
 
-                if (a.fields.ves_in >= a.fields.ves_out) {
-                    min = a.fields.ves_out;
-                    max = a.fields.ves_in;
-                } else {
-                    min = a.fields.ves_in;
-                    max =  a.fields.ves_out;
-                }
-                to_data.push([a.fields.number, min,max]);
-                to_circle.push([a.fields.last_in, a.fields.netto]);
-            });
+        okWeight = +(physicalWeight).toFixed(3);
+        sumWithoutNds = +(firstPrice * okWeight).toFixed(3);
+        sumNds = +(firstPrice * persentNds / 100).toFixed(3);
+        sumWithNds = +(sumWithoutNds + sumNds).toFixed(3);
 
-            var data = google.visualization.arrayToDataTable(to_data);
+        $(iN + "CellSumWithoutNds").text(sumWithoutNds);
+        $(iN + "CellSumNds").text(sumNds);
+        $(iN + "CellSumWithNds").text(sumWithNds);
+    }
+    break;
+    case 3: {
+        $(iN + "CellViewTmc").text($(iN + "ViewTmc").val());
+        $(iN + "CellAccountTmc").text($(iN + "AccountTmc").val());
+        $(iN + "CellCharackteristicTmc1").text($(iN + "CharackteristicTmc").val());
+        $(iN + "CellUnitPrice").text($(iN + "UnitPrice").val());
+        $(iN + "CellPercentNds").text($(iN + "PercentNds").val());
+        $(iN + "CellUnitWeight").text($(iN + "UnitWeight").val());
+        $(iN + "CellAcceptWeight").text($(iN + "AcceptWeight").val());
+        $(iN + "CellAcceptPrice").text($(iN + "AcceptPrice").val());
+        let physicalWeight = +$(iN + "CellPhysicalWeight").text(),
+            acceptWeight = +$(iN + "CellAcceptWeight").text(),
+            acceptPrice = +$(iN + "CellAcceptPrice").text(),
+            firstPrice = +$(iN + "CellFirstPrice").text(),
+            persentNds = +$(iN + "CellPercentNds").text(),
+            sumWithoutNds, sumWithNds, sumNds, okWeight, primeCost;
 
-            var options = {
-                title: 'График веса тара А/М',
-                chartArea: {width: '50%'},
-                hAxis: {
-                    title: 'вес',
-                    minValue: 0
-                },
-                vAxis: {
-                    title: 'дата'
-                }
-            };
-            var chart = new google.visualization.BarChart(document.getElementById('column'));
-            chart.draw(data, options);
-//======================================================================================================
-            //circle
-            var data = google.visualization.arrayToDataTable(to_circle);
+        sumWithoutNds = +(acceptWeight * acceptPrice).toFixed(3);
+        sumNds = +(acceptWeight * persentNds / 100).toFixed(3);
+        sumWithNds = +(sumWithoutNds + sumNds).toFixed(3);
+        primeCost = +(physicalWeight * acceptPrice).toFixed(3);
 
-            var options = {
-                title: 'График нагруженности транспорта'
-            };
-
-            var chartBouble = new google.visualization.PieChart(document.getElementById('piechart'));
-
-            chartBouble.draw(data, options);
-
+        $(iN + "CellSumWithoutNds").text(sumWithoutNds);
+        $(iN + "CellSumNds").text(sumNds);
+        $(iN + "CellSumWithNds").text(sumWithNds);
+        $(iN + "CellPrimeCost").text(primeCost);
+    }
+    break;
+    case 4: {
+        $(iN + "CellViewTmc").text($(iN + "ViewTmc").val());
+        $(iN + "CellAccountTmc").text($(iN + "AccountTmc").val());
+        $(iN + "CellCharackteristicTmc1").text($(iN + "CharackteristicTmc").val());
+        $(iN + "CellUnitWeight").text($(iN + "UnitWeight").val());
+        $(iN + "CellExpenseAccount").text($(iN + "ExpenseAccount").val());
+        $(iN + "CellOtherIncomeExpenses").text($(iN + "OtherIncomeExpenses").val());
+    }
+    break;
     }
 
+};
+    </script>
+
+{#  Работа с полями АКТА #}
+    <script>
+    $(".actCalculation").bind("change paste keyup", function() {
+    let iN = "#act";
+
+    let weightInvoice=+$(iN+"WeightInvoice").val(),
+        percentDirt=+$(iN+"PercentDirt").val(),
+        fullWeight =+$(iN+"FullWeight").val(),
+        emptyWeight = +$(iN+"EmptyWeight").val(),
+        factWeight, notWeight, okWeight;
+
+
+    factWeight = +(fullWeight-emptyWeight).toFixed(3);
+    notWeight = +(weightInvoice-factWeight).toFixed(3);
+    okWeight=+(factWeight*(1-percentDirt/100)).toFixed(3);
+
+
+    $(iN+"FactWeight").val(factWeight);
+    $(iN+"NotWeight").val(notWeight);
+    $(iN+"OkWeight").val(okWeight);
+
+    });
+
+    const openModalAct = ()=>{
+   transferFieldOpenModalAct();
+    $("#modalInfoAct").modal('show');
+}
+
+const transferFieldOpenModalAct = () =>{
+    let iN = "#act";
+
+    let weightInvoice=+$(iN+"WeightInvoice").val(),
+        percentDirt=+$(iN+"PercentDirt").val(),
+        fullWeight =+$(iN+"FullWeight").val(),
+        emptyWeight = +$(iN+"EmptyWeight").val(),
+        factWeight, notWeight, okWeight;
+
+
+    factWeight = +(fullWeight-emptyWeight).toFixed(3);
+    notWeight = +(weightInvoice-factWeight).toFixed(3);
+    okWeight=+(factWeight*(1-percentDirt/100)).toFixed(3);
+
+
+    $(iN+"FactWeight").val(factWeight);
+    $(iN+"NotWeight").val(notWeight);
+    $(iN+"OkWeight").val(okWeight);
+}
+
+    </script>
+
+{#  Работа с полями Накладной на стекло А ТАКЖЕ ОБРАБОТКА ОТКРЫТИЯ ГОРИЗОНТАЛЬНЫХ НАКЛАДНЫХ(НА СТЕКЛО И ЖЕЛЕЗА#}
+    <script>
+    $(".t2Calculation").bind("change paste keyup", function() {
+    let iN = "#t" + this.id[1]
+    $(iN+"CellNameTmc").text($(iN+"NameTmc").val());
+    $(iN+"CellUnitWeight").text($(iN+"UnitWeight").val());
+    $(iN+"CellPercentNds").text($(iN+"PercentNds").val());
+    let physicalWeight=+$(iN+"CellPhysicalWeight").text(),
+
+        firstPrice=+$(iN+"CellFirstPrice").text(),
+        persentNds=+$(iN+"CellPercentNds").text(),
+        sumWithoutNds,sumWithNds,sumNds;
+
+    sumWithoutNds = +(firstPrice*physicalWeight).toFixed(3);
+    sumNds = +(firstPrice*persentNds/100).toFixed(3);
+    sumWithNds = +(sumWithoutNds+sumNds).toFixed(3);
+
+    $(iN+"CellSumWithoutNds").text(sumWithoutNds);
+    $(iN+"CellSumNds").text(sumNds);
+    $(iN+"CellSumWithNds").text(sumWithNds);
+});
+
+
+const openModalVertical=(num)=>{
+    switch (+num) {
+        case 2:{
+            transferFieldOpenModalInvoiceT2();
+
+            $('#modalInfoInvoiceType2').modal("show");
+        };
+        break;
+        case 3:{
+            transferFieldOpenModalInvoiceT3();
+
+            $('#modalInfoInvoiceType3').modal("show");
+        };
+        break;
+    }
+
+};
+
+const transferFieldOpenModalInvoiceT2 = () =>{
+
+    let iN = "#t2";
+    $(iN+"CellNameTmc").text($(iN+"NameTmc").val());
+    $(iN+"CellUnitWeight").text($(iN+"UnitWeight").val());
+    $(iN+"CellPercentNds").text($(iN+"PercentNds").val());
+    let physicalWeight=+$(iN+"CellPhysicalWeight").text(),
+
+        firstPrice=+$(iN+"CellFirstPrice").text(),
+        persentNds=+$(iN+"CellPercentNds").text(),
+        sumWithoutNds,sumWithNds,sumNds;
+
+    sumWithoutNds = +(firstPrice*physicalWeight).toFixed(3);
+    sumNds = +(firstPrice*persentNds/100).toFixed(3);
+    sumWithNds = +(sumWithoutNds+sumNds).toFixed(3);
+
+    $(iN+"CellSumWithoutNds").text(sumWithoutNds);
+    $(iN+"CellSumNds").text(sumNds);
+    $(iN+"CellSumWithNds").text(sumWithNds);
+    transferDataToModalAkt(2);
+}
+    </script>
+
+{#  Работа с полями накладной на железо  #}
+    <script>
+    $(".t3Calculation").bind("change paste keyup", function() {
+          transferDataToModalAkt(this.id[1]);
+    let iN = "#t" + this.id[1]
+    $(iN+"CellNameTmc").text($(iN+"NameTmc").val());
+    $(iN+"CellUnitWeight").text($(iN+"UnitWeight").val());
+    $(iN+"CellPercentNds").text($(iN+"PercentNds").val());
+    $(iN+"CellNumberLoadPlace").text($(iN+"NumberLoadPlace").val());
+    let physicalWeight=+$(iN+"CellPhysicalWeight").text(),
+        firstPrice=+$(iN+"CellFirstPrice").text(),
+        persentNds=+$(iN+"CellPercentNds").text(),
+        sumWithoutNds,sumWithNds,sumNds;
+
+    sumWithoutNds = +(firstPrice*physicalWeight).toFixed(3);
+    sumNds = +(firstPrice*persentNds/100).toFixed(3);
+    sumWithNds = +(sumWithoutNds+sumNds).toFixed(3);
+
+    $(iN+"CellSumWithoutNds").text(sumWithoutNds);
+    $(iN+"CellSumNds").text(sumNds);
+    $(iN+"CellSumWithNds").text(sumWithNds);
+});
+
+
+$('#openModalInfoInvoiceType3').click(()=>{
+    transferFieldOpenModalInvoiceT3();
+    $('#modalInfoInvoiceType3').modal("show");
+});
+
+const openModalHorizontal =  ()=>{
+    transferFieldOpenModalInvoiceT3();
+    $('#modalInfoInvoiceType3').modal("show");
+};
+
+const transferFieldOpenModalInvoiceT3 = () =>{
+    transferDataToModalAkt(3);
+      let iN = "#t3";
+    $(iN+"CellNameTmc").text($(iN+"NameTmc").val());
+    $(iN+"CellUnitWeight").text($(iN+"UnitWeight").val());
+    $(iN+"CellPercentNds").text($(iN+"PercentNds").val());
+    $(iN+"CellNumberLoadPlace").text($(iN+"NumberLoadPlace").val());
+    let physicalWeight=+$(iN+"CellPhysicalWeight").text(),
+        firstPrice=+$(iN+"CellFirstPrice").text(),
+        persentNds=+$(iN+"CellPercentNds").text(),
+        sumWithoutNds,sumWithNds,sumNds;
+
+    sumWithoutNds = +(firstPrice*physicalWeight).toFixed(3);
+    sumNds = +(firstPrice*persentNds/100).toFixed(3);
+    sumWithNds = +(sumWithoutNds+sumNds).toFixed(3);
+
+    $(iN+"CellSumWithoutNds").text(sumWithoutNds);
+    $(iN+"CellSumNds").text(sumNds);
+    $(iN+"CellSumWithNds").text(sumWithNds);
+
+}
     </script>
 {% endblock %}
