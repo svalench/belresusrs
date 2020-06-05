@@ -170,9 +170,10 @@ def getVagonAll():
 
 def vagonSql():
     with connection.cursor() as cursor:
-        sql = "SELECT ag.name as nameAgent, c.name as contractName, c.id as contractId, c.*,ag.*,a.* FROM ves_vagon a " \
+        sql = "SELECT ag.name as nameAgent,p.name as productname, c.name as contractName, c.id as contractId, c.*,ag.*,a.* FROM ves_vagon a " \
               "LEFT JOIN ves_agent ag ON ag.id=a.agent_vagon_id" \
-              " LEFT JOIN ves_catalogcontract c ON c.id=a.parentContractId_id  WHERE a.status_in=true"
+              " LEFT JOIN ves_catalogcontract c ON c.id=a.parentContractId_id " \
+              "LEFT JOIN ves_production p ON p.id = c.parentmaterialid_id WHERE a.status_in=true"
         cursor.execute(sql)
         columns = [col[0] for col in cursor.description]
         return [
