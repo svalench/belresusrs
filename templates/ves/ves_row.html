@@ -78,6 +78,7 @@
 
 
  <script>
+     let path1_g,path2_g,path3_g;
  function detect(path) {
         data={'path':path};
         $.ajax({
@@ -88,6 +89,9 @@
             data: data,
             success: function (ret) {
                insertAuto(ret.number)
+                path1_g = ret.path1;
+               path2_g = ret.path2;
+               path3_g = ret.path3;
             },
             beforeSend: function (xhr, settings) {
                 if (!csrfSafeMethod(settings.type) && !this.crossDomain) {

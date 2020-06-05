@@ -103,7 +103,13 @@ def addAutoNew(request):
             form['NumberWayList'] = None
         if (not 'NumberAccompanyingPassport' in form):
             form['NumberAccompanyingPassport'] = None
-        auto = Auto(number=form['gos_num_avto'], agents_id=form['Contragent'], driver=form['NameDriver'], parentcontractid_id=form['Contract'],
+        if (not 'path3' in form):
+            form['path3'] = None
+        if (not 'path2' in form):
+            form['path2'] = None
+        if (not 'path1' in form):
+            form['path1'] = None
+        auto = Auto(path1=form['path1'],path2=form['path2'], path3=form['path3'], number=form['gos_num_avto'], agents_id=form['Contragent'], driver=form['NameDriver'], parentcontractid_id=form['Contract'],
                     number_pricep=form['gos_num_pricep'],  last_in=last_in, catalog_id=form['DataAuto'], catalogpricep=form['DataTrailer'],
                     description= form['Description'], seria=form['SeriesInvoice'],numberNakladnaia=form['NumberInvoice'], nakladnayaDate = form['DateInvoice'],
                     ves_nakladnaya=form['WeightInvoice'], price_ed_iz=form['ContractPrice'], discont= form['DirtPercent'],

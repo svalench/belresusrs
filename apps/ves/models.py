@@ -178,6 +178,9 @@ class Auto(models.Model):
     prinyal = models.CharField('кто принял', null=True, max_length=255, db_index=True)
     putlist = models.BigIntegerField('номер путевого листа', null=True, db_index=True)
     osnovanie = models.CharField('основание', max_length=255, null=True, db_index=True)
+    path1 = models.CharField('path1', max_length=255, null=True, db_index=True)
+    path2 = models.CharField('path2', max_length=255, null=True, db_index=True)
+    path3 = models.CharField('path3', max_length=255, null=True, db_index=True)
     def __str__(self):
         return self.number
     class Meta:
@@ -237,6 +240,9 @@ class Vagon(models.Model):
     prinyal = models.CharField('кто принял', null=True, max_length=255, db_index=True)
     putlist = models.BigIntegerField('номер путевого листа', null=True, db_index=True)
     osnovanie = models.CharField('основание', max_length=255, null=True, db_index=True)
+    path1 = models.CharField('path1', max_length=255, null=True, db_index=True)
+    path2 = models.CharField('path2', max_length=255, null=True, db_index=True)
+    path3 = models.CharField('path3', max_length=255, null=True, db_index=True)
     def __str__(self):
         return self.number
     class Meta:
